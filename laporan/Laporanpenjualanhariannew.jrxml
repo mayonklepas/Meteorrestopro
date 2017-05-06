@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="57b932b9-373a-4192-8f1e-14e9f5f00aef">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFE0">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="getpajak" uuid="bc57aacd-6a76-45ab-b712-ab26fa22561b">
+		<parameter name="tanggal" class="java.util.Date">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT t.kode_transaksi,(select SUM(jumlah*harga) FROM transaksi INNER JOIN menu ON transaksi.kode_menu=menu.kode WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total,(select tax FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS pajak,(select SUM(jumlah*harga*tax/100) FROM transaksi INNER JOIN menu ON transaksi.kode_menu=menu.kode WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total_pajak FROM transaksi t WHERE tanggal::date=$P{tanggal} GROUP BY kode_transaksi]]>
+		</queryString>
+		<field name="kode_transaksi" class="java.lang.String"/>
+		<field name="total" class="java.lang.Double"/>
+		<field name="pajak" class="java.lang.Integer"/>
+		<field name="total_pajak" class="java.lang.Double"/>
+		<variable name="totalpajak" class="java.lang.Number" calculation="Sum">
+			<variableExpression><![CDATA[$F{total_pajak}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\Workspace\\Netbeans\\MeteorResto\\laporan\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tanggal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sub" class="java.lang.String"/>
+	<parameter name="header" class="java.lang.String"/>
+	<parameter name="sub2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT id,nama,(SELECT SUM(jumlah*harga) FROM transaksi INNER JOIN menu ON transaksi.kode_menu=menu.kode WHERE transaksi.kode_user=a.id AND status=1 AND tanggal::date=$P{tanggal}) AS total_pendapatan FROM akun a]]>
+	</queryString>
+	<field name="id" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="total_pendapatan" class="java.lang.Double"/>
+	<variable name="total_pendapatan_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_pendapatan}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<textField>
+				<reportElement x="8" y="13" width="413" height="31" uuid="89978ba6-77e7-46f6-a313-80ec04c08a28"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="494" y="0" width="61" height="20" uuid="1b1dc58a-d1a0-4629-8e00-b6f225566f20"/>
+				<textFieldExpression><![CDATA[$P{tanggal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="434" y="0" width="60" height="20" uuid="876d2a64-ddda-4b09-b220-b73c0ae75f40"/>
+				<text><![CDATA[Pertanggal : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="8" y="0" width="303" height="18" uuid="678783d3-b0e2-448c-92fe-05c5bdfdc355"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Penjualan Harian]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="93" height="20" forecolor="#3333FF" backcolor="#CCCCCC" uuid="a8edf220-4374-46e4-b5ed-4a5f841e5657"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="93" y="0" width="462" height="20" forecolor="#3333FF" backcolor="#CCCCCC" uuid="52ded863-a101-4eed-8881-07b9fb5ee71e"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="23" width="554" height="45" uuid="b74fc11e-8a8c-41db-834b-cd3472e5a864"/>
+				<subreportParameter name="tanggal">
+					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="kode_user">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="219" y="17" width="80" height="20" backcolor="#CCCCCC" uuid="b0ff77b1-4264-4f65-bf0b-e0458d90320c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="299" y="17" width="256" height="20" backcolor="#CCCCCC" uuid="3a5eb687-29a8-4d77-97e7-f154b938fa43"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement mode="Opaque" x="2" y="17" width="217" height="20" backcolor="#CCCCCC" uuid="a548d1b5-c779-437d-b903-24de5a6be0bc"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="123" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="43" width="133" height="20" uuid="5290f229-e0a1-4057-b6b4-c69dc13182b9"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah Pajak pernota]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="413" y="5" width="141" height="20" uuid="36971e61-da3b-4f76-8c3d-c1bfda4d99c6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_pendapatan_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="313" y="5" width="100" height="20" uuid="628a8789-e5de-4608-8c95-70aef537f8b0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Keseluruhan :]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="1" y="68" width="553" height="43" uuid="88360416-5450-4f9b-8f90-2b5faf62add0"/>
+				<subreportParameter name="tanggal">
+					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{sub2}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

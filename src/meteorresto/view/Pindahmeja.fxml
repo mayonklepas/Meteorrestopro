@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.PindahmejaController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="98.0" prefWidth="388.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="281.0" text="PINDAH MEJA" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="28.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/ic_desktop_windows_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="106.0" layoutY="55.0" text="Pilih Meja dan Slot tujuan" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <VBox layoutX="12.0" layoutY="104.0" prefHeight="419.0" prefWidth="388.0" spacing="10.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="104.0">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="104.0" prefViewportHeight="314.0" prefViewportWidth="360.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
+               <content>
+                  <FlowPane fx:id="fpasal" alignment="CENTER" hgap="5.0" layoutX="14.0" layoutY="104.0" prefHeight="314.0" prefWidth="360.0" vgap="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+               </content>
+            </ScrollPane>
+            <ComboBox fx:id="cslotasal" editable="true" prefHeight="25.0" prefWidth="380.0" promptText="Slot" style="-fx-text-size: 14;" />
+            <Button fx:id="pindahkan" mnemonicParsing="false" prefHeight="25.0" prefWidth="379.0" text="Pindahkan" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <AnchorPane fx:id="footer" layoutY="525.0" prefHeight="57.0" prefWidth="388.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   </children>
+</AnchorPane>

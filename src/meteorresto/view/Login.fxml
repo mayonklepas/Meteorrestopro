@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" onKeyPressed="#keypress" prefHeight="348.0" prefWidth="283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.LoginController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="117.0" prefWidth="314.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="95.0" fitWidth="106.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@../icon/ic_lock_open_white_48dp.png" />
+               </image></ImageView>
+            <Label blendMode="SRC_ATOP" layoutX="109.0" layoutY="38.0" style="-fx-font-smoothing-type: white;" text="LOGIN FORM" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="110.0" layoutY="62.0" text="MeteorIT Resto APP" textFill="#f8f8f8">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <VBox layoutY="117.0" prefHeight="228.0" prefWidth="262.0" spacing="5.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="117.0">
+         <children>
+            <Label text="Username">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <ComboBox fx:id="cuser" editable="true" prefHeight="31.0" prefWidth="263.0" promptText="Pilih Username" />
+            <Label text="Password">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <PasswordField fx:id="tpassword">
+               <font>
+                  <Font size="14.0" />
+               </font></PasswordField>
+            <HBox prefHeight="4.0" prefWidth="241.0" spacing="5.0">
+               <children>
+                  <Button fx:id="blogin" mnemonicParsing="false" prefHeight="30.0" prefWidth="264.0" text="Login">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding></VBox>
+      <AnchorPane fx:id="footer" layoutY="344.0" prefHeight="57.0" prefWidth="262.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   </children>
+</AnchorPane>

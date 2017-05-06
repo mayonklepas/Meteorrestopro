@@ -1,0 +1,114 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 30, 2017, 6:27:15 AM
+    Author     : user
+*/
+
+#button-meja{
+    -fx-background-color: #333333;
+    -fx-font: bold 17pt "Segoe UI";
+    -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
+    -fx-text-fill: #ffffff;
+}
+
+#button-meja-dead{
+    -fx-background-color: crimson;
+    -fx-font: bold 17pt "Segoe UI";
+    -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
+    -fx-text-fill: #ffffff;
+}
+
+#button-meja-pilih{
+    -fx-background-color: orange;
+    -fx-font: bold 17pt "Segoe UI";
+    -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
+    -fx-text-fill: #ffffff;
+}
+
+#button-meja-pilih:hover{
+    -fx-background-color: orange;
+    -fx-font: bold 17pt "Segoe UI";
+    -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
+    -fx-text-fill: #ffffff;
+}
+
+#button-meja:hover{
+    -fx-background-color: orange;
+    -fx-text-fill: #ffffff;
+}
+
+#button-meja-dead:hover{
+    -fx-background-color: orange;
+    -fx-text-fill: #ffffff;
+}
+
+#button-menu{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 0.9em;
+    -fx-effect: dropshadow( gaussian , black , 2 , 0 , 0 , 0 );
+    -fx-padding: 5 5 5 5;
+}
+
+#button-menu:hover{
+    -fx-background-color: teal;
+    -fx-text-fill: #ffffff;
+}
+
+#button-menu:pressed{
+    -fx-background-color: crimson;
+    -fx-text-fill: #ffffff;
+}
+
+#bc{
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.3em;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow( gaussian , black , 5 , 0.1 , 0.1 , 0.1 );
+    -fx-padding:  3 3 3 3;
+}
+
+#bc:hover{
+    -fx-background-color: orange;
+}
+
+#bc:pressed{
+    -fx-background-color: crimson;
+}
+
+#bc text{
+    -fx-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
+}
+
+#tema{
+    -fx-background-color:#333333;
+}
+
+#pane{
+    -fx-background-color: #333333;
+}
+
+#pane:hover{
+    -fx-background-color: #444444;
+    -fx-effect: dropshadow( three-pass-box , white , 5 , 0.1 , 0.1 , 0.1 );
+}
+
+#pane:pressed{
+    -fx-background-color: #222222;
+    -fx-effect: dropshadow( three-pass-box , white , 5 , 0.1 , 0.1 , 0.1 );
+}
+
+.combo-box{
+  -fx-font:14px segoeui;
+ }
+.text-input{
+  -fx-font:14px segoeui; 
+ }

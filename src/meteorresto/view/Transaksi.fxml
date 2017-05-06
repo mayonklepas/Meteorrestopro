@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.TransaksiController">
+    <children>
+      <AnchorPane fx:id="header" layoutX="18.0" layoutY="111.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="281.0" text="BILLING TRANSAKSI" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="28.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/ic_desktop_windows_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="106.0" layoutY="55.0" text="Biling Kasir" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+            <Pane fx:id="pkembali" layoutX="582.0" layoutY="10.0" prefHeight="74.0" prefWidth="203.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <ImageView fitHeight="53.0" fitWidth="64.0" layoutX="136.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_input_white_36dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="41.0" layoutY="21.0" text="KEMBALI" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="footer" layoutX="10.0" layoutY="499.0" prefHeight="68.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView fitHeight="62.0" fitWidth="95.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@../icon/ic_account_circle_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="luser" layoutX="76.0" layoutY="20.0" text="Iwan Budiman" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="165.0" prefHeight="387.0" prefViewportHeight="427.0" prefViewportWidth="310.0" prefWidth="331.0" AnchorPane.bottomAnchor="108.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="165.0">
+         <content>
+            <FlowPane fx:id="fpmeja" hgap="5.0" layoutX="3.0" layoutY="165.0" prefHeight="427.0" prefWidth="300.0" vgap="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="165.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></FlowPane>
+         </content>
+      </ScrollPane>
+      <AnchorPane fx:id="detail1" layoutY="98.0" prefHeight="68.0" prefWidth="331.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="98.0">
+         <children>
+            <Label layoutX="125.0" layoutY="5.0" text="MEJA" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="ctipemeja" editable="true" layoutX="14.0" layoutY="34.0" prefHeight="25.0" prefWidth="210.0" promptText="Tipe" AnchorPane.leftAnchor="14.0" />
+            <Button fx:id="bclear" layoutX="230.0" layoutY="33.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" AnchorPane.leftAnchor="230.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="detail2" layoutX="329.0" layoutY="98.0" prefHeight="68.0" prefWidth="667.0" AnchorPane.leftAnchor="329.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="98.0">
+         <children>
+            <Label layoutX="304.0" layoutY="5.0" text="MENU" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="ckategorimenu" editable="true" layoutX="15.0" layoutY="34.0" prefHeight="25.0" prefWidth="540.0" promptText="Kategori" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="112.0" />
+            <Button fx:id="bclear2" layoutX="563.0" layoutY="33.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" AnchorPane.rightAnchor="14.0" />
+         </children>
+      </AnchorPane>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="329.0" layoutY="165.0" prefHeight="426.0" prefViewportHeight="427.0" prefViewportWidth="680.0" prefWidth="667.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="329.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="165.0">
+         <content>
+            <FlowPane fx:id="fpmenu" hgap="5.0" layoutX="310.0" layoutY="165.0" prefHeight="425.0" prefWidth="676.0" vgap="5.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="324.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </FlowPane>
+         </content>
+      </ScrollPane>
+      <AnchorPane fx:id="detail3" layoutX="990.0" layoutY="98.0" prefHeight="38.0" prefWidth="331.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="98.0">
+         <children>
+            <Label layoutX="62.0" layoutY="5.0" text="DETAIL PESANAN" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TableView fx:id="tableview" layoutX="990.0" layoutY="134.0" prefHeight="295.0" prefWidth="331.0" AnchorPane.bottomAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="134.0">
+        <columns>
+          <TableColumn fx:id="menu" prefWidth="160.0" text="Menu" />
+          <TableColumn fx:id="qty" minWidth="7.0" prefWidth="67.0" text="Qty" />
+            <TableColumn fx:id="harga" prefWidth="97.0" text="Harga" />
+        </columns>
+      </TableView>
+      <AnchorPane layoutX="995.0" layoutY="508.0" prefHeight="164.0" prefWidth="331.0" AnchorPane.bottomAnchor="68.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label fx:id="ljumlah" layoutX="306.0" layoutY="10.0" text="0" textAlignment="RIGHT" textFill="#110101" AnchorPane.rightAnchor="13.0">
+               <font>
+                  <Font name="Segoe UI Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="ljumlah1" layoutX="14.0" layoutY="10.0" text="Total : " textAlignment="RIGHT" textFill="#110101">
+               <font>
+                  <Font name="Segoe UI Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="border" layoutX="40.0" layoutY="42.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="120.0" text="Simpan" AnchorPane.rightAnchor="171.0" />
+            <Button fx:id="bpindah" layoutX="171.0" layoutY="79.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="120.0" text="Pindah Meja" />
+            <Button fx:id="bbayar" layoutX="171.0" layoutY="42.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="120.0" text="Bayar" />
+            <Button fx:id="bcetakbil" layoutX="40.0" layoutY="79.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="120.0" text="Cetak Bil" />
+            <Button fx:id="bbatal" layoutX="40.0" layoutY="116.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="254.0" text="Batalkan Pesanan" />
+         </children>
+      </AnchorPane>
+      <ComboBox fx:id="cslot" editable="true" layoutX="7.0" layoutY="559.0" prefHeight="25.0" prefWidth="317.0" promptText="Slot" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="7.0" />
+   </children>
+</AnchorPane>

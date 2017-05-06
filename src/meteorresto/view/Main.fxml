@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="mainpane" prefHeight="740.0" prefWidth="1299.0" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.MainController">
+    <children>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="58.0" prefHeight="50.0" prefWidth="1247.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Pane fx:id="pakun" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_account_circle_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="26.0" layoutY="75.0" text="USERS" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="pperkiraan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="95.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_assignment_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="5.0" layoutY="75.0" text="PERKIRAAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pmeja" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="95.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_event_seat_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="29.0" layoutY="74.0" text="MEJA" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="pbahan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_kitchen_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="21.0" layoutY="75.0" text="BAHAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="presep" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_receipt_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="27.0" layoutY="75.0" text="RESEP" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="pmenu" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_restaurant_menu_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="26.0" layoutY="75.0" text="MENU" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="ppenjualan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_desktop_windows_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="4.0" layoutY="75.0" text="PENJUALAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="ppembelian" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_local_grocery_store_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="5.0" layoutY="75.0" text="PEMBELIAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="pcatatan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_content_paste_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="12.0" layoutY="75.0" text="CATATAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="plaporan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: grey;">
+                     <image>
+                        <Image url="@../icon/ic_description_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="12.0" layoutY="75.0" text="LAPORAN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+            <Pane fx:id="psetting" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_tune_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="17.0" layoutY="75.0" text="SETTING" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin>
+            </Pane>
+         </children>
+      </FlowPane>
+      <ImageView fitHeight="66.0" fitWidth="82.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+         <image>
+            <Image url="@../icon/ic_view_module_white_36dp.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="80.0" layoutY="31.0" text="MeteorIT POS Resto" textFill="WHITE" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="31.0">
+         <font>
+            <Font name="Segoe UI Bold" size="25.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="62.0" fitWidth="95.0" layoutX="14.0" layoutY="676.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="14.0">
+         <image>
+            <Image url="@../icon/ic_account_circle_white_48dp.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="luser" layoutX="80.0" layoutY="691.0" text="Mulyadi" textFill="WHITE" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="80.0">
+         <font>
+            <Font name="Segoe UI Bold" size="25.0" />
+         </font>
+      </Label>
+      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" layoutY="31.0" prefHeight="21.0" prefWidth="776.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label text="Minami Cafe" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </FlowPane>
+      <GridPane layoutX="10.0" layoutY="168.0" prefHeight="489.0" prefWidth="1288.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="16.0" minHeight="16.0" prefHeight="16.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="16.0" minHeight="16.0" prefHeight="16.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <LineChart fx:id="gpenjualanperhari" alternativeColumnFillVisible="true" createSymbols="false" legendVisible="false" GridPane.rowIndex="1">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <AreaChart fx:id="gpenjulanperbulan" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </AreaChart>
+            <Label text="Grafik Penjualan Perhari" textFill="#f5f5f5" GridPane.halignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Daftar Stock Bahan" textFill="#fcfafa" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Grafik Top Selling Menu" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Grafik Penjulan Pertahun" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tablebahan" prefHeight="200.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+              <columns>
+                <TableColumn fx:id="kode_bahan" prefWidth="110.0" text="Kode Bahan" />
+                <TableColumn fx:id="nama_bahan" minWidth="0.0" prefWidth="259.0" text="Nama Bahan" />
+                  <TableColumn fx:id="jumlah_g" minWidth="0.0" prefWidth="118.0" text="Jumlah g/ml" />
+                  <TableColumn fx:id="jumlah_kg" prefWidth="115.0" text="Jumlah Kg/Liter" />
+              </columns>
+               <GridPane.margin>
+                  <Insets bottom="25.0" left="40.0" right="10.0" top="5.0" />
+               </GridPane.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <BarChart fx:id="gtopselling" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </BarChart>
+         </children>
+      </GridPane>
+    </children>
+</AnchorPane>

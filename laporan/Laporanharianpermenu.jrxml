@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f3116eb-3e6f-49be-b7a7-160482f5c0a5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tanggal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="key" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="header" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t.kode_menu,m.nama,SUM(t.jumlah) AS total,SUM(t.jumlah*t.harga_masing) AS total_uang FROM transaksi t INNER JOIN 
+menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} AND m.nama ILIKE $P{key} GROUP BY t.kode_menu,m.nama]]>
+	</queryString>
+	<field name="kode_menu" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="total" class="java.lang.Long"/>
+	<field name="total_uang" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="14" width="294" height="34" uuid="c3d1ce89-be38-488e-ae84-4f1103e7ca3e"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="53" y="52" width="326" height="25" uuid="9b23a2fe-050a-4691-a386-5c3db2dcb6f8"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Laporan Penjualan Harian Permenu]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="0" width="100" height="13" uuid="827d78a0-25f6-468a-836f-73ec3f0d9055"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{tanggal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="4" width="43" height="15" uuid="da5767e2-6556-41d6-8fe0-7ccb8c4e68fe"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Menu : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="4" width="100" height="15" uuid="5ae37cbb-5ac9-4e12-ad67-ab194693d004"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{key}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="17" uuid="a37f9c73-5b04-473b-b161-eaa8c82e625d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kode Menu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="210" height="17" uuid="a26b7293-e3b5-42a9-b82d-8e9bbec9e441"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nama Menu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="104" height="17" uuid="1a93bcc4-188f-4537-8d79-7a6a37829a0b"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Terjual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="138" height="17" uuid="c9487e0a-612e-4bad-bf71-87c2c13265c5"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jumlah Pendapatan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="c8f71e56-ea6c-41b4-aeb0-6ef7f0cf7b17"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="15" uuid="d83097b7-ccc8-4cf7-9632-e7ec886a292d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_menu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="210" height="15" uuid="7940de6c-12f9-4497-b8e0-93eb9f66a0fb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="104" height="15" uuid="aa715d25-0521-4b3d-a62b-14cc8860dd45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0">
+				<reportElement x="414" y="0" width="138" height="15" uuid="65c955d1-c387-4693-b6b6-477b0b1b80b2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_uang}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="17" width="555" height="1" uuid="24991a47-3b12-4406-b465-ddcc3ecbe2b3"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="6" width="100" height="15" uuid="e27cf2ae-4e14-4001-9bab-0ab2aab55d04"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="5" width="80" height="15" uuid="395439dd-d819-4d61-8201-c44322c295a7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="294" y="5" width="40" height="15" uuid="250edad6-6953-482d-bd0a-536d2876022c"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

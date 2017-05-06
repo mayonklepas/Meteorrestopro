@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="567.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.BayarController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="281.0" text="PEMBAYARAN" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="28.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/ic_desktop_windows_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="106.0" layoutY="55.0" text="Form Kalkulasi Pembayaran" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="footer" layoutY="337.0" prefHeight="67.0" prefWidth="389.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <VBox layoutX="14.0" layoutY="97.0" prefHeight="447.0" prefWidth="387.0" spacing="10.0" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="97.0">
+         <children>
+            <Pane layoutX="14.0" layoutY="107.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="84.0" prefWidth="361.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+               <children>
+                  <Label layoutX="219.0" layoutY="5.0" text="Total Belanja + TAX" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ltotal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="18.0" layoutY="32.0" text="0" textAlignment="RIGHT" textFill="#37fc0f">
+                     <font>
+                        <Font name="Segoe UI Bold" size="35.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="198.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="84.0" prefWidth="361.0" style="-fx-background-color: grey;">
+               <children>
+                  <Label layoutX="281.0" layoutY="11.0" text="Kembalian" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lkembalian" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="23.0" layoutY="32.0" text="0" textAlignment="RIGHT" textFill="#fac60f">
+                     <font>
+                        <Font name="Segoe UI Bold" size="35.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="14.0" layoutY="289.0" text="Jumlah Uang">
+               <font>
+                  <Font name="Segoe UI Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="ljumlahuang" layoutX="14.0" layoutY="313.0" prefHeight="25.0" prefWidth="361.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </TextField>
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="266.0" spacing="5.0">
+               <children>
+                  <Button fx:id="b1" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="1">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b2" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="2">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b3" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="3">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b4" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="4">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b5" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="5">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b6" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="6">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="369.0" spacing="5.0">
+               <children>
+                  <Button fx:id="b7" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="7">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b8" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="8">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b9" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="9">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="b0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="bc" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="C">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="boke" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="OK">
+                     <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

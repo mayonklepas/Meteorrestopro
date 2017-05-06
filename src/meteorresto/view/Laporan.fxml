@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.embed.swing.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="541.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.LaporanController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="220.0" text="LAPORAN" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="28.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/ic_description_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="106.0" layoutY="55.0" text="Laporan hasil penjualan" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+            <Pane fx:id="pkembali" layoutX="598.0" layoutY="12.0" prefHeight="74.0" prefWidth="203.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="12.0">
+               <children>
+                  <ImageView fitHeight="53.0" fitWidth="64.0" layoutX="136.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_input_white_36dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="41.0" layoutY="21.0" text="KEMBALI" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="footer" layoutX="-2.0" layoutY="551.0" prefHeight="68.0" prefWidth="815.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView fitHeight="61.0" fitWidth="70.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@../icon/ic_account_circle_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="luser" layoutX="75.0" layoutY="20.0" text="Iwan Budiman" textFill="WHITE" AnchorPane.leftAnchor="75.0">
+               <font>
+                  <Font name="Segoe UI Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <SwingNode fx:id="sn" layoutY="138.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="147.0" />
+      <ToolBar layoutY="98.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="98.0">
+        <items>
+            <ComboBox fx:id="ckategori" editable="true" prefHeight="25.0" prefWidth="179.0" promptText="Pilih Ketegori" />
+            <DatePicker fx:id="ddari" promptText="Dari Tanggal" />
+            <DatePicker fx:id="dke" promptText="Ke Tanggal" />
+            <TextField fx:id="tfilter" prefHeight="25.0" prefWidth="200.0" />
+          <Button fx:id="bcetak" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="Cetak Laporan" />
+            <Button fx:id="bclear" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="202.0" text="Bersihkan Data Penjualan" />
+        </items>
+      </ToolBar>
+   </children>
+</AnchorPane>
