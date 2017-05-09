@@ -209,7 +209,6 @@ public class LaporanController implements Initializable {
                                 hm.put("header", info[0]);
                                 hm.put("tanggal", new Date().from(dari));
                                 hm.put("key", "%" + tfilter.getText() + "%");
-                                //hm.put("sub", new File("laporan/Laporanpenjualanharian_sub.jasper").getPath());
                                 String path = "laporan/Laporanharianpermenu.jasper";
                                 loadrepot lr = new loadrepot(path, hm);
                                 Thread th = new Thread(lr);
