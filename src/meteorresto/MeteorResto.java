@@ -25,7 +25,7 @@ public class MeteorResto extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Login.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("MeteorIT POS Resto");
+        stage.setTitle("Teman Resto POS");
         String css = new File("style.css").getAbsolutePath();
         stage.getScene().getStylesheets().clear();
         stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));

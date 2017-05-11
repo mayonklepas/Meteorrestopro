@@ -205,7 +205,7 @@
             <Image url="@../icon/ic_view_module_white_36dp.png" />
          </image>
       </ImageView>
-      <Label layoutX="80.0" layoutY="31.0" text="MeteorIT POS Resto" textFill="WHITE" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="31.0">
+      <Label layoutX="80.0" layoutY="31.0" text="Teman Resto" textFill="WHITE" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="31.0">
          <font>
             <Font name="Segoe UI Bold" size="25.0" />
          </font>
@@ -222,7 +222,7 @@
       </Label>
       <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" layoutY="31.0" prefHeight="21.0" prefWidth="776.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label text="Minami Cafe" textFill="WHITE">
+            <Label fx:id="lnamacafe" text="Cilinaya Cafe" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Bold" size="25.0" />
                </font>

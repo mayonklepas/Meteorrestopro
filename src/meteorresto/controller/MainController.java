@@ -111,6 +111,8 @@ public class MainController implements Initializable {
     FIlehelper fh = new FIlehelper();
     ObservableList<Entitybahan> tabledata = FXCollections.observableArrayList();
     NumberFormat nf = NumberFormat.getInstance();
+    @FXML
+    private Label lnamacafe;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -126,6 +128,7 @@ public class MainController implements Initializable {
         catatan();
         resep();
         perkiraan();
+        lnamacafe.setText(fh.getinfo().split(";")[0]);
         luser.setText(sh.getUsername());
         mainpane.setId("tema");
         pmeja.setId("pane");
