@@ -119,7 +119,7 @@
                   <Font name="Segoe UI Bold" size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="tlimit" layoutX="510.0" layoutY="17.0" prefHeight="38.0" prefWidth="77.0" promptText="Limit" style="-fx-text-fill: white;" text="100" AnchorPane.rightAnchor="178.0">
+            <TextField fx:id="tlimit" layoutX="510.0" layoutY="15.0" prefHeight="38.0" prefWidth="77.0" promptText="Limit" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="500" AnchorPane.rightAnchor="178.0">
                <font>
                   <Font name="Segoe UI Bold" size="20.0" />
                </font>

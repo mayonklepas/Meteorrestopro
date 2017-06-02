@@ -108,7 +108,13 @@ and open the template in the editor.
 
 .combo-box{
   -fx-font:14px segoeui;
+  -fx-font-smoothing-type: lcd;
  }
 .text-input{
-  -fx-font:14px segoeui; 
+  -fx-font:14px segoeui;
+  -fx-font-smoothing-type: lcd;
+ }
+ 
+ .label{
+     -fx-font-smoothing-type: lcd;
  }
