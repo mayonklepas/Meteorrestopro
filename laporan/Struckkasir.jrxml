@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="217"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -193,7 +193,7 @@
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="21" width="136" height="1" uuid="9f46b9ec-f0a9-49e7-99c2-bbe79f726244"/>
+				<reportElement x="0" y="21" width="136" height="1" forecolor="#999999" uuid="9f46b9ec-f0a9-49e7-99c2-bbe79f726244"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>

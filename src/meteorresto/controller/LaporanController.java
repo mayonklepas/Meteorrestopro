@@ -23,6 +23,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -39,6 +41,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
@@ -149,6 +154,10 @@ public class LaporanController implements Initializable {
         ObservableList<String> olscombo = FXCollections.observableArrayList();
         olscombo.add("Laporan Harian");
         olscombo.add("Laporan Harian Permenu");
+        olscombo.add("Laporan Periodik Permenu");
+        olscombo.add("Laporan Periodik Pembelian");
+        olscombo.add("Laporan Periodik Catatan Pengeluaran dan Pendapatan");
+        olscombo.add("Laporan Periodik Rekap Usaha");
         olscombo.add("Daftar Menu");
         ckategori.setItems(olscombo);
     }
@@ -160,12 +169,42 @@ public class LaporanController implements Initializable {
                 if (newValue.intValue() == 0) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
+                    dke.setDisable(true);
                     tfilter.setDisable(true);
                 } else if (newValue.intValue() == 1) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
+                    dke.setDisable(true);
                     tfilter.setDisable(false);
                     tfilter.requestFocus();
+                } else if (newValue.intValue() == 2) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                }else if (newValue.intValue() == 3) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                }else if (newValue.intValue() == 4) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                }else if (newValue.intValue() == 5) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                } else {
+                    ddari.setDisable(true);
+                    dke.setDisable(true);
+                    tfilter.setDisable(true);
                 }
             }
         });
@@ -175,6 +214,19 @@ public class LaporanController implements Initializable {
         bcetak.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Stage st2 = new Stage();
+                st2.initStyle(StageStyle.UNDECORATED);
+                st2.initModality(Modality.APPLICATION_MODAL);
+                try {
+                    Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Progressdialogcustom.fxml"));
+                    Scene sc = new Scene(root);
+                    st2.setScene(sc);
+                    String css = new File("style.css").getAbsolutePath();
+                    st2.getScene().getStylesheets().clear();
+                    st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 String[] info = fh.getinfo().split(";");
                 if (ckategori.getEditor().getText().equals("")) {
                     oh.gagal("Maaf anda belum memilih kategori laporan");
@@ -184,17 +236,29 @@ public class LaporanController implements Initializable {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             HashMap hm = new HashMap(3);
-
                             hm.put("header", info[0]);
                             hm.put("tanggal", new Date().from(dari));
-                            hm.put("sub", new File("laporan/Laporanpenjualanharian_sub.jasper").getPath());
-                            hm.put("sub2", new File("laporan/Laporanpenjualanhariannew_subreport.jasper").getPath());
-                            String path = "laporan/Laporanpenjualanhariannew.jasper";
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/Laporanpenjualanharianmaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
                             th.start();
                             ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             oh.error(ex);
@@ -215,30 +279,190 @@ public class LaporanController implements Initializable {
                                 th.setDaemon(true);
                                 th.start();
                                 ch.connect().close();
+                                lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                    @Override
+                                    public void handle(WorkerStateEvent event) {
+                                        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                        st2.showAndWait();
+                                    }
+                                });
+                                lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                    @Override
+                                    public void handle(WorkerStateEvent event) {
+                                        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                        st2.close();
+                                    }
+                                });
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 oh.error(ex);
                             }
                         }
-                    } else if (i == 2) {
+                    }else if (i == 2) {
                         try {
-
-                            HashMap hm = new HashMap(2);
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(4);
                             hm.put("header", info[0]);
-                            hm.put("sub", new File("laporan/Laporanmenu_sub.jasper").getPath());
-                            String path = "laporan/Laporanmenu.jasper";
+                            hm.put("tanggal_dari", new Date().from(dari));
+                            hm.put("tanggal_sampai", new Date().from(ke));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/Laporanpenjualanpermenumaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
                             th.start();
                             ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    } else if (i == 3) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(3);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal_dari", new Date().from(dari));
+                            hm.put("tanggal_sampai", new Date().from(ke));
+                            String path = "laporan/Laporanpembelian.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    }else if (i == 4) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(4);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal_dari", new Date().from(dari));
+                            hm.put("tanggal_sampai", new Date().from(ke));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/Laporancatatanmaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    }else if (i == 5) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(3);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal_dari", new Date().from(dari));
+                            hm.put("tanggal_sampai", new Date().from(ke));
+                            String path = "laporan/Laporanrekap.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    } else if (i == 6) {
+                        try {
+
+                            HashMap hm = new HashMap(2);
+                            hm.put("header", info[0]);
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/Laporanmenumaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
                     }
                 }
+
             }
+
         });
     }
 

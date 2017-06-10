@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanhariannew_subreport" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9bddad5a-9531-485c-be60-7af3cae03183">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanhariannew_subreport" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9bddad5a-9531-485c-be60-7af3cae03183">
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT t.kode_transaksi,(select SUM(jumlah*harga) FROM transaksi INNER JOIN menu ON transaksi.kode_menu=menu.kode WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total,(select tax FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS pajak,(select SUM(jumlah*harga*tax/100) FROM transaksi INNER JOIN menu ON transaksi.kode_menu=menu.kode WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total_pajak FROM transaksi t WHERE tanggal::date=$P{tanggal} GROUP BY kode_transaksi]]>
+		<![CDATA[SELECT t.kode_transaksi,(select SUM(jumlah*harga_masing) FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total,(select tax FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS pajak,(select SUM(jumlah*harga_masing*tax/100) FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total_pajak FROM transaksi t WHERE tanggal::date=$P{tanggal} GROUP BY kode_transaksi]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>
 	<field name="total" class="java.lang.Double"/>
@@ -55,7 +55,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="138" height="20" uuid="31420f94-f2bf-48c7-acb7-f51e8efb0c51"/>
 				<textElement verticalAlignment="Middle"/>
@@ -77,7 +77,7 @@
 				<textFieldExpression><![CDATA[$F{total_pajak}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="22" width="555" height="1" uuid="ce88448b-9854-47be-bf88-b58ea94cf5a3"/>
+				<reportElement x="0" y="22" width="555" height="1" forecolor="#CCCCCC" uuid="ce88448b-9854-47be-bf88-b58ea94cf5a3"/>
 			</line>
 		</band>
 	</detail>

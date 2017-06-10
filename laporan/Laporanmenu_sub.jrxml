@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" language="groovy" pageWidth="255" pageHeight="802" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" pageWidth="255" pageHeight="802" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -35,7 +35,7 @@
 				<reportElement x="0" y="23" width="255" height="1" uuid="7c05233f-812d-4775-9a95-89d17c2c7986"/>
 			</line>
 			<staticText>
-				<reportElement x="1" y="0" width="25" height="20" uuid="dfad7cf3-651b-42f4-a503-f63caf93f52d"/>
+				<reportElement x="0" y="0" width="26" height="20" uuid="dfad7cf3-651b-42f4-a503-f63caf93f52d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -44,7 +44,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<textField pattern="Rp #,##0">
 				<reportElement x="200" y="0" width="55" height="20" uuid="9a3d7071-ec98-4837-a01f-8e36c0e83762"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -53,7 +53,7 @@
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="22" width="255" height="1" uuid="64d5d8da-6332-4480-9af8-dba3b5e05dc2"/>
+				<reportElement x="0" y="22" width="255" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="64d5d8da-6332-4480-9af8-dba3b5e05dc2"/>
 			</line>
 			<textField>
 				<reportElement x="26" y="0" width="174" height="20" uuid="fe164af4-d204-4375-8daf-03b52935d269"/>

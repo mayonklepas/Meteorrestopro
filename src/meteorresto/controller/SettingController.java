@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -71,6 +72,14 @@ public class SettingController implements Initializable {
     private AnchorPane header;
     @FXML
     private AnchorPane footer;
+    @FXML
+    private ColorPicker cptema;
+    @FXML
+    private ColorPicker cphoverbutton;
+    @FXML
+    private ColorPicker cppressedbutton;
+    @FXML
+    private Button bsimpantema;
 
     /**
      * Initializes the controller class.
@@ -115,6 +124,10 @@ public class SettingController implements Initializable {
         tkelompokmeja.setText(fh.getkategorimeja());
         tkelompokmakanan.setText(fh.getkategorimenu());
         tslot.setText(fh.getslot());
+    }
+    
+    private void loadtema(){
+        
     }
 
     private void simpankoneksi() {
@@ -172,6 +185,10 @@ public class SettingController implements Initializable {
                 }
             }
         });
+    }
+    
+    private void simpantema(){
+        
     }
 
 }

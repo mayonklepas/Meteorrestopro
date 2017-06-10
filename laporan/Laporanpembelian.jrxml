@@ -51,42 +51,42 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="62" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<textField>
-				<reportElement x="8" y="23" width="413" height="31" uuid="89978ba6-77e7-46f6-a313-80ec04c08a28"/>
+				<reportElement x="0" y="23" width="421" height="31" uuid="89978ba6-77e7-46f6-a313-80ec04c08a28"/>
 				<textElement>
 					<font size="24" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="362" y="0" width="81" height="20" uuid="1b1dc58a-d1a0-4629-8e00-b6f225566f20"/>
+				<reportElement x="421" y="0" width="59" height="20" uuid="1b1dc58a-d1a0-4629-8e00-b6f225566f20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{tanggal_dari}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="302" y="0" width="60" height="20" uuid="876d2a64-ddda-4b09-b220-b73c0ae75f40"/>
+				<reportElement x="361" y="0" width="60" height="20" uuid="876d2a64-ddda-4b09-b220-b73c0ae75f40"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Pertanggal : ]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="460" y="0" width="93" height="20" uuid="14e3969f-6381-4dc9-b92f-bc2e4d9176be"/>
+				<reportElement x="497" y="0" width="56" height="20" uuid="14e3969f-6381-4dc9-b92f-bc2e4d9176be"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{tanggal_sampai}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="443" y="0" width="17" height="20" uuid="c38b4481-e62f-4048-90c2-15f7faf74b55"/>
+				<reportElement x="480" y="0" width="17" height="20" uuid="c38b4481-e62f-4048-90c2-15f7faf74b55"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[-]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="31" splitType="Stretch">
 			<staticText>
-				<reportElement x="8" y="0" width="303" height="18" uuid="678783d3-b0e2-448c-92fe-05c5bdfdc355"/>
+				<reportElement x="0" y="0" width="311" height="25" uuid="678783d3-b0e2-448c-92fe-05c5bdfdc355"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font size="17" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Laporan Pembelian Bahan]]></text>
 			</staticText>
@@ -135,7 +135,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="0" y="0" width="63" height="20" uuid="501b8f23-f71f-4852-af1a-1ecb27f68de3"/>
 				<textElement verticalAlignment="Middle"/>
@@ -171,6 +171,9 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="d6479f51-8489-4a4f-b722-4595ea9b7247"/>
+			</line>
 		</band>
 	</detail>
 	<pageFooter>
@@ -186,7 +189,7 @@
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement mode="Opaque" x="2" y="17" width="217" height="20" backcolor="#CCCCCC" uuid="a548d1b5-c779-437d-b903-24de5a6be0bc"/>
+				<reportElement mode="Opaque" x="0" y="17" width="219" height="20" backcolor="#CCCCCC" uuid="a548d1b5-c779-437d-b903-24de5a6be0bc"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanpermenu_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d3ffe1b6-dc7d-4093-b96b-726fd8946e1f">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="38"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tanggal_dari" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tanggal_sampai" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="kategori" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t.kode_menu,m.nama,SUM(t.jumlah) AS total,SUM(t.jumlah*t.harga_masing) AS total_uang FROM transaksi t LEFT JOIN 
+menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date >=$P{tanggal_dari}  AND  t.tanggal::date <= $P{tanggal_sampai} AND m.kategori=$P{kategori} GROUP BY t.kode_menu,m.nama ORDER BY total DESC]]>
+	</queryString>
+	<field name="kode_menu" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="total" class="java.lang.Long"/>
+	<field name="total_uang" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="138" height="20" uuid="96266f8a-8cec-49ac-bba2-bac3cc8ea3f0"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Kode Menu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="0" width="242" height="20" uuid="2236e0eb-291f-4e7b-a376-d37cf4969bd9"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Menu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="63" height="20" uuid="2daaab43-88a0-48ec-b5e7-8d0e9c2a5229"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Terjual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="443" y="0" width="109" height="20" uuid="36365f50-c6e4-4bc6-89e6-7b71c3b27979"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Pendapatan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" uuid="374ce8f6-e8bb-4e0e-b609-9059d8ade67b"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="138" height="20" uuid="a626d559-0262-4106-b876-d5324a7e2ef2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_menu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="0" width="242" height="20" uuid="f9c3cbde-941a-4582-bf73-bda5881b8ed9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="63" height="20" uuid="9df16092-37f6-4ecf-aab3-7e65ca0bdcde"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0">
+				<reportElement x="443" y="0" width="109" height="20" uuid="c11b2665-9245-4e64-ae9e-71883ae3af17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_uang}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement mode="Opaque" x="0" y="22" width="555" height="1" forecolor="#999999" backcolor="#CCCCCC" uuid="a77e2dc6-cabb-428e-809b-682fe361b0b2"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f3116eb-3e6f-49be-b7a7-160482f5c0a5">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
@@ -24,7 +24,7 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} 
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="86" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="14" width="294" height="34" uuid="c3d1ce89-be38-488e-ae84-4f1103e7ca3e"/>
 				<textElement>
@@ -33,7 +33,7 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} 
 				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="53" y="52" width="326" height="25" uuid="9b23a2fe-050a-4691-a386-5c3db2dcb6f8"/>
+				<reportElement x="0" y="49" width="326" height="25" uuid="9b23a2fe-050a-4691-a386-5c3db2dcb6f8"/>
 				<textElement>
 					<font size="18"/>
 				</textElement>
@@ -49,12 +49,12 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} 
 	<pageHeader>
 		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="4" width="43" height="15" uuid="da5767e2-6556-41d6-8fe0-7ccb8c4e68fe"/>
+				<reportElement x="0" y="4" width="45" height="15" uuid="da5767e2-6556-41d6-8fe0-7ccb8c4e68fe"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Menu : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="45" y="4" width="100" height="15" uuid="5ae37cbb-5ac9-4e12-ad67-ab194693d004"/>
+				<reportElement x="45" y="4" width="217" height="15" uuid="5ae37cbb-5ac9-4e12-ad67-ab194693d004"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{key}]]></textFieldExpression>
 			</textField>
@@ -118,24 +118,26 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} 
 				<textFieldExpression><![CDATA[$F{total_uang}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="17" width="555" height="1" uuid="24991a47-3b12-4406-b465-ddcc3ecbe2b3"/>
+				<reportElement x="0" y="17" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="24991a47-3b12-4406-b465-ddcc3ecbe2b3"/>
 			</line>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="27" splitType="Stretch">
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="0" y="6" width="100" height="15" uuid="e27cf2ae-4e14-4001-9bab-0ab2aab55d04"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+		<band height="41" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="297" y="10" width="258" height="20" backcolor="#CCCCCC" uuid="4052db68-8f7b-4d90-a09b-ef6b4ae4eb79"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="214" y="5" width="80" height="15" uuid="395439dd-d819-4d61-8201-c44322c295a7"/>
-				<textElement textAlignment="Right"/>
+				<reportElement mode="Opaque" x="217" y="10" width="80" height="20" backcolor="#CCCCCC" uuid="266bfe4a-898c-465e-a8f4-7dae19c98075"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="294" y="5" width="40" height="15" uuid="250edad6-6953-482d-bd0a-536d2876022c"/>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement mode="Opaque" x="0" y="10" width="217" height="20" backcolor="#CCCCCC" uuid="169c0c5e-8778-4c97-8c72-be91707d23f3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

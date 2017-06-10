@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
@@ -10,7 +10,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT m.nama,t.jumlah,t.kode_transaksi,(t.jumlah*t.harga_masing) as total FROM transaksi t INNER JOIN 
+		<![CDATA[SELECT m.nama,t.jumlah,t.kode_transaksi,(t.jumlah*t.harga_masing) as total FROM transaksi t LEFT JOIN 
 menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tanggal::date=$P{tanggal}]]>
 	</queryString>
 	<field name="nama" class="java.lang.String"/>
@@ -83,7 +83,7 @@ menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tan
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="22" width="555" height="1" uuid="64d5d8da-6332-4480-9af8-dba3b5e05dc2"/>
+				<reportElement x="0" y="22" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="64d5d8da-6332-4480-9af8-dba3b5e05dc2"/>
 			</line>
 			<textField>
 				<reportElement x="1" y="1" width="41" height="20" uuid="a65a94fb-8a98-47e2-aa0c-31d91778028f"/>

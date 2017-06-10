@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 #button-meja{
-    -fx-background-color: #333333;
+    -fx-background-color: darkred;
     -fx-font: bold 17pt "Segoe UI";
     -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
     -fx-text-fill: #ffffff;
@@ -23,26 +23,26 @@ and open the template in the editor.
 }
 
 #button-meja-pilih{
-    -fx-background-color: orange;
+    -fx-background-color: maroon;
     -fx-font: bold 17pt "Segoe UI";
     -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
     -fx-text-fill: #ffffff;
 }
 
 #button-meja-pilih:hover{
-    -fx-background-color: orange;
+    -fx-background-color: maroon;
     -fx-font: bold 17pt "Segoe UI";
     -fx-effect: dropshadow( three-pass-box , grey , 5 , 0.0 , 2 , 0 );
     -fx-text-fill: #ffffff;
 }
 
 #button-meja:hover{
-    -fx-background-color: orange;
+    -fx-background-color: maroon;
     -fx-text-fill: #ffffff;
 }
 
 #button-meja-dead:hover{
-    -fx-background-color: orange;
+    -fx-background-color: maroon;
     -fx-text-fill: #ffffff;
 }
 
@@ -56,7 +56,7 @@ and open the template in the editor.
 }
 
 #button-menu:hover{
-    -fx-background-color: teal;
+    -fx-background-color: maroon;
     -fx-text-fill: #ffffff;
 }
 
@@ -66,7 +66,7 @@ and open the template in the editor.
 }
 
 #bc{
-    -fx-background-color: #333333;
+    -fx-background-color: darkred;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 1.3em;
@@ -76,7 +76,7 @@ and open the template in the editor.
 }
 
 #bc:hover{
-    -fx-background-color: orange;
+    -fx-background-color: maroon;
 }
 
 #bc:pressed{
@@ -89,20 +89,20 @@ and open the template in the editor.
 }
 
 #tema{
-    -fx-background-color:#333333;
+    -fx-background-color:darkred;
 }
 
 #pane{
-    -fx-background-color: #333333;
+    -fx-background-color: darkred;
 }
 
 #pane:hover{
-    -fx-background-color: #444444;
+    -fx-background-color: darkred;
     -fx-effect: dropshadow( three-pass-box , white , 5 , 0.1 , 0.1 , 0.1 );
 }
 
 #pane:pressed{
-    -fx-background-color: #222222;
+    -fx-background-color: maroon;
     -fx-effect: dropshadow( three-pass-box , white , 5 , 0.1 , 0.1 , 0.1 );
 }
 

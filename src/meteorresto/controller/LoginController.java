@@ -115,7 +115,7 @@ public class LoginController implements Initializable {
                     stage.getScene().getStylesheets().clear();
                     stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                     stage.setMaximized(true);
-                    stage.setTitle("Teman Resto POS App");
+                    stage.setTitle("Myresto POS App");
                     stage.show();
                     Node node = (Node) event.getSource();
                     Stage st = (Stage) node.getScene().getWindow();

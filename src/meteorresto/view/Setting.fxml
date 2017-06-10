@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.SettingController">
+<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="1327.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.SettingController">
    <children>
       <AnchorPane fx:id="header" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -118,6 +118,25 @@
                </children>
             </AnchorPane>
         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="888.0" layoutY="98.0" prefHeight="474.0" prefWidth="299.0" text="Tema">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <VBox layoutX="49.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="Tema Aplikasi" />
+                        <ColorPicker fx:id="cptema" prefHeight="25.0" prefWidth="309.0" />
+                        <Label text="Hover Button" />
+                        <ColorPicker fx:id="cphoverbutton" prefHeight="25.0" prefWidth="298.0" />
+                        <Label text="Pressed Button" />
+                        <ColorPicker fx:id="cppressedbutton" prefHeight="25.0" prefWidth="296.0" />
+                        <Button fx:id="bsimpantema" mnemonicParsing="false" prefHeight="25.0" prefWidth="280.0" text="Simpan" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </content>
       </TitledPane>
    </children>
 </AnchorPane>
