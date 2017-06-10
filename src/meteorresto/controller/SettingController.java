@@ -102,6 +102,7 @@ public class SettingController implements Initializable {
         bsimpanutil.setId("bc");
         header.setId("tema");
         footer.setId("tema");
+        bsimpantema.setId("bc");
         simpantema();
         //pkembali.setId("pane");
     }
@@ -204,7 +205,14 @@ public class SettingController implements Initializable {
                 String[] warnasekarang = fh.loadtema().split(";");
                 fh.settema(warnasekarang[0], warnatema, warnasekarang[1], warnahoverbutton, warnasekarang[2], warnapressbutton);
                 fh.setconfigtema(warnatema, warnahoverbutton, warnapressbutton);
-                oh.info("Restart Aplikasi Untuk Melihat Efek");
+                oh.info("Tema Berhasil Diterapkan");
+                try {
+                    FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
+                    Parent root = fxl.load();
+                    sh.getSt().getScene().setRoot(root);
+                } catch (IOException ex) {
+                    Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
