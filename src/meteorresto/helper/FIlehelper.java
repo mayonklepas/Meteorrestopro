@@ -26,11 +26,13 @@ public class FIlehelper {
     File kategorimenu = new File("kategorimenu");
     File info = new File("info");
     File slot = new File("slot");
-    File dirimage=new File("image");
+    File dirimage = new File("image");
+    File style = new File("style.css");
+    File configstyle = new File("configstyle");
 
     public FIlehelper() {
         if (!koneksi.exists() || !kategorimeja.exists() || !kategorimenu.exists()
-                ||!dirimage.exists()||!slot.exists() || !info.exists()) {
+                || !dirimage.exists() || !slot.exists() || !info.exists() || !configstyle.exists()) {
             try {
                 koneksi.createNewFile();
                 kategorimeja.createNewFile();
@@ -38,6 +40,7 @@ public class FIlehelper {
                 slot.createNewFile();
                 info.createNewFile();
                 dirimage.mkdir();
+                configstyle.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -123,7 +126,7 @@ public class FIlehelper {
         return data.toString();
 
     }
-    
+
     public String getslot() {
         StringBuilder data = new StringBuilder();
         String line = "";
@@ -154,6 +157,85 @@ public class FIlehelper {
             Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public String loadtema() {
+        StringBuilder data = new StringBuilder();
+        String line = "";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(configstyle));
+            while ((line = br.readLine()) != null) {
+                data.append(line);
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data.toString();
+
+    }
+
+    public void settema(String temacari, String temareplace, String bhovercari, String bhoverreplace,
+            String bpresscari, String bpressreplace) {
+        StringBuilder data = new StringBuilder();
+        String line = "";
+        try {
+            BufferedReader brtema = new BufferedReader(new FileReader(style));
+            while ((line = brtema.readLine()) != null) {
+                data.append(line);
+            }
+            brtema.close();
+            BufferedWriter bwtema = new BufferedWriter(new FileWriter(style));
+            bwtema.write(data.toString().replaceAll(temacari, temareplace));
+            bwtema.flush();
+            bwtema.close();
+
+            data.setLength(0);
+
+            BufferedReader brbhover = new BufferedReader(new FileReader(style));
+            while ((line = brbhover.readLine()) != null) {
+                data.append(line);
+            }
+            brbhover.close();
+            BufferedWriter bwbhover = new BufferedWriter(new FileWriter(style));
+            bwbhover.write(data.toString().replaceAll(bhovercari, bhoverreplace));
+            bwbhover.flush();
+            bwbhover.close();
+
+            data.setLength(0);
+
+            BufferedReader brbpress = new BufferedReader(new FileReader(style));
+            while ((line = brbpress.readLine()) != null) {
+                data.append(line);
+            }
+            brbhover.close();
+            BufferedWriter bwbpress = new BufferedWriter(new FileWriter(style));
+            bwbpress.write(data.toString().replaceAll(bpresscari, bpressreplace));
+            bwbpress.flush();
+            bwbpress.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void setconfigtema(String tema,String bhover,String bpress){
+        try {
+            BufferedWriter bw=new BufferedWriter(new FileWriter(configstyle));
+            bw.write(tema+";"+bhover+";"+bpress);
+            bw.flush();
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }

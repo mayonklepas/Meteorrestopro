@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
@@ -90,6 +91,7 @@ public class SettingController implements Initializable {
         loadinfo();
         loadkoneksi();
         loadutil();
+        loadtema();
         simpaninfo();
         simpankoneksi();
         simpankelompok();
@@ -100,6 +102,7 @@ public class SettingController implements Initializable {
         bsimpanutil.setId("bc");
         header.setId("tema");
         footer.setId("tema");
+        simpantema();
         //pkembali.setId("pane");
     }
 
@@ -125,9 +128,12 @@ public class SettingController implements Initializable {
         tkelompokmakanan.setText(fh.getkategorimenu());
         tslot.setText(fh.getslot());
     }
-    
-    private void loadtema(){
-        
+
+    private void loadtema() {
+        String[] warnasekarang = fh.loadtema().split(";");
+        cptema.setValue(Color.web(warnasekarang[0]));
+        cphoverbutton.setValue(Color.web(warnasekarang[1]));
+        cppressedbutton.setValue(Color.web(warnasekarang[2]));
     }
 
     private void simpankoneksi() {
@@ -186,9 +192,22 @@ public class SettingController implements Initializable {
             }
         });
     }
-    
-    private void simpantema(){
-        
+
+    private void simpantema() {
+        bsimpantema.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                String warnatema = "#" + Integer.toHexString(cptema.getValue().hashCode()).substring(0, 6);
+                String warnahoverbutton = "#" + Integer.toHexString(cphoverbutton.getValue().hashCode()).substring(0, 6);
+                String warnapressbutton = "#" + Integer.toHexString(cppressedbutton.getValue().hashCode()).substring(0, 6);
+                String[] warnasekarang = fh.loadtema().split(";");
+                fh.settema(warnasekarang[0], warnatema, warnasekarang[1], warnahoverbutton, warnasekarang[2], warnapressbutton);
+                fh.setconfigtema(warnatema, warnahoverbutton, warnapressbutton);
+                oh.info("Restart Aplikasi Untuk Melihat Efek");
+            }
+        });
+
     }
 
 }
