@@ -222,7 +222,7 @@ public class LaporanController implements Initializable {
                     Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Progressdialogcustom.fxml"));
                     Scene sc = new Scene(root);
                     st2.setScene(sc);
-                    String css = new File("style.css").getAbsolutePath();
+                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");;
                     st2.getScene().getStylesheets().clear();
                     st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                 } catch (Exception e) {

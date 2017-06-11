@@ -36,18 +36,18 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <ComboBox fx:id="cuser" editable="true" prefHeight="31.0" prefWidth="263.0" promptText="Pilih Username" />
+            <ComboBox fx:id="cuser" editable="true" prefHeight="31.0" prefWidth="287.0" promptText="Pilih Username" />
             <Label text="Password">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <PasswordField fx:id="tpassword">
+            <PasswordField fx:id="tpassword" prefHeight="30.0" prefWidth="303.0">
                <font>
                   <Font size="14.0" />
                </font></PasswordField>
             <HBox prefHeight="4.0" prefWidth="241.0" spacing="5.0">
                <children>
-                  <Button fx:id="blogin" mnemonicParsing="false" prefHeight="30.0" prefWidth="264.0" text="Login">
+                  <Button fx:id="blogin" mnemonicParsing="false" prefHeight="30.0" prefWidth="308.0" text="Login">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

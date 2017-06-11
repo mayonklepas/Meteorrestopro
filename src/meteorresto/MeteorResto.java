@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -47,8 +48,7 @@ public class MeteorResto extends Application {
                     Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Progressdialogstart.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
-                    stage.setTitle("Myresto POS");
-                    String css = new File("style.css").getAbsolutePath();
+                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                     stage.getScene().getStylesheets().clear();
                     stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                     stage.show();
@@ -65,10 +65,13 @@ public class MeteorResto extends Application {
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     stage.close();
                     Stage st2 = new Stage();
+                    st2.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/icon.png").toString()));
+                    st2.resizableProperty().setValue(Boolean.FALSE);
+                    st2.setTitle("MyResto Login");
                     Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Login.fxml"));
                     Scene sc = new Scene(root);
                     st2.setScene(sc);
-                    String css = new File("style.css").getAbsolutePath();
+                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                     st2.getScene().getStylesheets().clear();
                     st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                     st2.show();
@@ -98,6 +101,7 @@ public class MeteorResto extends Application {
                 String cmd = "pg_restore -U " + fh.getkoneksi().split(";")[1] + " --dbname=dbrestopro --create --verbose " + pathdata;
                 Runtime.getRuntime().exec(cmd);
             }
+            Thread.sleep(3*1000);
             return null;
         }
 

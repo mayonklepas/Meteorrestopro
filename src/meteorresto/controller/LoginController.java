@@ -185,8 +185,7 @@ public class LoginController implements Initializable {
                         Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Main.fxml"));
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
-                        //stage.setFullScreen(true);
-                        String css = new File("style.css").getAbsolutePath();
+                        String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                         stage.getScene().getStylesheets().clear();
                         stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                         stage.setMaximized(true);

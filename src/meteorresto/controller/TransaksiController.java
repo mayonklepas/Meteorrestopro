@@ -967,7 +967,7 @@ public class TransaksiController implements Initializable {
                         Parent root = (AnchorPane) FXMLLoader.load(getClass().getResource("/meteorresto/view/Bayar.fxml"));
                         Scene sc = new Scene(root);
                         st.setScene(sc);
-                        String css = new File("style.css").getAbsolutePath();
+                        String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                         st.getScene().getStylesheets().clear();
                         st.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                         st.showAndWait();
