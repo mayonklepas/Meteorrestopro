@@ -159,6 +159,7 @@ public class LaporanController implements Initializable {
         olscombo.add("Laporan Periodik Catatan Pengeluaran dan Pendapatan");
         olscombo.add("Laporan Periodik Rekap Usaha");
         olscombo.add("Daftar Menu");
+        olscombo.add("Laporan Stock Bahan");
         ckategori.setItems(olscombo);
     }
 
@@ -435,6 +436,35 @@ public class LaporanController implements Initializable {
                             hm.put("header", info[0]);
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
                             String path = "laporan/Laporanmenumaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    }else if (i == 7) {
+                        try {
+
+                            HashMap hm = new HashMap(1);
+                            hm.put("header", info[0]);
+                            String path = "laporan/Laporanstockbahan.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);

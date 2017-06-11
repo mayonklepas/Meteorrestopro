@@ -14,8 +14,13 @@
 		<defaultValueExpression><![CDATA["D:\\Workspace\\Netbeans\\MeteorRestopro\\laporan\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT (SELECT SUM(harga_masing*jumlah) FROM transaksi WHERE status=1 AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS penjualan,(SELECT SUM(harga) FROM pembelian WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pembelian,
-(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pendapatan' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pendapatan_lain,(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pengeluaran' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pengeluaran_lain]]>
+		<![CDATA[SELECT (SELECT SUM(harga_masing*jumlah) FROM transaksi WHERE  tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai} AND status = 1) AS penjualan,
+
+(SELECT SUM(harga) FROM pembelian WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pembelian,
+
+(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pendapatan' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pendapatan_lain,
+
+(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pengeluaran' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pengeluaran_lain]]>
 	</queryString>
 	<field name="penjualan" class="java.lang.Double"/>
 	<field name="pembelian" class="java.lang.Double"/>

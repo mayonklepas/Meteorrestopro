@@ -209,7 +209,7 @@ public class MainController implements Initializable {
         XYChart.Series bar = new XYChart.Series();
         try {
             String sql = "SELECT kode_menu,SUM(jumlah) AS total FROM transaksi INNER JOIN menu ON "
-                    + "transaksi.kode_menu=menu.kode GROUP BY kode_menu ORDER BY kode_menu";
+                    + "transaksi.kode_menu=menu.kode GROUP BY kode_menu ORDER BY kode_menu LIMIT 10";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
@@ -222,7 +222,7 @@ public class MainController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
-        }finally{
+        } finally {
             ch.close();
         }
 

@@ -47,7 +47,7 @@
             </Pane>
             </children>
         </AnchorPane>
-      <ScrollPane layoutY="137.0" prefHeight="433.0" prefViewportHeight="550.0" prefViewportWidth="310.0" prefWidth="319.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
+      <ScrollPane layoutY="137.0" prefHeight="433.0" prefViewportHeight="550.0" prefViewportWidth="310.0" prefWidth="327.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
          <content>
               <VBox layoutY="137.0" prefHeight="340.0" prefWidth="310.0" spacing="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
                   <padding>
@@ -158,7 +158,7 @@
             </TextField>
             </children>
         </AnchorPane>
-        <TableView fx:id="table" editable="true" layoutX="317.0" layoutY="96.0" prefHeight="473.0" prefWidth="448.0" style="-fx-font-size: 14;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="317.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
+        <TableView fx:id="table" editable="true" layoutX="326.0" layoutY="96.0" prefHeight="473.0" prefWidth="439.0" style="-fx-font-size: 14;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="326.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
             <placeholder>
                 <Label text="Tidak Ada Data" />
             </placeholder>
@@ -176,7 +176,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
         </TableView>
-        <Pane fx:id="detail" layoutY="96.0" prefHeight="38.0" prefWidth="319.0" AnchorPane.leftAnchor="0.0">
+        <Pane fx:id="detail" layoutY="96.0" prefHeight="44.0" prefWidth="327.0" AnchorPane.leftAnchor="0.0">
             <children>
                 <TextField fx:id="tcari" layoutX="9.0" layoutY="4.0" prefHeight="29.0" prefWidth="290.0" promptText="Cari Data Disini">
                     <font>

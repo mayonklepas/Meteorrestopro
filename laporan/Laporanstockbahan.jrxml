@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5720cf4f-eb96-48d2-8774-6f01d01c5906">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="header" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT kode,nama,jumlah,(jumlah/100) AS jumlah_kg FROM bahan ORDER BY jumlah ASC]]>
+	</queryString>
+	<field name="kode" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="jumlah" class="java.lang.Double"/>
+	<field name="jumlah_kg" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="30" width="413" height="31" uuid="08361906-83e8-49da-ac89-66e29083b141"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="214" height="25" uuid="50bc3449-e5df-4f95-ae40-17032c0c68c5"/>
+				<textElement>
+					<font size="17"/>
+				</textElement>
+				<text><![CDATA[Laporan Stock Bahan]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="116" height="20" uuid="8c04bc86-d2ad-4aa3-9691-b04eff3f8a2a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Kode Bahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="0" width="231" height="20" uuid="ff700e54-c6f9-4129-9305-dab385ebddef"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Bahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="120" height="20" uuid="99cf8394-177c-4636-be1a-10dffd5d3f32"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah / gram / mililiter]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" uuid="8645a74a-f78c-40f3-bb66-0343eb7f2377"/>
+			</line>
+			<staticText>
+				<reportElement x="467" y="1" width="88" height="20" uuid="493a6e24-4081-4bde-af2c-77fc3c6f9fb0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah Kg / L]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="116" height="20" uuid="1bf35ec7-bb7e-460f-8abc-8737475b64ac"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="116" y="0" width="231" height="20" uuid="d15ad304-7f3b-4493-8993-5fa0e371cc57"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="347" y="0" width="120" height="20" uuid="ebb997e6-7d99-4589-b2c1-34af3950a223"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" forecolor="#CCCCCC" uuid="677a2a0b-b26f-4ac0-ab1a-9ed3a08f2f72"/>
+			</line>
+			<textField pattern="#,##0">
+				<reportElement x="467" y="1" width="88" height="20" uuid="240a9dcd-8a65-4cb5-a697-78f330416143"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{jumlah_kg}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement mode="Opaque" x="0" y="17" width="217" height="20" backcolor="#CCCCCC" uuid="771fa307-c1f2-4046-a08b-52c2da0f96fd"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="217" y="17" width="80" height="20" backcolor="#CCCCCC" uuid="f9a8dedf-81f7-4806-a282-c9257cfdc45d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="297" y="17" width="258" height="20" backcolor="#CCCCCC" uuid="e532d79f-3172-41ec-abef-131ce2da28a0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="119" splitType="Stretch"/>
+	</summary>
+</jasperReport>
