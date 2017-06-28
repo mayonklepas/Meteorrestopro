@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="header" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT kode,nama,jumlah,(jumlah/100) AS jumlah_kg FROM bahan ORDER BY jumlah ASC]]>
+		<![CDATA[SELECT kode,nama,jumlah,(jumlah/1000) AS jumlah_kg FROM bahan ORDER BY jumlah ASC]]>
 	</queryString>
 	<field name="kode" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String"/>
@@ -75,7 +75,7 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="347" y="0" width="120" height="20" uuid="ebb997e6-7d99-4589-b2c1-34af3950a223"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
@@ -83,7 +83,7 @@
 			<line>
 				<reportElement x="0" y="21" width="555" height="1" forecolor="#CCCCCC" uuid="677a2a0b-b26f-4ac0-ab1a-9ed3a08f2f72"/>
 			</line>
-			<textField pattern="#,##0">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="467" y="1" width="88" height="20" uuid="240a9dcd-8a65-4cb5-a697-78f330416143"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah_kg}]]></textFieldExpression>

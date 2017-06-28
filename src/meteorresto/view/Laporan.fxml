@@ -66,7 +66,7 @@
             <DatePicker fx:id="dke" promptText="Ke Tanggal" />
             <TextField fx:id="tfilter" prefHeight="25.0" prefWidth="170.0" />
           <Button fx:id="bcetak" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Cetak" />
-            <Button fx:id="bclear" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" text="Bersihkan Data Penjualan" />
+            <Button fx:id="bclear" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="141.0" text="Hapus Data" />
         </items>
       </ToolBar>
    </children>

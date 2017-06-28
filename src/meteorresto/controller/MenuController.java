@@ -279,7 +279,7 @@ public class MenuController implements Initializable {
                     pre.setString(2, tnama.getText());
                     pre.setString(3, ckategori.getEditor().getText());
                     pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
-                    pre.setString(5, ckategori.getEditor().getText().split("-")[1]);
+                    pre.setString(5, cresep.getEditor().getText().split("-")[1]);
                     pre.executeUpdate();
                     pre.close();
                     ch.close();
@@ -294,7 +294,7 @@ public class MenuController implements Initializable {
                     pre.setString(3, ckategori.getEditor().getText());
                     pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                     pre.setString(5, tkode.getText() + "." + extgambar[1]);
-                    pre.setString(6, ckategori.getEditor().getText().split("-")[1]);
+                    pre.setString(6, cresep.getEditor().getText().split("-")[1]);
                     pre.executeUpdate();
                     pre.close();
                     ch.close();

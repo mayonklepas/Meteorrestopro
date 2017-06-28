@@ -232,7 +232,7 @@ public class MainController implements Initializable {
         tablebahan.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tablebahan.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,jumlah,(jumlah / 100) AS jumlahkg FROM bahan ORDER BY jumlah ASC";
+            String sql = "SELECT kode,nama,jumlah,(jumlah / 1000) AS jumlahkg FROM bahan ORDER BY jumlah ASC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {

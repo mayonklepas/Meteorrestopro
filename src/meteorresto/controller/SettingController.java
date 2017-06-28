@@ -7,9 +7,14 @@ package meteorresto.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
@@ -69,6 +76,7 @@ public class SettingController implements Initializable {
     FIlehelper fh = new FIlehelper();
     Operationhelper oh = new Operationhelper();
     Sessionhelper sh = new Sessionhelper();
+    Connectionhelper ch=new Connectionhelper();
     @FXML
     private AnchorPane header;
     @FXML
@@ -81,6 +89,12 @@ public class SettingController implements Initializable {
     private ColorPicker cppressedbutton;
     @FXML
     private Button bsimpantema;
+    @FXML
+    private ComboBox<String> cpenjualan;
+    @FXML
+    private ComboBox<String> cpembelian;
+    @FXML
+    private Button bsimpanakun;
 
     /**
      * Initializes the controller class.
@@ -96,6 +110,7 @@ public class SettingController implements Initializable {
         simpankoneksi();
         simpankelompok();
         kembali();
+        loadakunumum();
         luser.setText(sh.getUsername());
         bsimpaninformasi.setId("bc");
         bsimpankoneksi.setId("bc");
@@ -104,6 +119,7 @@ public class SettingController implements Initializable {
         footer.setId("tema");
         bsimpantema.setId("bc");
         simpantema();
+        simpanakunumum();
         //pkembali.setId("pane");
     }
 
@@ -112,6 +128,30 @@ public class SettingController implements Initializable {
         thost.setText(koneksi[0]);
         tuser.setText(koneksi[1]);
         tpassword.setText(koneksi[2]);
+    }
+    
+    private void loadakunumum(){
+        try {
+            String[] akun = fh.getakunumum().split(";");
+            cpenjualan.getEditor().setText(akun[0]);
+            cpembelian.getEditor().setText(akun[1]);
+            ObservableList<String> ols=FXCollections.observableArrayList();
+            PreparedStatement pre=ch.connect().prepareStatement("SELECT kode_perkiraan,nama_perkiraan FROM perkiraan");
+            ResultSet res=pre.executeQuery();
+            while (res.next()) {                
+                ols.add(res.getString("kode_perkiraan")+":"+res.getString("nama_perkiraan"));
+            }
+            cpenjualan.setItems(ols);
+            cpembelian.setItems(ols);
+            res.close();
+            pre.close();
+            ch.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ch.close();
+        }
+        
     }
 
     private void loadinfo() {
@@ -178,6 +218,18 @@ public class SettingController implements Initializable {
             }
         });
     }
+    
+    
+    private void simpanakunumum(){
+        bsimpanakun.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fh.setakunumum(cpenjualan.getEditor().getText()+";"+
+                        cpembelian.getEditor().getText());
+                oh.sukses("Pengaturan Berhasil Disimpan");
+            }
+        });
+    }
 
     private void kembali() {
         pkembali.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -203,16 +255,22 @@ public class SettingController implements Initializable {
                 String warnahoverbutton = "#" + Integer.toHexString(cphoverbutton.getValue().hashCode()).substring(0, 6);
                 String warnapressbutton = "#" + Integer.toHexString(cppressedbutton.getValue().hashCode()).substring(0, 6);
                 String[] warnasekarang = fh.loadtema().split(";");
-                fh.settema(warnasekarang[0], warnatema, warnasekarang[1], warnahoverbutton, warnasekarang[2], warnapressbutton);
-                fh.setconfigtema(warnatema, warnahoverbutton, warnapressbutton);
-                oh.info("Tema Berhasil Diterapkan");
-                try {
+                if (warnatema.equals(warnahoverbutton) || warnatema.equals(warnapressbutton)
+                        || warnahoverbutton.equals(warnapressbutton)) {
+                    oh.gagal("Warna antara 3 pilihan tidak boleh sama");
+                } else {
+                    fh.settema(warnasekarang[0], warnatema, warnasekarang[1], warnahoverbutton, warnasekarang[2], warnapressbutton);
+                    fh.setconfigtema(warnatema, warnahoverbutton, warnapressbutton);
+                    oh.info("Tema Berhasil Diterapkan");
+                    try {
                     FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
                     Parent root = fxl.load();
                     sh.getSt().getScene().setRoot(root);
                 } catch (IOException ex) {
                     Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                }
+
             }
         });
 

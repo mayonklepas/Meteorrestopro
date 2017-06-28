@@ -5,10 +5,16 @@
  */
 package meteorresto;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Base64;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -22,6 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
+import meteorresto.helper.Operationhelper;
 import org.apache.log4j.BasicConfigurator;
 
 /**
@@ -32,6 +39,7 @@ public class MeteorResto extends Application {
 
     Connectionhelper ch = new Connectionhelper();
     FIlehelper fh = new FIlehelper();
+    Operationhelper oh = new Operationhelper();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -45,6 +53,7 @@ public class MeteorResto extends Application {
                 try {
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     stage.initStyle(StageStyle.UNDECORATED);
+                    stage.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/favico.png").toString()));
                     Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Progressdialogstart.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
@@ -65,16 +74,32 @@ public class MeteorResto extends Application {
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     stage.close();
                     Stage st2 = new Stage();
-                    st2.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/icon.png").toString()));
-                    st2.resizableProperty().setValue(Boolean.FALSE);
-                    st2.setTitle("MyResto Login");
-                    Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Login.fxml"));
-                    Scene sc = new Scene(root);
-                    st2.setScene(sc);
-                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
-                    st2.getScene().getStylesheets().clear();
-                    st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
-                    st2.show();
+                    String srcencode = oh.gethddid() + "bk201!@#";
+                    String base64res = Base64.getEncoder().encodeToString(srcencode.getBytes());
+                    if (fh.getreg().equals(base64res)) {
+                        st2.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/icon.png").toString()));
+                        st2.resizableProperty().setValue(Boolean.FALSE);
+                        st2.setTitle("Restoku Login");
+                        Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Login.fxml"));
+                        Scene sc = new Scene(root);
+                        st2.setScene(sc);
+                        String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
+                        st2.getScene().getStylesheets().clear();
+                        st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
+                        st2.show();
+                    } else {
+                        st2.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/favico.png").toString()));
+                        st2.resizableProperty().setValue(Boolean.FALSE);
+                        st2.setTitle("Restoku Aktivasi");
+                        Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Dialogaktivasi.fxml"));
+                        Scene sc = new Scene(root);
+                        st2.setScene(sc);
+                        String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
+                        st2.getScene().getStylesheets().clear();
+                        st2.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
+                        st2.show();
+                    }
+
                 } catch (IOException ex) {
                     Logger.getLogger(MeteorResto.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -98,10 +123,10 @@ public class MeteorResto extends Application {
                 ch.createdb();
                 System.out.println("Database telah dibuat");
                 String pathdata = new File("dbrestopro.backup").getAbsolutePath();
-                String cmd = "pg_restore -U " + fh.getkoneksi().split(";")[1] + " --dbname=dbrestopro --create --verbose " + pathdata;
+                String cmd = "pg_restore -U " + fh.getkoneksi().split(";")[1] + " --dbname=dbrestopro --create --verbose " + "\"" + pathdata + "\"";
                 Runtime.getRuntime().exec(cmd);
             }
-            Thread.sleep(3*1000);
+            Thread.sleep(3 * 1000);
             return null;
         }
 

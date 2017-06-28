@@ -122,7 +122,7 @@ public class TransaksiController implements Initializable {
     ObservableList<Entity> olstable = FXCollections.observableArrayList();
     ObservableList<String> olsslot = FXCollections.observableArrayList();
     NumberFormat nf = NumberFormat.getInstance();
-    String ids, kategorimeja, namameja;
+    String ids, kategorimeja, namameja, statusmeja;
     int tax, status_tax;
     String kode_transaksi;
     double total_belanja = 0;
@@ -280,6 +280,7 @@ public class TransaksiController implements Initializable {
                 sh.setKode_meja(datameja.get(y).kode);
                 kategorimeja = datameja.get(y).kategori;
                 namameja = datameja.get(y).nama;
+                statusmeja = datameja.get(y).status;
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
                 setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
@@ -302,6 +303,7 @@ public class TransaksiController implements Initializable {
                 sh.setKode_meja(datameja.get(y).kode);
                 kategorimeja = datameja.get(y).kategori;
                 namameja = datameja.get(y).nama;
+                statusmeja = datameja.get(y).status;
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
                 setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
@@ -553,7 +555,7 @@ public class TransaksiController implements Initializable {
                 btlmenu.get(i).setPadding(new Insets(3));
                 btlmenu.get(i).setId("button-menu");
                 btlmenu.get(i).setOnAction(actionmenu(i));
-                
+
             }
             fpmenu.getChildren().addAll(btlmenu);
             fis.close();
@@ -745,17 +747,18 @@ public class TransaksiController implements Initializable {
         bpindah.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
-                    oh.gagal("Maaf anda harus memilih meja dan slot");
+                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")||statusmeja.equals("0")) {
+                    oh.gagal("Maaf anda harus memilih meja dan slot yang terisi lebih dulu");
                 } else {
                     try {
                         sh.setSlot(cslot.getEditor().getText());
                         Stage st = new Stage(StageStyle.UTILITY);
+                        st.setTitle("Pindah Meja");
                         st.initModality(Modality.APPLICATION_MODAL);
                         Parent root = (AnchorPane) FXMLLoader.load(getClass().getResource("/meteorresto/view/Pindahmeja.fxml"));
                         Scene sc = new Scene(root);
                         st.setScene(sc);
-                        String css = new File("style.css").getAbsolutePath();
+                        String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                         st.getScene().getStylesheets().clear();
                         st.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                         st.showAndWait();
@@ -773,7 +776,7 @@ public class TransaksiController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
-                    oh.gagal("Maaf anda harus memilih meja dan slot");
+                    oh.gagal("Maaf anda harus memilih meja dan slot lebih dulu");
                 } else {
                     rawclear();
                 }
@@ -881,8 +884,8 @@ public class TransaksiController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
-                    oh.gagal("Maaf anda harus memilih meja dan slot");
+                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")||statusmeja.equals("0")) {
+                    oh.gagal("Maaf anda harus memilih meja dan slot yang terisi lebih dulu");
                 } else {
                     try {
                         if (kode_transaksi == null || kode_transaksi.equals("")) {
@@ -953,8 +956,8 @@ public class TransaksiController implements Initializable {
         bbayar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
-                    oh.gagal("Maaf anda harus memilih meja dan slot");
+                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")||statusmeja.equals("0")) {
+                    oh.gagal("Maaf anda harus memilih meja dan slot yang terisi lebih dulu");
                 } else if (status_tax == 0) {
                     oh.gagal("Maaf anda belum mencetak bil");
                 } else {
@@ -963,6 +966,8 @@ public class TransaksiController implements Initializable {
                         sh.setSlot(cslot.getEditor().getText());
                         sh.setTax(tax);
                         Stage st = new Stage(StageStyle.UTILITY);
+                        st.setTitle("Pembayaran");
+                        st.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/favico.png").toString()));
                         st.initModality(Modality.APPLICATION_MODAL);
                         Parent root = (AnchorPane) FXMLLoader.load(getClass().getResource("/meteorresto/view/Bayar.fxml"));
                         Scene sc = new Scene(root);
@@ -1029,8 +1034,8 @@ public class TransaksiController implements Initializable {
         bbatal.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
-                    oh.gagal("Maaf anda harus memilih meja dan slot lebih dulu");
+                if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("") || statusmeja.equals("0")) {
+                    oh.gagal("Maaf anda harus memilih meja dan slot yag terisi lebih dulu");
                 } else {
                     if (oh.konfirmasi("hapus") == true) {
                         try {

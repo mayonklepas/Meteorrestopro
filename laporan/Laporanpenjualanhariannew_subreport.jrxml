@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanhariannew_subreport" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9bddad5a-9531-485c-be60-7af3cae03183">
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
@@ -66,12 +66,12 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="276" y="0" width="138" height="20" uuid="a6f9f0cf-7cd4-4909-8503-caa8ba4ee0c1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{pajak}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="414" y="0" width="138" height="20" uuid="3b124e98-d77c-49ab-8a91-00dde1b84f41"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_pajak}]]></textFieldExpression>
@@ -83,7 +83,7 @@
 	</detail>
 	<summary>
 		<band height="42" splitType="Stretch">
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="414" y="6" width="138" height="20" uuid="8fad72fa-f16f-4e26-bb9f-3c5a2137640b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>

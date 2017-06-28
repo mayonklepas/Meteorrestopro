@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainpane" prefHeight="740.0" prefWidth="1299.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.MainController">
+<AnchorPane id="AnchorPane" fx:id="mainpane" prefHeight="740.0" prefWidth="1299.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.MainController">
     <children>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="81.0" prefHeight="86.0" prefWidth="1299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -200,12 +200,12 @@
             </Pane>
          </children>
       </FlowPane>
-      <ImageView fitHeight="66.0" fitWidth="82.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+      <ImageView fitHeight="70.0" fitWidth="80.0" layoutX="14.0" layoutY="14.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
          <image>
             <Image url="@../icon/icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="87.0" layoutY="32.0" text="MyResto" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
+      <Label layoutX="87.0" layoutY="32.0" text="Restoku" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
          <font>
             <Font name="Segoe UI Bold" size="25.0" />
          </font>
@@ -233,18 +233,24 @@
          <children>
             <LineChart fx:id="gpenjualanperhari" alternativeColumnFillVisible="true" legendVisible="false" GridPane.rowIndex="1">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis endMargin="3.0" side="BOTTOM" startMargin="3.0" tickLabelFill="#a7a7a7">
+                     <tickLabelFont>
+                        <Font size="12.0" />
+                     </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" tickLabelsVisible="false" tickMarkVisible="false" />
+                <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelFill="#a7a7a7" tickLabelGap="0.0" tickLabelRotation="-22.6" tickLabelsVisible="false" tickLength="10.0" tickUnit="3.0" upperBound="1.0">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="12.0" />
+                     </tickLabelFont></NumberAxis>
               </yAxis>
             </LineChart>
             <AreaChart fx:id="gpenjulanperbulan" alternativeColumnFillVisible="true" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <xAxis>
-                <CategoryAxis />
+                <CategoryAxis startMargin="3.0" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" tickLabelsVisible="false" />
+                <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
               </yAxis>
             </AreaChart>
             <Label text="Grafik Penjualan Perhari" textFill="#f5f5f5" GridPane.halignment="CENTER">
@@ -286,7 +292,7 @@
                   <CategoryAxis side="BOTTOM" tickLabelsVisible="false" />
                </xAxis>
                <yAxis>
-                  <NumberAxis side="LEFT" tickLabelsVisible="false" />
+                  <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
                </yAxis>
             </BarChart>
          </children>

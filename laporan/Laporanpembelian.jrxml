@@ -156,17 +156,17 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="351" y="0" width="56" height="20" uuid="9b6a59f0-94e0-48d9-9090-74543ccd30e3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="407" y="0" width="67" height="20" uuid="0ca640ef-7cef-4b28-baa7-f438dcb955ad"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlahkg}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="474" y="0" width="79" height="20" uuid="9c06b0e2-0c66-4ec4-a204-ad9e248d28e7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
@@ -202,7 +202,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Total Keseluruhan :]]></text>
 			</staticText>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="421" y="5" width="132" height="20" uuid="bade2bab-b310-4023-98a4-97a59c29a3b1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{harga_1}]]></textFieldExpression>

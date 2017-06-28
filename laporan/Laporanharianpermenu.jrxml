@@ -112,7 +112,7 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date = $P{tanggal} 
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="414" y="0" width="138" height="15" uuid="65c955d1-c387-4693-b6b6-477b0b1b80b2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_uang}]]></textFieldExpression>

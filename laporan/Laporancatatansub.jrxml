@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporancatatansub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cf69a39c-2ee8-48b7-97ed-d38d6d09e268">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="808"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="kategori" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -54,7 +54,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="277" y="0" width="277" height="20" uuid="eea1129f-9109-4d4f-9882-f5f0249b2a2b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
@@ -69,7 +69,7 @@
 	</detail>
 	<summary>
 		<band height="27">
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="421" y="2" width="133" height="20" uuid="65f072b9-2ed7-4d28-9e3f-d0dc296bccc6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>

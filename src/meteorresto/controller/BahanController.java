@@ -136,7 +136,7 @@ public class BahanController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,jumlah,(jumlah / 100) AS jumlahkg FROM bahan ORDER BY nama DESC LIMIT ?";
+            String sql = "SELECT kode,nama,jumlah,(jumlah / 1000) AS jumlahkg FROM bahan ORDER BY nama DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();

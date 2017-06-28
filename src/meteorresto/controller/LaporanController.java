@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -112,25 +114,75 @@ public class LaporanController implements Initializable {
         bclear.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (oh.konfirmasi("Hapus") == true) {
-                    try {
-                        String sql = "DELETE FROM transaksi;"
-                                + "ALTER TABLE transaksi DROP id;"
-                                + "ALTER TABLE transaksi ADD id serial;"
-                                + "UPDATE meja SET status=0;";
-                        PreparedStatement pre = ch.connect().prepareStatement(sql);
-                        pre.executeUpdate();
-                        oh.sukses("Data Transaksi Telah Dihapus");
-                        pre.close();
-                        ch.close();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(LaporanController.class.getName()).log(Level.SEVERE, null, ex);
-                    } finally {
-                        ch.close();
+                ObservableList<String> olstax = FXCollections.observableArrayList();
+                olstax.add("Penjualan");
+                olstax.add("Pembelian");
+                olstax.add("Catatan");
+                ChoiceDialog<String> cd = new ChoiceDialog<>("Pilih Kategori", olstax);
+                cd.setTitle("Konfirmasi");
+                cd.setHeaderText("Pilih Data Yang Ingin Dihapus");
+                cd.setContentText("Kategori : ");
+                Optional<String> res = cd.showAndWait();
+                if (res.isPresent()) {
+
+                    if (res.get().equals("Penjualan")) {
+                        if (oh.konfirmasi("Hapus") == true) {
+                            try {
+                                String sql = "DELETE FROM transaksi;"
+                                        + "ALTER TABLE transaksi DROP id;"
+                                        + "ALTER TABLE transaksi ADD id serial;"
+                                        + "UPDATE meja SET status=0;";
+                                PreparedStatement pre = ch.connect().prepareStatement(sql);
+                                pre.executeUpdate();
+                                oh.sukses("Data Transaksi Telah Dihapus");
+                                pre.close();
+                                ch.close();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(LaporanController.class.getName()).log(Level.SEVERE, null, ex);
+                            } finally {
+                                ch.close();
+                            }
+                        } else {
+
+                        }
+                    }else if (res.get().equals("Pembelian")) {
+                        if (oh.konfirmasi("Hapus") == true) {
+                            try {
+                                String sql = "DELETE FROM pembelian;";
+                                PreparedStatement pre = ch.connect().prepareStatement(sql);
+                                pre.executeUpdate();
+                                oh.sukses("Data Pembelian Telah Dihapus");
+                                pre.close();
+                                ch.close();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(LaporanController.class.getName()).log(Level.SEVERE, null, ex);
+                            } finally {
+                                ch.close();
+                            }
+                        } else {
+
+                        }
+                    }else if (res.get().equals("Catatan")) {
+                        if (oh.konfirmasi("Hapus") == true) {
+                            try {
+                                String sql = "DELETE FROM catatan;";
+                                PreparedStatement pre = ch.connect().prepareStatement(sql);
+                                pre.executeUpdate();
+                                oh.sukses("Data Catatan Telah Dihapus");
+                                pre.close();
+                                ch.close();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(LaporanController.class.getName()).log(Level.SEVERE, null, ex);
+                            } finally {
+                                ch.close();
+                            }
+                        } else {
+
+                        }
                     }
-                } else {
 
                 }
+
             }
         });
     }
@@ -184,19 +236,19 @@ public class LaporanController implements Initializable {
                     dke.setDisable(false);
                     dke.setValue(LocalDate.now());
                     tfilter.setDisable(true);
-                }else if (newValue.intValue() == 3) {
+                } else if (newValue.intValue() == 3) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
                     dke.setValue(LocalDate.now());
                     tfilter.setDisable(true);
-                }else if (newValue.intValue() == 4) {
+                } else if (newValue.intValue() == 4) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
                     dke.setValue(LocalDate.now());
                     tfilter.setDisable(true);
-                }else if (newValue.intValue() == 5) {
+                } else if (newValue.intValue() == 5) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
@@ -299,7 +351,7 @@ public class LaporanController implements Initializable {
                                 oh.error(ex);
                             }
                         }
-                    }else if (i == 2) {
+                    } else if (i == 2) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -364,7 +416,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    }else if (i == 4) {
+                    } else if (i == 4) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -397,7 +449,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    }else if (i == 5) {
+                    } else if (i == 5) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -459,7 +511,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    }else if (i == 7) {
+                    } else if (i == 7) {
                         try {
 
                             HashMap hm = new HashMap(1);

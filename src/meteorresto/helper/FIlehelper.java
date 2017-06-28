@@ -29,10 +29,13 @@ public class FIlehelper {
     File dirimage = new File("image");
     File style = new File("style.css");
     File configstyle = new File("configstyle");
+    File reg=new File("reg");
+    File akunumum=new File("akunumum");
 
     public FIlehelper() {
         if (!koneksi.exists() || !kategorimeja.exists() || !kategorimenu.exists()
-                || !dirimage.exists() || !slot.exists() || !info.exists() || !configstyle.exists()) {
+                || !dirimage.exists() || !slot.exists() || !info.exists() || !configstyle.exists() || !reg.exists() || 
+                !akunumum.exists()) {
             try {
                 koneksi.createNewFile();
                 kategorimeja.createNewFile();
@@ -41,6 +44,8 @@ public class FIlehelper {
                 info.createNewFile();
                 dirimage.mkdir();
                 configstyle.createNewFile();
+                reg.createNewFile();
+                akunumum.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -113,6 +118,46 @@ public class FIlehelper {
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(info));
+            while ((line = br.readLine()) != null) {
+                data.append(line);
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data.toString();
+
+    }
+    
+    public String getreg() {
+        StringBuilder data = new StringBuilder();
+        String line = "";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(reg));
+            while ((line = br.readLine()) != null) {
+                data.append(line);
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data.toString();
+
+    }
+    
+    public String getakunumum() {
+        StringBuilder data = new StringBuilder();
+        String line = "";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(akunumum));
             while ((line = br.readLine()) != null) {
                 data.append(line);
             }
@@ -230,6 +275,30 @@ public class FIlehelper {
         try {
             BufferedWriter bw=new BufferedWriter(new FileWriter(configstyle));
             bw.write(tema+";"+bhover+";"+bpress);
+            bw.flush();
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void setreg(String reqid){
+        try {
+            BufferedWriter bw=new BufferedWriter(new FileWriter(reg));
+            bw.write(reqid);
+            bw.flush();
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void setakunumum(String akunstr){
+        try {
+            BufferedWriter bw=new BufferedWriter(new FileWriter(akunumum));
+            bw.write(akunstr);
             bw.flush();
             bw.close();
         } catch (IOException ex) {

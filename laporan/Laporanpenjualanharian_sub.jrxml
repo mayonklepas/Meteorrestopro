@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
@@ -72,12 +72,12 @@ menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tan
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="370" y="0" width="77" height="20" uuid="fe164af4-d204-4375-8daf-03b52935d269"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="447" y="0" width="108" height="20" uuid="9a3d7071-ec98-4837-a01f-8e36c0e83762"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
@@ -99,7 +99,7 @@ menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tan
 	</detail>
 	<summary>
 		<band height="23" splitType="Stretch">
-			<textField pattern="Rp #,##0">
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="447" y="1" width="108" height="20" backcolor="#FFFFFF" uuid="35fee06c-b68d-44ba-84d2-4ae6bdd70179"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>

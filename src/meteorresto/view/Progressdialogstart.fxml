@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="137.0" prefWidth="480.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.ProgressdialogstartController">
+<AnchorPane id="AnchorPane" prefHeight="137.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.ProgressdialogstartController">
    <children>
       <AnchorPane fx:id="header" layoutX="-1.0" layoutY="10.0" prefHeight="117.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -17,7 +17,7 @@
                   <Image url="@../icon/icon.png" />
                </image>
             </ImageView>
-            <Label blendMode="SRC_ATOP" layoutX="114.0" layoutY="36.0" style="-fx-font-smoothing-type: white;" text="MyResto" textFill="WHITE">
+            <Label blendMode="SRC_ATOP" layoutX="114.0" layoutY="36.0" style="-fx-font-smoothing-type: white;" text="Restoku" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Bold" size="36.0" />
                </font>
