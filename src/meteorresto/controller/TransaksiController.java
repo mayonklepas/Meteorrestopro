@@ -428,6 +428,18 @@ public class TransaksiController implements Initializable {
         kategorimeja = "";
         namameja = "";
     }
+    
+    private void rawclear2() {
+        //ctipemeja.getEditor().clear();
+        //sh.setKode_meja("");
+        //sh.setStatus_meja(0);
+        //cslot.getEditor().clear();
+        //ctipemeja.getSelectionModel().clearSelection();
+        //loadmeja();
+        loaddatatransaksi();
+        //kategorimeja = "";
+        //namameja = "";
+    }
 
     private void clearmeja() {
         bclear.setOnAction(new EventHandler<ActionEvent>() {
@@ -946,7 +958,7 @@ public class TransaksiController implements Initializable {
                         ch.close();
                     }
 
-                    rawclear();
+                    rawclear2();
                 }
             }
         });

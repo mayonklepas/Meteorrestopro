@@ -115,6 +115,7 @@ public class SettingController implements Initializable {
         bsimpaninformasi.setId("bc");
         bsimpankoneksi.setId("bc");
         bsimpanutil.setId("bc");
+        bsimpanakun.setId("bc");
         header.setId("tema");
         footer.setId("tema");
         bsimpantema.setId("bc");

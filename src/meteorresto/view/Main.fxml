@@ -233,7 +233,7 @@
          <children>
             <LineChart fx:id="gpenjualanperhari" alternativeColumnFillVisible="true" legendVisible="false" GridPane.rowIndex="1">
               <xAxis>
-                <CategoryAxis endMargin="3.0" side="BOTTOM" startMargin="3.0" tickLabelFill="#a7a7a7">
+                <CategoryAxis endMargin="3.0" side="BOTTOM" startMargin="3.0" tickLabelFill="#a7a7a7" tickLabelGap="1.0">
                      <tickLabelFont>
                         <Font size="12.0" />
                      </tickLabelFont></CategoryAxis>
@@ -247,7 +247,10 @@
             </LineChart>
             <AreaChart fx:id="gpenjulanperbulan" alternativeColumnFillVisible="true" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <xAxis>
-                <CategoryAxis startMargin="3.0" />
+                <CategoryAxis endMargin="3.0" startMargin="3.0" tickLabelFill="#a7a7a7">
+                     <tickLabelFont>
+                        <Font size="12.0" />
+                     </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
                 <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
@@ -289,10 +292,10 @@
             </TableView>
             <BarChart fx:id="gtopselling" alternativeColumnFillVisible="true" barGap="7.0" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <xAxis>
-                  <CategoryAxis side="BOTTOM" tickLabelsVisible="false" />
+                  <CategoryAxis />
                </xAxis>
                <yAxis>
-                  <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
+                  <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelFill="#a7a7a7" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
                </yAxis>
             </BarChart>
          </children>
