@@ -205,7 +205,7 @@
             <Image url="@../icon/icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="87.0" layoutY="32.0" text="Restoku" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
+      <Label layoutX="87.0" layoutY="32.0" text="MyResto" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
          <font>
             <Font name="Segoe UI Bold" size="25.0" />
          </font>
@@ -239,10 +239,7 @@
                      </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelFill="#a7a7a7" tickLabelGap="0.0" tickLabelRotation="-22.6" tickLabelsVisible="false" tickLength="10.0" tickUnit="3.0" upperBound="1.0">
-                     <tickLabelFont>
-                        <Font name="System Bold" size="12.0" />
-                     </tickLabelFont></NumberAxis>
+                <NumberAxis tickLabelFill="#a7a7a7" tickLabelGap="0.0" />
               </yAxis>
             </LineChart>
             <AreaChart fx:id="gpenjulanperbulan" alternativeColumnFillVisible="true" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -253,10 +250,10 @@
                      </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
+                <NumberAxis tickLabelGap="10.0" />
               </yAxis>
             </AreaChart>
-            <Label text="Grafik Penjualan Perhari" textFill="#f5f5f5" GridPane.halignment="CENTER">
+            <Label fx:id="tharian" text="Grafik Penjualan Harian Perbulan" textFill="#f5f5f5" GridPane.halignment="CENTER">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -266,12 +263,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Grafik Topten Selling Menu" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Label fx:id="ttopselling" text="Grafik Topten Selling Menu Perbulan" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Grafik Penjulan Pertahun" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <Label fx:id="tbulanan" text="Grafik Penjulanan Bulanan Pertahun" textFill="#f8f8f8" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -292,10 +289,10 @@
             </TableView>
             <BarChart fx:id="gtopselling" alternativeColumnFillVisible="true" barGap="7.0" legendVisible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <xAxis>
-                  <CategoryAxis />
+                  <CategoryAxis tickLabelsVisible="false" />
                </xAxis>
                <yAxis>
-                  <NumberAxis minorTickLength="3.0" side="LEFT" tickLabelFill="#a7a7a7" tickLabelGap="10.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="3.0" />
+                  <NumberAxis tickLabelFill="#a7a7a7" tickLabelGap="10.0" />
                </yAxis>
             </BarChart>
          </children>

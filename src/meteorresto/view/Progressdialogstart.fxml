@@ -17,7 +17,7 @@
                   <Image url="@../icon/icon.png" />
                </image>
             </ImageView>
-            <Label blendMode="SRC_ATOP" layoutX="114.0" layoutY="36.0" style="-fx-font-smoothing-type: white;" text="Restoku" textFill="WHITE">
+            <Label blendMode="SRC_ATOP" layoutX="114.0" layoutY="36.0" style="-fx-font-smoothing-type: white;" text="MyResto" textFill="WHITE">
                <font>
                   <Font name="Segoe UI Bold" size="36.0" />
                </font>

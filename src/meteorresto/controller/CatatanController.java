@@ -326,7 +326,7 @@ public class CatatanController implements Initializable {
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
-                String sql = "DELETE FROM catatan WHERE kode_transaksi=?";
+                String sql = "DELETE FROM catatan WHERE kode=?";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, ids);
                 pre.executeUpdate();

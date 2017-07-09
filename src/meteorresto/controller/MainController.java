@@ -5,13 +5,19 @@
  */
 package meteorresto.controller;
 
+import com.sun.javafx.font.LogicalFont;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -23,6 +29,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.AreaChart;
@@ -34,10 +41,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import meteorresto.helper.Connectionhelper;
@@ -113,6 +122,12 @@ public class MainController implements Initializable {
     NumberFormat nf = NumberFormat.getInstance();
     @FXML
     private Label lnamacafe;
+    @FXML
+    private Label tharian;
+    @FXML
+    private Label ttopselling;
+    @FXML
+    private Label tbulanan;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -142,6 +157,9 @@ public class MainController implements Initializable {
         presep.setId("pane");
         pcatatan.setId("pane");
         pperkiraan.setId("pane");
+        tharian.setText("Grafik Penjualan Harian Bulan "+new SimpleDateFormat("MMMM YYYY").format(new Date()));
+        tbulanan.setText("Grafik Penjualan Bulanan Tahun "+new SimpleDateFormat("YYYY").format(new Date()));
+        ttopselling.setText("Grafik 10 Top Selling Menu Bulan "+new SimpleDateFormat("MMMM YYYY").format(new Date()));
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -167,12 +185,27 @@ public class MainController implements Initializable {
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                linechart.getData().add(new XYChart.Data(res.getString("hari"), res.getDouble("total")));
+                linechart.getData().add(new XYChart.Data(res.getString("hari"), res.getDouble("total")/1000));
             }
             pre.close();
             res.close();
             ch.close();
             gpenjualanperhari.getData().setAll(linechart);
+            for (XYChart.Series<String, Number> s : gpenjualanperhari.getData()) {
+                for (XYChart.Data<String, Number> d : s.getData()) {
+                    Tooltip t = new Tooltip();
+                    t.setText("Tanggal : " + d.getXValue().toString() + "\n"
+                            + "Jumlah : Rp. " + nf.format(d.getYValue()));
+                    t.setFont(new Font(16));
+                    Tooltip.install(d.getNode(), t);
+
+                    //Adding class on hover
+                    d.getNode().setOnMouseEntered(event -> d.getNode().getStyleClass().add("onHover"));
+
+                    //Removing class on exit
+                    d.getNode().setOnMouseExited(event -> d.getNode().getStyleClass().remove("onHover"));
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
@@ -190,12 +223,26 @@ public class MainController implements Initializable {
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                area.getData().add(new XYChart.Data(res.getString("bulan"), res.getDouble("total")));
+                area.getData().add(new XYChart.Data(res.getString("bulan"), res.getDouble("total")/1000));
             }
-            gpenjulanperbulan.getData().setAll(area);
             pre.close();
             res.close();
             ch.close();
+            gpenjulanperbulan.getData().setAll(area);
+            for (XYChart.Series<String, Number> s : gpenjulanperbulan.getData()) {
+                for (XYChart.Data<String, Number> d : s.getData()) {
+                    Tooltip t = new Tooltip();
+                    t.setText("Bulan : " + d.getXValue().toString() + "\n"
+                            + "Jumlah : Rp. " + nf.format(d.getYValue()));
+                    t.setFont(new Font(16));
+                    Tooltip.install(d.getNode(), t);
+                    //Adding class on hover
+                    d.getNode().setOnMouseEntered(event -> d.getNode().getStyleClass().add("onHover"));
+
+                    //Removing class on exit
+                    d.getNode().setOnMouseExited(event -> d.getNode().getStyleClass().remove("onHover"));
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
@@ -208,17 +255,35 @@ public class MainController implements Initializable {
     private void loadtopselling() {
         XYChart.Series bar = new XYChart.Series();
         try {
-            String sql = "SELECT kode_menu,SUM(jumlah) AS total FROM transaksi INNER JOIN menu ON "
-                    + "transaksi.kode_menu=menu.kode GROUP BY kode_menu ORDER BY kode_menu LIMIT 10";
+            String sql = "SELECT kode_menu,menu.nama,SUM(jumlah) AS total FROM transaksi INNER JOIN menu ON "
+                    + "transaksi.kode_menu=menu.kode WHERE EXTRACT(MONTH FROM tanggal)= EXTRACT(MONTH FROM now()) "
+                    + "GROUP BY kode_menu,menu.nama ORDER BY kode_menu LIMIT 10";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                bar.getData().add(new XYChart.Data(res.getString("kode_menu"), res.getDouble("total")));
+                bar.getData().add(new XYChart.Data(res.getString("nama"), res.getDouble("total")));
             }
-            gtopselling.getData().setAll(bar);
+
             pre.close();
             res.close();
             ch.close();
+            gtopselling.getData().setAll(bar);
+            for (XYChart.Series<String, Number> s : gtopselling.getData()) {
+                for (XYChart.Data<String, Number> d : s.getData()) {
+
+                    Tooltip t = new Tooltip();
+                    t.setText("Menu : " + d.getXValue().toString() + "\n"
+                            + "Terjual : " + d.getYValue().intValue()+" Item");
+                    t.setFont(new Font(16));
+                    Tooltip.install(d.getNode(), t);
+
+                    //Adding class on hover
+                    d.getNode().setOnMouseEntered(event -> d.getNode().getStyleClass().add("onHover"));
+
+                    //Removing class on exit
+                    d.getNode().setOnMouseExited(event -> d.getNode().getStyleClass().remove("onHover"));
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
