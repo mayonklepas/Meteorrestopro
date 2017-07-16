@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" onKeyPressed="#keypress" prefHeight="413.0" prefWidth="283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.TentangController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="117.0" prefWidth="314.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="95.0" fitWidth="106.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@../icon/ic_lightbulb_outline_white_48dp.png" />
+               </image></ImageView>
+            <Label blendMode="SRC_ATOP" layoutX="109.0" layoutY="38.0" style="-fx-font-smoothing-type: white;" text="TENTANG APP" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="110.0" layoutY="62.0" text="Restoku APP" textFill="#f8f8f8">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <VBox layoutY="117.0" prefHeight="196.0" prefWidth="283.0" spacing="5.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="117.0">
+         <children>
+            <HBox prefHeight="4.0" prefWidth="241.0" spacing="5.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <TextFlow prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Restoku App merupakan aplikasi yang disiapkan untuk pengelolaan restaurant,cafe,warung dan lesehan dengan fitur lengkap untuk membantu pengelolaan resto anda agar terkomputerisasi dan modern" />
+               </children>
+            </TextFlow>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding></VBox>
+      <AnchorPane fx:id="footer" layoutY="344.0" prefHeight="101.0" prefWidth="283.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label layoutX="110.0" layoutY="11.0" text="By SB-Tech" textFill="#f8f8f8">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="79.0" layoutY="33.0" text="Phone 083129345215" textFill="#f8f8f8">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="54.0" text="Alamat  jl. Duyung pure segare no 7, Mataram" textFill="#f8f8f8">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

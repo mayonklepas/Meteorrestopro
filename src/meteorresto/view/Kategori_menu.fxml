@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="556.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.Kategori_menuController">
+    <children>
+        <AnchorPane fx:id="header" layoutX="8.0" layoutY="101.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="399.0" text="DATA KATEGORI MENU" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI Bold" size="28.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icon/ic_event_seat_white_48dp.png" />
+                    </image>
+                </ImageView>
+                <Label layoutX="106.0" layoutY="55.0" text="Data Kategori Menu Makanan Atau Minuman" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI" size="16.0" />
+                    </font>
+                </Label>
+            <Pane fx:id="pkembali" layoutX="582.0" layoutY="10.0" prefHeight="74.0" prefWidth="203.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                      <ImageView fitHeight="53.0" fitWidth="64.0" layoutX="136.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                              <Image url="@../icon/ic_input_white_36dp.png" />
+                          </image>
+                      </ImageView>
+                      <Label layoutX="41.0" layoutY="21.0" text="KEMBALI" textFill="WHITE">
+                          <font>
+                              <Font name="Segoe UI Bold" size="22.0" />
+                          </font>
+                      </Label>
+               </children>
+            </Pane>
+            </children>
+        </AnchorPane>
+        <VBox layoutY="137.0" prefHeight="340.0" prefWidth="310.0" spacing="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Label text="Kode Kategori Menu">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="tkode">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </TextField>
+                <Label text="Nama Kategori Menu">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="tnama">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </TextField>
+                <HBox prefHeight="18.0" prefWidth="310.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="bsimpan" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Simpan">
+                            <font>
+                                <Font name="Segoe UI" size="15.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="bclear" mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Clear">
+                            <font>
+                                <Font name="Segoe UI" size="15.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+        <AnchorPane fx:id="footer" layoutY="489.0" prefHeight="68.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <ImageView fitHeight="62.0" fitWidth="95.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+                    <image>
+                        <Image url="@../icon/ic_account_circle_white_48dp.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="luser" layoutX="76.0" layoutY="20.0" text="Iwan Budiman" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI Bold" size="22.0" />
+                    </font>
+                </Label>
+                <Label fx:id="ljumlah" layoutX="601.0" layoutY="23.0" text="| 100 / 190 DATA" textFill="WHITE" AnchorPane.rightAnchor="14.0">
+                    <font>
+                        <Font name="Segoe UI Bold" size="20.0" />
+                    </font>
+                </Label>
+            <Label layoutX="447.0" layoutY="24.0" text="LIMIT" textFill="WHITE" AnchorPane.rightAnchor="264.0">
+               <font>
+                  <Font name="Segoe UI Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tlimit" layoutX="510.0" layoutY="15.0" prefHeight="38.0" prefWidth="77.0" promptText="Limit" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="500" AnchorPane.rightAnchor="178.0">
+               <font>
+                  <Font name="Segoe UI Bold" size="20.0" />
+               </font>
+            </TextField>
+            </children>
+        </AnchorPane>
+        <TableView fx:id="table" editable="true" layoutX="310.0" layoutY="96.0" prefHeight="391.0" prefWidth="455.0" style="-fx-font-size: 14;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
+            <placeholder>
+                <Label text="Tidak Ada Data" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="kode" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Kode" />
+                <TableColumn fx:id="nama" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Nama" />
+            </columns>
+            <opaqueInsets>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </opaqueInsets>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+        </TableView>
+        <Pane fx:id="detail" layoutY="96.0" prefHeight="38.0" prefWidth="310.0" AnchorPane.leftAnchor="0.0">
+            <children>
+                <TextField fx:id="tcari" layoutX="9.0" layoutY="4.0" prefHeight="29.0" prefWidth="290.0" promptText="Cari Data Disini">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </TextField>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

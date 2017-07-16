@@ -93,6 +93,8 @@
                         <TextField fx:id="ttelp" />
                         <Label text="No Handphone" />
                         <TextField fx:id="tnohp" />
+                        <Label text="Pajak dalam persen" />
+                        <TextField fx:id="tpajak" />
                         <Button fx:id="bsimpaninformasi" mnemonicParsing="false" prefHeight="25.0" prefWidth="314.0" text="Simpan" />
                      </children>
                   </VBox>

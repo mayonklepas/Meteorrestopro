@@ -59,7 +59,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="165.0" prefHeight="387.0" prefViewportHeight="427.0" prefViewportWidth="310.0" prefWidth="331.0" AnchorPane.bottomAnchor="108.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="165.0">
+      <ScrollPane fx:id="spmeja" fitToHeight="true" fitToWidth="true" layoutY="165.0" prefHeight="387.0" prefViewportHeight="427.0" prefViewportWidth="310.0" prefWidth="331.0" AnchorPane.bottomAnchor="108.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="165.0">
          <content>
             <FlowPane fx:id="fpmeja" hgap="5.0" layoutX="3.0" layoutY="165.0" prefHeight="427.0" prefWidth="300.0" vgap="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="165.0">
                <padding>
@@ -85,11 +85,12 @@
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
             </Label>
-            <ComboBox fx:id="ckategorimenu" editable="true" layoutX="15.0" layoutY="34.0" prefHeight="25.0" prefWidth="540.0" promptText="Kategori" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="112.0" />
-            <Button fx:id="bclear2" layoutX="563.0" layoutY="33.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" AnchorPane.rightAnchor="14.0" />
+            <ComboBox fx:id="ckategorimenu" editable="true" layoutX="15.0" layoutY="34.0" prefHeight="25.0" prefWidth="262.0" promptText="Kategori" AnchorPane.leftAnchor="15.0" />
+            <Button fx:id="bclear2" layoutX="565.0" layoutY="34.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Clear" AnchorPane.rightAnchor="12.0" />
+            <TextField fx:id="tcari" layoutX="277.0" layoutY="34.0" prefHeight="25.0" prefWidth="254.0" promptText="Ketik dan Enter Untuk Mencari" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="128.0" />
          </children>
       </AnchorPane>
-      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="329.0" layoutY="165.0" prefHeight="426.0" prefViewportHeight="427.0" prefViewportWidth="680.0" prefWidth="667.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="329.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="165.0">
+      <ScrollPane fx:id="spmenu" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="329.0" layoutY="165.0" prefHeight="426.0" prefViewportHeight="427.0" prefViewportWidth="680.0" prefWidth="667.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="329.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="165.0">
          <content>
             <FlowPane fx:id="fpmenu" hgap="5.0" layoutX="310.0" layoutY="165.0" prefHeight="425.0" prefWidth="676.0" vgap="5.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="324.0">
                <padding>

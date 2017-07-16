@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT m.nama,t.jumlah,t.kode_transaksi,(t.jumlah*t.harga_masing) as total FROM transaksi t LEFT JOIN 
-menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tanggal::date=$P{tanggal}]]>
+menu m ON t.kode_menu=m.kode WHERE kode_user=$P{kode_user}  AND status=1 AND tanggal::date=$P{tanggal} ORDER BY t.kode_transaksi]]>
 	</queryString>
 	<field name="nama" class="java.lang.String"/>
 	<field name="jumlah" class="java.lang.Integer"/>

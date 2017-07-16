@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainpane" prefHeight="740.0" prefWidth="1299.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.MainController">
     <children>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="81.0" prefHeight="86.0" prefWidth="1299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="77.0" prefHeight="85.0" prefWidth="1299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Pane fx:id="pakun" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
                <children>
@@ -200,12 +200,7 @@
             </Pane>
          </children>
       </FlowPane>
-      <ImageView fitHeight="70.0" fitWidth="80.0" layoutX="14.0" layoutY="14.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
-         <image>
-            <Image url="@../icon/icon.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="87.0" layoutY="32.0" text="MyResto" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
+      <Label layoutX="87.0" layoutY="32.0" text="Restoku" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
          <font>
             <Font name="Segoe UI Bold" size="25.0" />
          </font>
@@ -250,7 +245,7 @@
                      </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis tickLabelGap="10.0" />
+                <NumberAxis tickLabelFill="#a7a7a7" tickLabelGap="10.0" />
               </yAxis>
             </AreaChart>
             <Label fx:id="tharian" text="Grafik Penjualan Harian Perbulan" textFill="#f5f5f5" GridPane.halignment="CENTER">
@@ -307,5 +302,10 @@
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
+      <ImageView fx:id="imglogo" fitHeight="70.0" fitWidth="80.0" layoutX="14.0" layoutY="14.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+         <image>
+            <Image url="@../icon/icon.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

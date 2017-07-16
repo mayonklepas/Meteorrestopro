@@ -5,7 +5,7 @@
  */
 package meteorresto.controller;
 
-import com.sun.javafx.font.LogicalFont;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -13,25 +13,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -43,12 +37,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
@@ -128,6 +122,8 @@ public class MainController implements Initializable {
     private Label ttopselling;
     @FXML
     private Label tbulanan;
+    @FXML
+    private ImageView imglogo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -143,6 +139,7 @@ public class MainController implements Initializable {
         catatan();
         resep();
         perkiraan();
+        about();
         lnamacafe.setText(fh.getinfo().split(";")[0]);
         luser.setText(sh.getUsername());
         mainpane.setId("tema");
@@ -157,9 +154,9 @@ public class MainController implements Initializable {
         presep.setId("pane");
         pcatatan.setId("pane");
         pperkiraan.setId("pane");
-        tharian.setText("Grafik Penjualan Harian Bulan "+new SimpleDateFormat("MMMM YYYY").format(new Date()));
-        tbulanan.setText("Grafik Penjualan Bulanan Tahun "+new SimpleDateFormat("YYYY").format(new Date()));
-        ttopselling.setText("Grafik 10 Top Selling Menu Bulan "+new SimpleDateFormat("MMMM YYYY").format(new Date()));
+        tharian.setText("Grafik Penjualan Harian Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()) + " (1000)");
+        tbulanan.setText("Grafik Penjualan Bulanan Tahun " + new SimpleDateFormat("YYYY").format(new Date()) + " (1000)");
+        ttopselling.setText("Grafik 10 Top Selling Menu Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()) + " (1000)");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -176,6 +173,27 @@ public class MainController implements Initializable {
         });
     }
 
+    private void about() {
+        imglogo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    Stage st = new Stage();
+                    Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Tentang.fxml"));
+                    Scene sc = new Scene(root);
+                    st.setScene(sc);
+                    st.setTitle("Tentang Aplikasi");
+                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
+                    st.getScene().getStylesheets().clear();
+                    st.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
+                    st.showAndWait();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
     private void loadpenjulanharichart() {
         XYChart.Series linechart = new XYChart.Series();
         linechart.setName("Penjualan Harian");
@@ -185,7 +203,7 @@ public class MainController implements Initializable {
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                linechart.getData().add(new XYChart.Data(res.getString("hari"), res.getDouble("total")/1000));
+                linechart.getData().add(new XYChart.Data(res.getString("hari"), res.getDouble("total") / 1000));
             }
             pre.close();
             res.close();
@@ -195,7 +213,7 @@ public class MainController implements Initializable {
                 for (XYChart.Data<String, Number> d : s.getData()) {
                     Tooltip t = new Tooltip();
                     t.setText("Tanggal : " + d.getXValue().toString() + "\n"
-                            + "Jumlah : Rp. " + nf.format(d.getYValue()));
+                            + "Jumlah : Rp. " + nf.format(d.getYValue().doubleValue() * 1000));
                     t.setFont(new Font(16));
                     Tooltip.install(d.getNode(), t);
 
@@ -223,7 +241,7 @@ public class MainController implements Initializable {
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                area.getData().add(new XYChart.Data(res.getString("bulan"), res.getDouble("total")/1000));
+                area.getData().add(new XYChart.Data(res.getString("bulan"), res.getDouble("total") / 1000));
             }
             pre.close();
             res.close();
@@ -233,7 +251,7 @@ public class MainController implements Initializable {
                 for (XYChart.Data<String, Number> d : s.getData()) {
                     Tooltip t = new Tooltip();
                     t.setText("Bulan : " + d.getXValue().toString() + "\n"
-                            + "Jumlah : Rp. " + nf.format(d.getYValue()));
+                            + "Jumlah : Rp. " + nf.format(d.getYValue().doubleValue() * 1000));
                     t.setFont(new Font(16));
                     Tooltip.install(d.getNode(), t);
                     //Adding class on hover
@@ -273,7 +291,7 @@ public class MainController implements Initializable {
 
                     Tooltip t = new Tooltip();
                     t.setText("Menu : " + d.getXValue().toString() + "\n"
-                            + "Terjual : " + d.getYValue().intValue()+" Item");
+                            + "Terjual : " + d.getYValue().intValue() + " Item");
                     t.setFont(new Font(16));
                     Tooltip.install(d.getNode(), t);
 

@@ -76,7 +76,7 @@ public class SettingController implements Initializable {
     FIlehelper fh = new FIlehelper();
     Operationhelper oh = new Operationhelper();
     Sessionhelper sh = new Sessionhelper();
-    Connectionhelper ch=new Connectionhelper();
+    Connectionhelper ch = new Connectionhelper();
     @FXML
     private AnchorPane header;
     @FXML
@@ -95,6 +95,8 @@ public class SettingController implements Initializable {
     private ComboBox<String> cpembelian;
     @FXML
     private Button bsimpanakun;
+    @FXML
+    private TextField tpajak;
 
     /**
      * Initializes the controller class.
@@ -130,17 +132,17 @@ public class SettingController implements Initializable {
         tuser.setText(koneksi[1]);
         tpassword.setText(koneksi[2]);
     }
-    
-    private void loadakunumum(){
+
+    private void loadakunumum() {
         try {
             String[] akun = fh.getakunumum().split(";");
             cpenjualan.getEditor().setText(akun[0]);
             cpembelian.getEditor().setText(akun[1]);
-            ObservableList<String> ols=FXCollections.observableArrayList();
-            PreparedStatement pre=ch.connect().prepareStatement("SELECT kode_perkiraan,nama_perkiraan FROM perkiraan");
-            ResultSet res=pre.executeQuery();
-            while (res.next()) {                
-                ols.add(res.getString("kode_perkiraan")+":"+res.getString("nama_perkiraan"));
+            ObservableList<String> ols = FXCollections.observableArrayList();
+            PreparedStatement pre = ch.connect().prepareStatement("SELECT kode_perkiraan,nama_perkiraan FROM perkiraan");
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                ols.add(res.getString("kode_perkiraan") + ":" + res.getString("nama_perkiraan"));
             }
             cpenjualan.setItems(ols);
             cpembelian.setItems(ols);
@@ -149,10 +151,10 @@ public class SettingController implements Initializable {
             ch.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             ch.close();
         }
-        
+
     }
 
     private void loadinfo() {
@@ -162,6 +164,7 @@ public class SettingController implements Initializable {
         temail.setText(info[2]);
         ttelp.setText(info[3]);
         tnohp.setText(info[4]);
+        tpajak.setText(info[5]);
 
     }
 
@@ -196,14 +199,19 @@ public class SettingController implements Initializable {
         bsimpaninformasi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(tperusahaan.getText() + ";\n");
-                sb.append(talamat.getText() + ";\n");
-                sb.append(temail.getText() + ";\n");
-                sb.append(ttelp.getText() + ";\n");
-                sb.append(tnohp.getText());
-                fh.setall("info", sb.toString());
-                oh.sukses("Berhasil Disimpan");
+                if (!Character.isDigit(tpajak.getText().charAt(0))) {
+                    oh.info("Pajak harus angka");
+                } else {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(tperusahaan.getText() + ";\n");
+                    sb.append(talamat.getText() + ";\n");
+                    sb.append(temail.getText() + ";\n");
+                    sb.append(ttelp.getText() + ";\n");
+                    sb.append(tnohp.getText() + ";\n");
+                    sb.append(tpajak.getText());
+                    fh.setall("info", sb.toString());
+                    oh.sukses("Berhasil Disimpan");
+                }
             }
         });
     }
@@ -219,14 +227,13 @@ public class SettingController implements Initializable {
             }
         });
     }
-    
-    
-    private void simpanakunumum(){
+
+    private void simpanakunumum() {
         bsimpanakun.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fh.setakunumum(cpenjualan.getEditor().getText()+";"+
-                        cpembelian.getEditor().getText());
+                fh.setakunumum(cpenjualan.getEditor().getText() + ";"
+                        + cpembelian.getEditor().getText());
                 oh.sukses("Pengaturan Berhasil Disimpan");
             }
         });
@@ -264,12 +271,12 @@ public class SettingController implements Initializable {
                     fh.setconfigtema(warnatema, warnahoverbutton, warnapressbutton);
                     oh.info("Tema Berhasil Diterapkan");
                     try {
-                    FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
-                    Parent root = fxl.load();
-                    sh.getSt().getScene().setRoot(root);
-                } catch (IOException ex) {
-                    Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                        FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
+                        Parent root = fxl.load();
+                        sh.getSt().getScene().setRoot(root);
+                    } catch (IOException ex) {
+                        Logger.getLogger(SettingController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
             }
