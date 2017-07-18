@@ -124,6 +124,8 @@ public class MainController implements Initializable {
     private Label tbulanan;
     @FXML
     private ImageView imglogo;
+    @FXML
+    private Pane puang;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -140,11 +142,13 @@ public class MainController implements Initializable {
         resep();
         perkiraan();
         about();
+        akunuang();
         lnamacafe.setText(fh.getinfo().split(";")[0]);
         luser.setText(sh.getUsername());
         mainpane.setId("tema");
         pmeja.setId("pane");
         pmenu.setId("pane");
+        puang.setId("pane");
         plaporan.setId("pane");
         ppenjualan.setId("pane");
         ppembelian.setId("pane");
@@ -156,7 +160,7 @@ public class MainController implements Initializable {
         pperkiraan.setId("pane");
         tharian.setText("Grafik Penjualan Harian Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()) + " (1000)");
         tbulanan.setText("Grafik Penjualan Bulanan Tahun " + new SimpleDateFormat("YYYY").format(new Date()) + " (1000)");
-        ttopselling.setText("Grafik 10 Top Selling Menu Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()) + " (1000)");
+        ttopselling.setText("Grafik 10 Top Selling Menu Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()));
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -387,6 +391,25 @@ public class MainController implements Initializable {
                 if (sh.getTipe().equals("admin")) {
                     try {
                         FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Akun.fxml"));
+                        Parent root = fxl.load();
+                        sh.getSt().getScene().setRoot(root);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    oh.gagal("Maaf Akses Ditolak");
+                }
+            }
+        });
+    }
+    
+    private void akunuang() {
+        puang.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (sh.getTipe().equals("admin")) {
+                    try {
+                        FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Akunuang.fxml"));
                         Parent root = fxl.load();
                         sh.getSt().getScene().setRoot(root);
                     } catch (IOException ex) {

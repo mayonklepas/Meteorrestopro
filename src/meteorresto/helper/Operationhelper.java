@@ -79,6 +79,24 @@ public class Operationhelper {
         }
         return hasil;
     }
+    
+    public boolean konfirmasibayar(String kata) {
+        Alert al = new Alert(Alert.AlertType.CONFIRMATION);
+        al.setTitle("Konfirmasi");
+        al.setHeaderText("Yakin pembayaran menggunakan " + kata + " ?");
+        al.setContentText("Data yang sudah diproses tidak bisa dikembalikan");
+        ButtonType ya = new ButtonType("Ya");
+        ButtonType tidak = new ButtonType("Tidak");
+        al.getButtonTypes().setAll(ya, tidak);
+        Optional<ButtonType> op = al.showAndWait();
+        boolean hasil;
+        if (op.get() == ya) {
+            hasil = true;
+        } else {
+            hasil = false;
+        }
+        return hasil;
+    }
 
     public String gethddid() {
         List<String> col=null;

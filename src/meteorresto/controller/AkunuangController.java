@@ -10,7 +10,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,15 +23,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -41,6 +38,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import meteorresto.helper.Connectionhelper;
+import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
 
@@ -49,7 +47,7 @@ import meteorresto.helper.Sessionhelper;
  *
  * @author user
  */
-public class AkunController implements Initializable {
+public class AkunuangController implements Initializable {
 
     @FXML
     private Pane pkembali;
@@ -57,14 +55,6 @@ public class AkunController implements Initializable {
     private TextField tkode;
     @FXML
     private TextField tnama;
-    @FXML
-    private TextField tusername;
-    @FXML
-    private PasswordField tpassword;
-    @FXML
-    private PasswordField trepassword;
-    @FXML
-    private ComboBox<String> ctipe;
     @FXML
     private Button bsimpan;
     @FXML
@@ -82,18 +72,14 @@ public class AkunController implements Initializable {
     @FXML
     private TableColumn<Entity, String> nama;
     @FXML
-    private TableColumn<Entity, String> username;
-    @FXML
-    private TableColumn<Entity, String> password;
-    @FXML
-    private TableColumn<Entity, String> tipe;
+    private TableColumn<Entity, String> keterangan;
     @FXML
     private TextField tcari;
     Sessionhelper sh = new Sessionhelper();
     Connectionhelper ch = new Connectionhelper();
     ObservableList tabledata = FXCollections.observableArrayList();
-    ObservableList olscombo = FXCollections.observableArrayList();
     Operationhelper oh = new Operationhelper();
+    FIlehelper fh = new FIlehelper();
     String ids;
     @FXML
     private AnchorPane header;
@@ -101,6 +87,8 @@ public class AkunController implements Initializable {
     private AnchorPane footer;
     @FXML
     private Pane detail;
+    @FXML
+    private TextArea tketerangan;
 
     /**
      * Initializes the controller class.
@@ -116,7 +104,6 @@ public class AkunController implements Initializable {
         clear();
         cari();
         loadtotaldata();
-        loadcombo();
         luser.setText(sh.getUsername());
         bsimpan.setId("bc");
         bclear.setId("bc");
@@ -124,7 +111,6 @@ public class AkunController implements Initializable {
         footer.setId("tema");
         detail.setId("tema");
         tlimit.setId("tema");
-        //pkembali.setId("pane");
     }
 
     private void kembali() {
@@ -133,51 +119,43 @@ public class AkunController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     table.getItems().clear();
-                    ctipe.getItems().clear();
                     tabledata.clear();
-                    olscombo.clear();
+                    tketerangan.clear();
                     FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
                     Parent root = fxl.load();
                     sh.getSt().getScene().setRoot(root);
                 } catch (IOException ex) {
-                    Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-    }
-
-    private void loadcombo() {
-        olscombo.addAll("admin", "kasir");
-        ctipe.setItems(olscombo);
     }
 
     private void loaddata() {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT id,nama,username,password,tipe FROM akun ORDER BY nama DESC LIMIT ?";
+            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan,keterangan_akun_keuangan "
+                    + "FROM akun_keuangan ORDER BY nama_akun_keuangan DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
+
             while (res.next()) {
-                String sid = res.getString("id");
-                String snama = res.getString("nama");
-                String susername = res.getString("username");
-                String spassword = res.getString("password");
-                String stipe = res.getString("tipe");
-                tabledata.add(new Entity(sid, snama, susername, spassword, stipe));
+                String skode = res.getString("kode_akun_keuangan");
+                String snama = res.getString("nama_akun_keuangan");
+                String sketerangan = res.getString("keterangan_akun_keuangan");
+                tabledata.add(new Entity(skode, snama, sketerangan));
             }
             pre.close();
             res.close();
             ch.close();
-            kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            username.setCellValueFactory(new PropertyValueFactory<>("username"));
-            password.setCellValueFactory(new PropertyValueFactory<>("password"));
-            tipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
+            kode.setCellValueFactory(new PropertyValueFactory<>("kode_akun_keuangan"));
+            nama.setCellValueFactory(new PropertyValueFactory<>("nama_akun_keuangan"));
+            keterangan.setCellValueFactory(new PropertyValueFactory<>("keterangan_akun_keuangan"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
-            Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
         } finally {
             ch.close();
@@ -197,9 +175,7 @@ public class AkunController implements Initializable {
                 ids = kode.getCellData(i);
                 tkode.setText(kode.getCellData(i));
                 tnama.setText(nama.getCellData(i));
-                tusername.setText(username.getCellData(i));
-                tpassword.setText(password.getCellData(i));
-                ctipe.getEditor().setText(tipe.getCellData(i));
+                tketerangan.setText(keterangan.getCellData(i));
             }
         });
     }
@@ -207,21 +183,20 @@ public class AkunController implements Initializable {
     private void rawsimpan() {
         if (ids == null || ids.equals("")) {
             try {
-                String sql = "INSERT INTO akun(id,nama,username,password,tipe) VALUES(?,?,?,?,?)";
+                String sql = "INSERT INTO akun_keuangan(kode_akun_keuangan,nama_akun_keuangan,keterangan_akun_keuangan)"
+                        + " VALUES(?,?,?)";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, tkode.getText());
                 pre.setString(2, tnama.getText());
-                pre.setString(3, tusername.getText());
-                pre.setString(4, tpassword.getText());
-                pre.setString(5, ctipe.getEditor().getText());
+                pre.setString(3, tketerangan.getText());
                 pre.executeUpdate();
                 pre.close();
                 ch.close();
-                oh.sukses("Data Akun Berhasil Disimpan");
+                oh.sukses("Data Akun Keuangan Berhasil Disimpan");
                 loaddata();
                 loadtotaldata();
             } catch (SQLException ex) {
-                Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
                 oh.error(ex);
             } finally {
                 ch.close();
@@ -230,22 +205,21 @@ public class AkunController implements Initializable {
         } else {
             if (oh.konfirmasi("ubah") == true) {
                 try {
-                    String sql = "UPDATE akun SET id=?,nama=?,username=?,password=?,tipe=? WHERE id=?";
+                    String sql = "UPDATE akun_keuangan SET kode_akun_keuangan=?,nama_akun_keuangan=?,"
+                            + "keterangan_akun_keuangan=? WHERE kode_akun_keuangan=?";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
-                    pre.setString(3, tusername.getText());
-                    pre.setString(4, tpassword.getText());
-                    pre.setString(5, ctipe.getEditor().getText());
-                    pre.setString(6, ids);
+                    pre.setString(3, tketerangan.getText());
+                    pre.setString(4, ids);
                     pre.executeUpdate();
                     pre.close();
                     ch.close();
-                    oh.sukses("Data Akun Berhasil Perbaharui");
+                    oh.sukses("Data Akun Keuangan Berhasil Perbaharui");
                     loaddata();
                     loadtotaldata();
                 } catch (SQLException ex) {
-                    Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
                     oh.error(ex);
                 } finally {
                     ch.close();
@@ -260,32 +234,25 @@ public class AkunController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                if(tpassword.getText().equals(trepassword.getText())){
-                    rawsimpan();
-                }else{
-                    oh.gagal("Password yang diketik ulang tidak cocok");
-                }
-                
+                rawsimpan();
             }
         });
     }
-    
-    
 
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
-                String sql = "DELETE FROM akun WHERE id=?";
+                String sql = "DELETE FROM akun_keuangan WHERE kode_akun_keuangan=?";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, ids);
                 pre.executeUpdate();
+                oh.sukses("Data Berhasil Dihapus");
                 pre.close();
                 ch.close();
-                oh.sukses("Data Berhasil Dihapus");
                 loaddata();
                 loadtotaldata();
             } catch (SQLException ex) {
-                Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
                 oh.error(ex);
             } finally {
                 ch.close();
@@ -309,10 +276,7 @@ public class AkunController implements Initializable {
         ids = "";
         tkode.clear();
         tnama.clear();
-        tusername.clear();
-        tpassword.clear();
-        trepassword.clear();
-        ctipe.getEditor().clear();
+        tketerangan.clear();
     }
 
     private void clear() {
@@ -330,40 +294,31 @@ public class AkunController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT id,nama,username,password,tipe FROM akun "
-                    + "WHERE id ILIKE ? OR "
-                    + "nama ILIKE ? OR "
-                    + "username ILIKE ? OR "
-                    + "tipe ILIKE ? ORDER BY nama DESC LIMIT ?";
+            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan,keterangan_akun_keuangan"
+                    + " FROM akun_keuangan "
+                    + "WHERE kode_akun_keuangan ILIKE ? OR "
+                    + "nama_akun_keuangan ILIKE ? OR "
+                    + "keterangan_akun_keuangan ILIKE ? ORDER BY nama_akun_keuangan DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 3; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
             }
-            pre.setInt(5, Integer.parseInt(tlimit.getText()));
+            pre.setInt(4, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                String sid = res.getString("id");
-                String snama = res.getString("nama");
-                String susername = res.getString("username");
-                String spassword = res.getString("password");
-                String stipe = res.getString("tipe");
-                tabledata.add(new Entity(sid, snama, susername, spassword, stipe));
+                String skode = res.getString("kode_akun_keuangan");
+                String snama = res.getString("nama_akun_keuangan");
+                String sketerangan = res.getString("keterangan_akun_keuangan");
+                tabledata.add(new Entity(skode, snama, sketerangan));
             }
-            pre.close();
-            res.close();
-            ch.close();
-            kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            username.setCellValueFactory(new PropertyValueFactory<>("username"));
-            password.setCellValueFactory(new PropertyValueFactory<>("password"));
-            tipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
+            ch.connect().close();
+            kode.setCellValueFactory(new PropertyValueFactory<>("kode_akun_keuangan"));
+            nama.setCellValueFactory(new PropertyValueFactory<>("nama_akun_keuangan"));
+            keterangan.setCellValueFactory(new PropertyValueFactory<>("keterangan_akun_keuangan"));
             table.setItems(tabledata);
-
         } catch (SQLException ex) {
-            Logger.getLogger(AkunController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
-        } finally {
-            ch.close();
         }
     }
 
@@ -379,56 +334,41 @@ public class AkunController implements Initializable {
 
     public class Entity {
 
-        String kode, nama, username, password, tipe;
+       String kode_akun_keuangan,nama_akun_keuangan,keterangan_akun_keuangan;
 
-        public Entity(String kode, String nama, String username, String password, String tipe) {
-            this.kode = kode;
-            this.nama = nama;
-            this.username = username;
-            this.password = password;
-            this.tipe = tipe;
+        public Entity(String kode_akun_keuangan, String nama_akun_keuangan, String keterangan_akun_keuangan) {
+            this.kode_akun_keuangan = kode_akun_keuangan;
+            this.nama_akun_keuangan = nama_akun_keuangan;
+            this.keterangan_akun_keuangan = keterangan_akun_keuangan;
         }
 
-        public String getKode() {
-            return kode;
+        public String getKode_akun_keuangan() {
+            return kode_akun_keuangan;
         }
 
-        public void setKode(String kode) {
-            this.kode = kode;
+        public void setKode_akun_keuangan(String kode_akun_keuangan) {
+            this.kode_akun_keuangan = kode_akun_keuangan;
         }
 
-        public String getNama() {
-            return nama;
+        public String getNama_akun_keuangan() {
+            return nama_akun_keuangan;
         }
 
-        public void setNama(String nama) {
-            this.nama = nama;
+        public void setNama_akun_keuangan(String nama_akun_keuangan) {
+            this.nama_akun_keuangan = nama_akun_keuangan;
         }
 
-        public String getUsername() {
-            return username;
+        public String getKeterangan_akun_keuangan() {
+            return keterangan_akun_keuangan;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setKeterangan_akun_keuangan(String keterangan_akun_keuangan) {
+            this.keterangan_akun_keuangan = keterangan_akun_keuangan;
         }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getTipe() {
-            return tipe;
-        }
-
-        public void setTipe(String tipe) {
-            this.tipe = tipe;
-        }
+       
+       
+       
+       
 
     }
-
 }

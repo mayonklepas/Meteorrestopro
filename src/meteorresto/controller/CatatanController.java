@@ -89,6 +89,7 @@ public class CatatanController implements Initializable {
     Connectionhelper ch = new Connectionhelper();
     ObservableList<Entity> tabledata = FXCollections.observableArrayList();
     ObservableList olscombo = FXCollections.observableArrayList();
+    ObservableList olscombouang = FXCollections.observableArrayList();
     Operationhelper oh = new Operationhelper();
     String ids;
     @FXML
@@ -104,6 +105,10 @@ public class CatatanController implements Initializable {
     @FXML
     private TableColumn<Entity, String> keterangan;
     NumberFormat nf = NumberFormat.getInstance();
+    @FXML
+    private ComboBox<?> cakunuang;
+    @FXML
+    private TableColumn<Entity, String> akun_keuangan;
 
     /**
      * Initializes the controller class.
@@ -120,6 +125,7 @@ public class CatatanController implements Initializable {
         cari();
         loadtotaldata();
         loadcombo();
+        loadcombokeuangan();
         rawclear();
         luser.setText(sh.getUsername());
         bsimpan.setId("bc");
@@ -173,12 +179,39 @@ public class CatatanController implements Initializable {
         }
     }
 
+    private void loadcombokeuangan() {
+        cakunuang.getEditor().clear();
+        olscombouang.clear();
+        try {
+            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan FROM akun_keuangan "
+                    + "ORDER BY kode_akun_keuangan DESC LIMIT ?";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            pre.setInt(1, Integer.parseInt(tlimit.getText()));
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                olscombouang.add(res.getString("kode_akun_keuangan") + "-" + res.getString("nama_akun_keuangan"));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            cakunuang.setItems(olscombouang);
+        } catch (SQLException ex) {
+            Logger.getLogger(CatatanController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
+        }
+    }
+
     private void loaddata() {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,catatan.kode_perkiraan,nama_perkiraan,tanggal,nama,jumlah,keterangan FROM catatan "
-                    + "INNER JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan ORDER BY tanggal DESC LIMIT ?";
+            String sql = "SELECT kode,catatan.kode_perkiraan,nama_perkiraan,tanggal,nama,jumlah,keterangan,"
+                    + "akun_keuangan.nama_akun_keuangan,akun_keuangan.kode_akun_keuangan FROM catatan "
+                    + "INNER JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan "
+                    + "INNER JOIN akun_keuangan ON catatan.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan"
+                    + " ORDER BY tanggal DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
@@ -187,12 +220,14 @@ public class CatatanController implements Initializable {
                 String skode_transaksi = res.getString("kode");
                 String skodeperkiraan = res.getString("kode_perkiraan");
                 String snamaperkiraan = res.getString("nama_perkiraan");
+                String skodeakunkeuangan = res.getString("kode_akun_keuangan");
+                String snamaakunkeuangan = res.getString("nama_akun_keuangan");
                 String stanggal = res.getString("tanggal");
                 String snama = res.getString("nama");
                 String sjumlah = nf.format(res.getDouble("jumlah"));
                 String sketerangan = res.getString("keterangan");
                 tabledata.add(new Entity(skode_transaksi, skodeperkiraan, snamaperkiraan,
-                        stanggal, snama, sjumlah, sketerangan));
+                        skodeakunkeuangan, snamaakunkeuangan, stanggal, snama, sjumlah, sketerangan));
             }
             pre.close();
             res.close();
@@ -200,6 +235,7 @@ public class CatatanController implements Initializable {
             tanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
             kode_transaksi.setCellValueFactory(new PropertyValueFactory<>("kode"));
             kategori.setCellValueFactory(new PropertyValueFactory<>("nama_perkiraan"));
+            akun_keuangan.setCellValueFactory(new PropertyValueFactory<>("nama_akun_keuangan"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             jumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
             keterangan.setCellValueFactory(new PropertyValueFactory<>("keterangan"));
@@ -231,7 +267,10 @@ public class CatatanController implements Initializable {
                         dtanggal.setValue(LocalDate.parse(tanggal.getCellData(i)));
                     }
                     ids = kode_transaksi.getCellData(i);
-                    ckategori.getEditor().setText(tabledata.get(i).getKode_perkiraan()+"-"+tabledata.get(i).getNama_perkiraan());
+                    ckategori.getEditor().setText(tabledata.get(i).getKode_perkiraan()
+                            + "-" + tabledata.get(i).getNama_perkiraan());
+                    cakunuang.getEditor().setText(tabledata.get(i).getKode_akun_keuangan()
+                            + "-" + tabledata.get(i).getNama_akun_keuangan());
                     tnama.setText(nama.getCellData(i));
                     tjumlah.setText(jumlah.getCellData(i));
                     tketerangan.setText(keterangan.getCellData(i));
@@ -242,64 +281,43 @@ public class CatatanController implements Initializable {
 
     private void rawsimpan() {
         int indexcombo = ckategori.getSelectionModel().getSelectedIndex();
-        if (ids == null || ids.equals("")) {
-            try {
-                String sqlgetno = "SELECT kode FROM catatan ORDER BY kode DESC LIMIT 1";
-                PreparedStatement pregetno = ch.connect().prepareStatement(sqlgetno);
-                ResultSet resno = pregetno.executeQuery();
-                String kode_transaksi = "";
-                String tglhariini = new SimpleDateFormat("yyMMdd").format(new Date());
-                while (resno.next()) {
-                    kode_transaksi = resno.getString("kode");
-                }
-                if (kode_transaksi == null || kode_transaksi.equals("")
-                        || !kode_transaksi.substring(0, 6).equals(tglhariini)) {
-                    System.out.println(tglhariini);
-                    kode_transaksi = tglhariini + "1";
-                } else {
-                    kode_transaksi = String.valueOf(Integer.parseInt(kode_transaksi) + 1);
-                }
-                pregetno.close();
-                resno.close();
-                ch.close();
-                String sql = "INSERT INTO catatan(kode,kode_perkiraan,tanggal,nama,jumlah,keterangan) "
-                        + "VALUES(?,?,?::date,?,?,?)";
-                PreparedStatement pre = ch.connect().prepareStatement(sql);
-                pre.setString(1, kode_transaksi);
-                pre.setString(2, ckategori.getEditor().getText().split("-")[0]);
-                pre.setString(3, dtanggal.getValue().toString());
-                pre.setString(4, tnama.getText());
-                pre.setDouble(5, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
-                pre.setString(6, tketerangan.getText());
-                pre.executeUpdate();
-                pre.close();
-                ch.close();
-                oh.sukses("Data Catatan Berhasil Disimpan");
-                loaddata();
-                loadtotaldata();
-            } catch (SQLException ex) {
-                Logger.getLogger(CatatanController.class.getName()).log(Level.SEVERE, null, ex);
-                oh.error(ex);
-            } finally {
-                ch.close();
-            }
-
+        if (ckategori.getEditor().getText().equals("") || cakunuang.getEditor().getText().equals("")) {
+            oh.equals("Maaf anda belum memilih kategori atau akun keuangan");
         } else {
-            if (oh.konfirmasi("ubah") == true) {
+            if (ids == null || ids.equals("")) {
                 try {
-                    String sql = "UPDATE catatan SET kode_perkiraan=?,tanggal=?::date,"
-                            + "nama=?,jumlah=?,keterangan=? WHERE kode=?";
+                    String sqlgetno = "SELECT kode FROM catatan ORDER BY kode DESC LIMIT 1";
+                    PreparedStatement pregetno = ch.connect().prepareStatement(sqlgetno);
+                    ResultSet resno = pregetno.executeQuery();
+                    String kode_transaksi = "";
+                    String tglhariini = new SimpleDateFormat("yyMMdd").format(new Date());
+                    while (resno.next()) {
+                        kode_transaksi = resno.getString("kode");
+                    }
+                    if (kode_transaksi == null || kode_transaksi.equals("")
+                            || !kode_transaksi.substring(0, 6).equals(tglhariini)) {
+                        System.out.println(tglhariini);
+                        kode_transaksi = tglhariini + "1";
+                    } else {
+                        kode_transaksi = String.valueOf(Integer.parseInt(kode_transaksi) + 1);
+                    }
+                    pregetno.close();
+                    resno.close();
+                    ch.close();
+                    String sql = "INSERT INTO catatan(kode,kode_perkiraan,kode_akun_keuangan,tanggal,nama,jumlah,keterangan) "
+                            + "VALUES(?,?,?,?::date,?,?,?)";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
-                    pre.setString(1, ckategori.getEditor().getText().split("-")[0]);
-                    pre.setString(2, dtanggal.getValue().toString());
-                    pre.setString(3, tnama.getText());
-                    pre.setDouble(4, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
-                    pre.setString(5, tketerangan.getText());
-                    pre.setString(6, ids);
+                    pre.setString(1, kode_transaksi);
+                    pre.setString(2, ckategori.getEditor().getText().split("-")[0]);
+                    pre.setString(3, cakunuang.getEditor().getText().split("-")[0]);
+                    pre.setString(4, dtanggal.getValue().toString());
+                    pre.setString(5, tnama.getText());
+                    pre.setDouble(6, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
+                    pre.setString(7, tketerangan.getText());
                     pre.executeUpdate();
                     pre.close();
                     ch.close();
-                    oh.sukses("Data Catatan Berhasil Perbaharui");
+                    oh.sukses("Data Catatan Berhasil Disimpan");
                     loaddata();
                     loadtotaldata();
                 } catch (SQLException ex) {
@@ -308,8 +326,35 @@ public class CatatanController implements Initializable {
                 } finally {
                     ch.close();
                 }
-            }
 
+            } else {
+                if (oh.konfirmasi("ubah") == true) {
+                    try {
+                        String sql = "UPDATE catatan SET kode_perkiraan=?,kode_akun_keuangan=?,tanggal=?::date,"
+                                + "nama=?,jumlah=?,keterangan=? WHERE kode=?";
+                        PreparedStatement pre = ch.connect().prepareStatement(sql);
+                        pre.setString(1, ckategori.getEditor().getText().split("-")[0]);
+                        pre.setString(2, cakunuang.getEditor().getText().split("-")[0]);
+                        pre.setString(3, dtanggal.getValue().toString());
+                        pre.setString(4, tnama.getText());
+                        pre.setDouble(5, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
+                        pre.setString(6, tketerangan.getText());
+                        pre.setString(7, ids);
+                        pre.executeUpdate();
+                        pre.close();
+                        ch.close();
+                        oh.sukses("Data Catatan Berhasil Perbaharui");
+                        loaddata();
+                        loadtotaldata();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CatatanController.class.getName()).log(Level.SEVERE, null, ex);
+                        oh.error(ex);
+                    } finally {
+                        ch.close();
+                    }
+                }
+
+            }
         }
     }
 
@@ -359,6 +404,7 @@ public class CatatanController implements Initializable {
     private void rawclear() {
         ids = "";
         ckategori.getEditor().clear();
+        cakunuang.getEditor().clear();
         tnama.clear();
         tjumlah.clear();
         tketerangan.clear();
@@ -380,30 +426,35 @@ public class CatatanController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,catatan.kode_perkiraan,nama_perkiraan,tanggal,nama,jumlah,keterangan FROM catatan "
+            String sql = "SELECT kode,catatan.kode_perkiraan,nama_perkiraan,tanggal,nama,jumlah,keterangan,"
+                    + "akun_keuangan.nama_akun_keuangan,akun_keuangan.kode_akun_keuangan FROM catatan "
                     + "INNER JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan "
+                    + "INNER JOIN akun_keuangan ON catatan.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan "
                     + "WHERE tanggal::character varying ILIKE ? OR "
                     + "kode ILIKE ? OR "
                     + "nama ILIKE ? OR "
                     + "jumlah::character varying ILIKE ? OR "
                     + "nama_perkiraan ILIKE ? OR "
+                    + "nama_akun_keuangan ILIKE ? OR "
                     + "keterangan ILIKE ? ORDER BY tanggal DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 7; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
             }
-            pre.setInt(7, Integer.parseInt(tlimit.getText()));
+            pre.setInt(8, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String skode_transaksi = res.getString("kode");
                 String skodeperkiraan = res.getString("kode_perkiraan");
                 String snamaperkiraan = res.getString("nama_perkiraan");
+                String skodeakunkeuangan = res.getString("kode_akun_keuangan");
+                String snamaakunkeuangan = res.getString("nama_akun_keuangan");
                 String stanggal = res.getString("tanggal");
                 String snama = res.getString("nama");
                 String sjumlah = nf.format(res.getDouble("jumlah"));
                 String sketerangan = res.getString("keterangan");
                 tabledata.add(new Entity(skode_transaksi, skodeperkiraan, snamaperkiraan,
-                        stanggal, snama, sjumlah, sketerangan));
+                        skodeakunkeuangan, snamaakunkeuangan, stanggal, snama, sjumlah, sketerangan));
             }
             pre.close();
             res.close();
@@ -411,6 +462,7 @@ public class CatatanController implements Initializable {
             tanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
             kode_transaksi.setCellValueFactory(new PropertyValueFactory<>("kode"));
             kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
+            akun_keuangan.setCellValueFactory(new PropertyValueFactory<>("nama_akun_keuangan"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             jumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
             keterangan.setCellValueFactory(new PropertyValueFactory<>("keterangan"));
@@ -435,12 +487,14 @@ public class CatatanController implements Initializable {
 
     public class Entity {
 
-        String kode, kode_perkiraan, nama_perkiraan, tanggal, nama, jumlah, keterangan;
+        String kode, kode_perkiraan, nama_perkiraan, kode_akun_keuangan, nama_akun_keuangan, tanggal, nama, jumlah, keterangan;
 
-        public Entity(String kode, String kode_perkiraan, String nama_perkiraan, String tanggal, String nama, String jumlah, String keterangan) {
+        public Entity(String kode, String kode_perkiraan, String nama_perkiraan, String kode_akun_keuangan, String nama_akun_keuangan, String tanggal, String nama, String jumlah, String keterangan) {
             this.kode = kode;
             this.kode_perkiraan = kode_perkiraan;
             this.nama_perkiraan = nama_perkiraan;
+            this.kode_akun_keuangan = kode_akun_keuangan;
+            this.nama_akun_keuangan = nama_akun_keuangan;
             this.tanggal = tanggal;
             this.nama = nama;
             this.jumlah = jumlah;
@@ -469,6 +523,22 @@ public class CatatanController implements Initializable {
 
         public void setNama_perkiraan(String nama_perkiraan) {
             this.nama_perkiraan = nama_perkiraan;
+        }
+
+        public String getKode_akun_keuangan() {
+            return kode_akun_keuangan;
+        }
+
+        public void setKode_akun_keuangan(String kode_akun_keuangan) {
+            this.kode_akun_keuangan = kode_akun_keuangan;
+        }
+
+        public String getNama_akun_keuangan() {
+            return nama_akun_keuangan;
+        }
+
+        public void setNama_akun_keuangan(String nama_akun_keuangan) {
+            this.nama_akun_keuangan = nama_akun_keuangan;
         }
 
         public String getTanggal() {

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanhariannew_subreport" pageWidth="554" pageHeight="842" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9bddad5a-9531-485c-be60-7af3cae03183">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="431"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tanggal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="kode_transaksi" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT m.nama,t.jumlah,(t.jumlah*t.harga_masing) as total FROM transaksi t LEFT JOIN 
+menu m ON t.kode_menu=m.kode WHERE status=1 AND tanggal::date=$P{tanggal} AND t.kode_transaksi=$P{kode_transaksi} ORDER BY t.kode_transaksi]]>
+	</queryString>
+	<field name="nama" class="java.lang.String"/>
+	<field name="jumlah" class="java.lang.Integer"/>
+	<field name="total" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="333" height="20" forecolor="#006633" backcolor="#99FF99" uuid="e413dbf8-79e5-426a-b11c-0d37e9fe2a2a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Menu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="333" y="0" width="78" height="20" forecolor="#006633" backcolor="#99FF99" uuid="112cbe25-9a18-4f5b-b473-6a51ca6577b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="411" y="0" width="142" height="20" forecolor="#006633" backcolor="#99FF99" uuid="29ef59d3-a698-45c0-9ab7-6fff8c561193"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="23" width="554" height="1" uuid="4fa8a6d0-fca4-461e-bcd2-e32fc2491947"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="333" height="20" uuid="a88a740e-accf-4381-8477-9946fab50c15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="78" height="20" uuid="2959fef8-db52-494b-814d-c425da32485f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0">
+				<reportElement x="411" y="0" width="142" height="20" uuid="cb5e34bc-5330-46bb-a0f5-dc0c848e4beb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="22" width="554" height="1" uuid="1d430b05-6ed0-45ef-931c-a3c34cd8895c"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

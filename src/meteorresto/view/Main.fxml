@@ -12,193 +12,180 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainpane" prefHeight="740.0" prefWidth="1299.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.MainController">
     <children>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="77.0" prefHeight="85.0" prefWidth="1299.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="5.0" layoutY="91.0" prefHeight="70.0" prefWidth="1299.0" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Pane fx:id="pakun" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="pakun" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_account_circle_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="26.0" layoutY="75.0" text="USERS" textFill="WHITE">
+                  <Label layoutX="23.0" layoutY="59.0" text="USERS" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="pperkiraan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="puang" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="95.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_business_center_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="23.0" layoutY="59.0" text="AKUN" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pperkiraan" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_assignment_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="5.0" layoutY="75.0" text="PERKIRAAN" textFill="WHITE">
+                  <Label layoutX="7.0" layoutY="60.0" text="PERKIRAAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="pmeja" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="pmeja" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="95.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_event_seat_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="29.0" layoutY="74.0" text="MEJA" textFill="WHITE">
+                  <Label layoutX="25.0" layoutY="59.0" text="MEJA" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="pbahan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="pbahan" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_kitchen_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="21.0" layoutY="75.0" text="BAHAN" textFill="WHITE">
+                  <Label layoutX="20.0" layoutY="59.0" text="BAHAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="presep" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="presep" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_receipt_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="27.0" layoutY="75.0" text="RESEP" textFill="WHITE">
+                  <Label layoutX="23.0" layoutY="59.0" text="RESEP" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="pmenu" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="pmenu" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_restaurant_menu_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="26.0" layoutY="75.0" text="MENU" textFill="WHITE">
+                  <Label layoutX="22.0" layoutY="59.0" text="MENU" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="ppenjualan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="ppenjualan" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_desktop_windows_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="4.0" layoutY="75.0" text="PENJUALAN" textFill="WHITE">
+                  <Label layoutX="8.0" layoutY="59.0" text="PENJUALAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="ppembelian" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="ppembelian" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_local_grocery_store_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="5.0" layoutY="75.0" text="PEMBELIAN" textFill="WHITE">
+                  <Label layoutX="8.0" layoutY="59.0" text="PEMBELIAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="pcatatan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="pcatatan" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_content_paste_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="12.0" layoutY="75.0" text="CATATAN" textFill="WHITE">
+                  <Label layoutX="14.0" layoutY="59.0" text="CATATAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="plaporan" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="plaporan" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: grey;">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: grey;">
                      <image>
                         <Image url="@../icon/ic_description_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="12.0" layoutY="75.0" text="LAPORAN" textFill="WHITE">
+                  <Label layoutX="14.0" layoutY="59.0" text="LAPORAN" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
-            <Pane fx:id="psetting" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0">
+            <Pane fx:id="psetting" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icon/ic_tune_white_48dp.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="17.0" layoutY="75.0" text="SETTING" textFill="WHITE">
+                  <Label layoutX="17.0" layoutY="59.0" text="SETTING" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI Bold" size="16.0" />
+                        <Font name="Segoe UI Bold" size="11.0" />
                      </font>
                   </Label>
                </children>
-               <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </FlowPane.margin>
             </Pane>
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </FlowPane>
       <Label layoutX="87.0" layoutY="32.0" text="Restoku" textFill="WHITE" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="32.0">
          <font>

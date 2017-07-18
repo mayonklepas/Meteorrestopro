@@ -17,19 +17,25 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.Operationhelper;
@@ -49,7 +55,7 @@ public class BayarController implements Initializable {
     @FXML
     private TextField ljumlahuang;
     @FXML
-    private Button boke, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bc;
+    private Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bc;
     Sessionhelper sh = new Sessionhelper();
     Operationhelper oh = new Operationhelper();
     Connectionhelper ch = new Connectionhelper();
@@ -60,6 +66,12 @@ public class BayarController implements Initializable {
     @FXML
     private AnchorPane footer;
     ArrayList<listmenugettersetter> listmenupilihan = new ArrayList<>();
+    @FXML
+    private FlowPane fpakunuang;
+    ObservableList<Button> btlist = FXCollections.observableArrayList();
+    ObservableList<Entitykeuangan> datakeuangan = FXCollections.observableArrayList();
+    @FXML
+    private Button bcl;
 
     /**
      * Initializes the controller class.
@@ -69,9 +81,9 @@ public class BayarController implements Initializable {
         // TODO
         loadtotaluang();
         kalkulasi();
-        clearpembayaran();
+        clearfield();
         kalkulasibybutton();
-        boke.setId("bc");
+        bcl.setId("bc");
         b1.setId("bc");
         b2.setId("bc");
         b3.setId("bc");
@@ -84,6 +96,64 @@ public class BayarController implements Initializable {
         b0.setId("bc");
         header.setId("tema");
         footer.setId("tema");
+        loadakunkeuangan();
+
+    }
+
+    private EventHandler actionmeja(int y) {
+        EventHandler evt = new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
+                    rawclearpembayaran(datakeuangan.get(y).kode_akun_keuangan);
+                    Node node = (Node) event.getSource();
+                    Stage st = (Stage) node.getScene().getWindow();
+                    st.close();
+                }
+            }
+        };
+
+        return evt;
+
+    }
+
+    private void loadakunkeuangan() {
+        try {
+            datakeuangan.clear();
+            btlist.clear();
+            fpakunuang.getChildren().clear();
+            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan FROM akun_keuangan ORDER BY kode_akun_keuangan ASC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                String kode = res.getString("kode_akun_keuangan");
+                String nama = res.getString("nama_akun_keuangan");
+                datakeuangan.add(new Entitykeuangan(kode, nama));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            for (int i = 0; i < datakeuangan.size(); i++) {
+                final int y = i;
+
+                Button bt = new Button(datakeuangan.get(i).nama_akun_keuangan);
+                bt.setPrefWidth(80);
+                bt.setPrefHeight(50);
+                bt.setWrapText(true);
+                bt.setAlignment(Pos.CENTER);
+                bt.setContentDisplay(ContentDisplay.TOP);
+                btlist.add(bt);
+                btlist.get(i).setPadding(new Insets(3));
+                btlist.get(i).setOnAction(actionmeja(y));
+                btlist.get(i).setId("button-meja");
+            }
+            fpakunuang.getChildren().addAll(btlist);
+        } catch (Exception ex) {
+            Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
+        }
 
     }
 
@@ -115,8 +185,8 @@ public class BayarController implements Initializable {
             pre.setString(2, sh.getSlot());
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                String kode_resep=res.getString("kode_master_resep");
-                int jumlah_pesan=res.getInt("jumlah");
+                String kode_resep = res.getString("kode_master_resep");
+                int jumlah_pesan = res.getInt("jumlah");
                 listmenupilihan.add(new listmenugettersetter(kode_resep, jumlah_pesan));
             }
             pre.close();
@@ -130,31 +200,32 @@ public class BayarController implements Initializable {
                 while (resselectbahan.next()) {
                     String sqlupdastock = "UPDATE bahan SET jumlah=jumlah - ? WHERE kode=? ";
                     PreparedStatement preupdatestock = ch.connect().prepareStatement(sqlupdastock);
-                    preupdatestock.setDouble(1, resselectbahan.getDouble("jumlah_pakai")*listmenupilihan.get(i).jumlah_pesanan);
+                    preupdatestock.setDouble(1, resselectbahan.getDouble("jumlah_pakai") * listmenupilihan.get(i).jumlah_pesanan);
                     preupdatestock.setString(2, resselectbahan.getString("kode_bahan"));
                     preupdatestock.executeUpdate();
                     preupdatestock.close();
                     ch.close();
                 }
-                
+
                 preselectbahan.close();
                 resselectbahan.close();
                 ch.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(BayarController.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             ch.close();
         }
     }
 
-    private void rawclearpembayaran() {
+    private void rawclearpembayaran(String kode_akun) {
         kurangistock();
         try {
-            String sql = "UPDATE transaksi SET status=1 WHERE kode_meja=? AND slot=?";
+            String sql = "UPDATE transaksi SET status=1,kode_akun_keuangan=? WHERE kode_meja=? AND slot=?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            pre.setString(1, sh.getKode_meja());
-            pre.setString(2, sh.getSlot());
+            pre.setString(1, kode_akun);
+            pre.setString(2, sh.getKode_meja());
+            pre.setString(3, sh.getSlot());
             pre.executeUpdate();
             String sqlcount = "SELECT COUNT(kode_meja) total_data FROM transaksi WHERE "
                     + "kode_meja=? AND status=0";
@@ -192,7 +263,7 @@ public class BayarController implements Initializable {
             }
         });
 
-        ljumlahuang.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        /*ljumlahuang.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
@@ -202,7 +273,7 @@ public class BayarController implements Initializable {
                     st.close();
                 }
             }
-        });
+        });*/
     }
 
     private void kalkulasibybutton() {
@@ -261,19 +332,17 @@ public class BayarController implements Initializable {
 
     }
 
-    private void clearpembayaran() {
-        boke.setOnAction(new EventHandler<ActionEvent>() {
+    private void clearfield() {
+        bcl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                rawclearpembayaran();
-                Node node = (Node) event.getSource();
-                Stage st = (Stage) node.getScene().getWindow();
-                st.close();
+                ljumlahuang.clear();
             }
         });
     }
-    
-    public class listmenugettersetter{
+
+    public class listmenugettersetter {
+
         String kode_resep;
         int jumlah_pesanan;
 
@@ -297,8 +366,34 @@ public class BayarController implements Initializable {
         public void setJumlah_pesanan(int jumlah_pesanan) {
             this.jumlah_pesanan = jumlah_pesanan;
         }
-        
-        
+
+    }
+
+    public class Entitykeuangan {
+
+        String kode_akun_keuangan, nama_akun_keuangan;
+
+        public Entitykeuangan(String kode_akun_keuangan, String nama_akun_keuangan) {
+            this.kode_akun_keuangan = kode_akun_keuangan;
+            this.nama_akun_keuangan = nama_akun_keuangan;
+        }
+
+        public String getKode_akun_keuangan() {
+            return kode_akun_keuangan;
+        }
+
+        public void setKode_akun_keuangan(String kode_akun_keuangan) {
+            this.kode_akun_keuangan = kode_akun_keuangan;
+        }
+
+        public String getNama_akun_keuangan() {
+            return nama_akun_keuangan;
+        }
+
+        public void setNama_akun_keuangan(String nama_akun_keuangan) {
+            this.nama_akun_keuangan = nama_akun_keuangan;
+        }
+
     }
 
 }

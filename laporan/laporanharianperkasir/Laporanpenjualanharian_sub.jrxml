@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanharian_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4b5c893b-b24c-4096-bf78-26d14fb69b8e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tanggal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="kode_user" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Workspace\\Netbeans\\MeteorRestopro\\laporan\\laporanharianperkasir\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t.kode_transaksi,ak.nama_akun_keuangan,(select SUM(jumlah*harga_masing) FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total,(select tax FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS pajak,(select SUM(jumlah*harga_masing*tax/100) FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total_pajak , 
+(select SUM(jumlah*harga_masing)+SUM(jumlah*harga_masing*tax/100) FROM transaksi WHERE kode_transaksi=t.kode_transaksi LIMIT 1 ) AS total_dengan_pajak FROM transaksi t INNER JOIN akun_keuangan ak ON t.kode_akun_keuangan=ak.kode_akun_keuangan WHERE tanggal::date=$P{tanggal} AND kode_user=$P{kode_user} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama_akun_keuangan]]>
+	</queryString>
+	<field name="kode_transaksi" class="java.lang.String"/>
+	<field name="nama_akun_keuangan" class="java.lang.String"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="pajak" class="java.lang.Integer"/>
+	<field name="total_pajak" class="java.lang.Double"/>
+	<field name="total_dengan_pajak" class="java.lang.Double"/>
+	<variable name="total_dengan_pajak_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_dengan_pajak}]]></variableExpression>
+	</variable>
+	<variable name="total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="pajak_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{pajak}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="92" height="20" uuid="cf8e5cda-a138-41fe-a009-dc10b17c2321"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Transaksi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="4" width="92" height="20" uuid="77bf9197-2336-4e57-ae63-c9dfe676aa1b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Akun Keuangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="4" width="92" height="20" uuid="55aef079-b151-41b3-9d02-383b836a416c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="4" width="92" height="20" uuid="0434ca6f-5043-4781-ae8d-0385e51702a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pajak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="4" width="92" height="20" uuid="d94ccdf0-e440-4d4b-878c-83cf2ac3aac6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Pajak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="4" width="92" height="20" uuid="5d978712-0b49-4f66-8cb3-33bc9c0e39de"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total + Pajak]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="26" width="555" height="1" uuid="1eb6230f-efcb-404c-8b05-c6b7ec8e2de9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="7d682108-b249-412e-a86e-d1670b219735"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="70" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="29" width="555" height="37" uuid="7641f389-f334-4e93-b04f-737f52dc1152"/>
+				<subreportParameter name="kode_transaksi">
+					<subreportParameterExpression><![CDATA[$F{kode_transaksi}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tanggal">
+					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Laporanpenjualanharian_subinsub.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="0" y="5" width="92" height="20" uuid="3f2d6a72-b386-47d7-b880-f0086634d6ca"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_transaksi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="5" width="92" height="20" uuid="95573a44-99cd-46fa-96ad-41d6ccbf8b4c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_akun_keuangan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##00">
+				<reportElement x="184" y="5" width="92" height="20" uuid="08f625cb-3dd8-456b-bad3-2b6f3a30534e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="5" width="92" height="20" uuid="9ba33e75-e099-474f-8ab1-39a0fb5d9a54"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pajak}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##00">
+				<reportElement x="368" y="5" width="92" height="20" uuid="534b7f84-0a05-46b9-8c0a-00c0d0ccbeee"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_pajak}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##00">
+				<reportElement x="460" y="5" width="92" height="20" uuid="567fc78f-4e86-4fc7-a8d7-1e9832787676"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_dengan_pajak}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="1e3a76b5-3ad3-4a83-9bcb-055f75cc3816"/>
+			</line>
+			<line>
+				<reportElement x="0" y="26" width="555" height="1" uuid="d50f5263-69cf-4458-985f-be39da5dfaa4"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="70" splitType="Stretch">
+			<textField pattern="Rp #,##0">
+				<reportElement x="437" y="47" width="118" height="20" uuid="cb2c2698-b4b7-42c0-a5ca-60d714a6f9f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{total_dengan_pajak_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="337" y="6" width="100" height="20" uuid="7ae86143-c1e7-4f2d-820a-6bb987af78ec"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Penjualan :]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="437" y="6" width="118" height="20" uuid="6d77d42f-fed7-4815-b777-1c3e71a0c4d4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="337" y="26" width="100" height="20" uuid="61410de2-4342-4266-8095-a1233a89042d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Pajak :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="46" width="149" height="20" uuid="48ec8781-85f8-4966-b084-4ba6b9936b35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Penjualan + Pajak :]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="437" y="27" width="118" height="20" uuid="cac3c755-7fc4-449e-9fc2-e7f61a482011"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{pajak_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="108cc2a6-cee1-42f6-8f4a-f21d86d7d19e"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

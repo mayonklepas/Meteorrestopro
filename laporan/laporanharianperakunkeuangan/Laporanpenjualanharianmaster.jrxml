@@ -11,14 +11,10 @@
 	</parameter>
 	<parameter name="header" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT id,nama,(SELECT SUM(jumlah*harga_masing) FROM transaksi WHERE transaksi.kode_user=a.id AND status=1 AND tanggal::date=$P{tanggal}) AS total_pendapatan FROM akun a]]>
+		<![CDATA[SELECT kode_akun_keuangan,nama_akun_keuangan FROM akun_keuangan]]>
 	</queryString>
-	<field name="id" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String"/>
-	<field name="total_pendapatan" class="java.lang.Double"/>
-	<variable name="total_pendapatan_1" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{total_pendapatan}]]></variableExpression>
-	</variable>
+	<field name="kode_akun_keuangan" class="java.lang.String"/>
+	<field name="nama_akun_keuangan" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -59,25 +55,25 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kode_akun_keuangan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="93" y="2" width="462" height="20" forecolor="#3333FF" backcolor="#CCCCCC" uuid="a406696f-8a3d-4287-b278-6928418c6799"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama_akun_keuangan}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="22" width="555" height="45" uuid="0a6934a2-347b-4bf0-9a09-bb8bd9571eb4"/>
-				<subreportParameter name="kode_user">
-					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				<subreportParameter name="kode_akun_keuangan">
+					<subreportParameterExpression><![CDATA[$F{kode_akun_keuangan}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="tanggal">
 					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Laporanpenjualanharian_sub.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"laporanharianperakunkeuangan/Laporanpenjualanharian_sub.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
@@ -100,37 +96,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="179" splitType="Stretch">
-			<staticText>
-				<reportElement x="1" y="50" width="133" height="20" uuid="d1df2a93-94d5-4ecb-b154-e1a334b59bad"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Jumlah Pajak pernota]]></text>
-			</staticText>
-			<subreport>
-				<reportElement x="1" y="76" width="555" height="43" uuid="fcc9b721-d004-4b2f-96a7-7f0f45818fa1"/>
-				<subreportParameter name="tanggal">
-					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Laporanpenjualanhariannew_subreport.jasper"]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="343" y="11" width="100" height="20" uuid="390802bf-1a0a-4283-a8c6-036134310e2d"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total Keseluruhan :]]></text>
-			</staticText>
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="443" y="11" width="112" height="20" uuid="46737258-eec4-4580-a4c3-6c7e634db280"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{total_pendapatan_1}]]></textFieldExpression>
-			</textField>
-		</band>
-	</summary>
 </jasperReport>

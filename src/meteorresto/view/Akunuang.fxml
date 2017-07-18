@@ -12,21 +12,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="636.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.CatatanController">
+<AnchorPane id="AnchorPane" prefHeight="556.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.AkunuangController">
     <children>
         <AnchorPane fx:id="header" layoutX="8.0" layoutY="101.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="546.0" text="DATA CATATAN KEUANGAN" textFill="WHITE">
+                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="191.0" text="DATA MEJA" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="28.0" />
                     </font>
                 </Label>
                 <ImageView fitHeight="84.0" fitWidth="95.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../icon/ic_content_paste_white_48dp.png" />
+                        <Image url="@../icon/ic_business_center_white_48dp.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="106.0" layoutY="55.0" prefHeight="19.0" prefWidth="373.0" text="Data catatan keuangan usaha " textFill="WHITE">
+                <Label layoutX="106.0" layoutY="55.0" text="Data akun keuangan usaha" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI" size="16.0" />
                     </font>
@@ -47,30 +47,22 @@
             </Pane>
             </children>
         </AnchorPane>
-        <VBox layoutY="137.0" prefHeight="403.0" prefWidth="310.0" spacing="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
+        <VBox layoutY="137.0" prefHeight="340.0" prefWidth="310.0" spacing="5.0" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="137.0">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-            <Label text="Tanggal">
-               <font>
-                  <Font name="Segoe UI" size="15.0" />
-               </font>
-            </Label>
-            <DatePicker fx:id="dtanggal" prefHeight="25.0" prefWidth="295.0" />
-            <Label text="Kategori">
-               <font>
-                  <Font name="Segoe UI" size="15.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="ckategori" editable="true" prefHeight="25.0" prefWidth="297.0" />
-            <Label text="Akun Keuangan">
-               <font>
-                  <Font name="Segoe UI" size="15.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="cakunuang" editable="true" prefHeight="25.0" prefWidth="297.0" />
-                <Label text="Nama">
+                <Label text="Kode Akun Keuangan">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="tkode">
+                    <font>
+                        <Font name="Segoe UI" size="15.0" />
+                    </font>
+                </TextField>
+                <Label text="Nama Akun Keuangan">
                     <font>
                         <Font name="Segoe UI" size="15.0" />
                     </font>
@@ -80,27 +72,13 @@
                         <Font name="Segoe UI" size="15.0" />
                     </font>
                 </TextField>
-                <Label text="Jumlah">
-                    <font>
-                        <Font name="Segoe UI" size="15.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="tjumlah">
-                    <font>
-                        <Font name="Segoe UI" size="15.0" />
-                    </font>
-                </TextField>
-                <Label text="Keterangan">
-                    <font>
-                        <Font name="Segoe UI" size="15.0" />
-                    </font>
-                </Label>
-            <TextArea fx:id="tketerangan" prefHeight="200.0" prefWidth="200.0" wrapText="true">
+            <Label text="Keterangan">
                <font>
-                  <Font name="Segoe UI" size="13.0" />
+                  <Font name="Segoe UI" size="15.0" />
                </font>
-            </TextArea>
-                <HBox prefHeight="18.0" prefWidth="247.0" spacing="10.0">
+            </Label>
+            <TextArea fx:id="tketerangan" prefHeight="200.0" prefWidth="200.0" />
+                <HBox prefHeight="18.0" prefWidth="310.0" spacing="10.0">
                     <children>
                         <Button fx:id="bsimpan" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Simpan">
                             <font>
@@ -141,25 +119,21 @@
                   <Font name="Segoe UI Bold" size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="tlimit" layoutX="711.0" layoutY="15.0" prefHeight="38.0" prefWidth="77.0" promptText="Limit" style="-fx-font-size: 20px; -fx-text-fill: white; -fx-font-weight: bold;" text="500" AnchorPane.rightAnchor="178.0">
+            <TextField fx:id="tlimit" layoutX="510.0" layoutY="15.0" prefHeight="38.0" prefWidth="77.0" promptText="Limit" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="500" AnchorPane.rightAnchor="178.0">
                <font>
                   <Font name="Segoe UI Bold" size="20.0" />
                </font>
             </TextField>
             </children>
         </AnchorPane>
-        <TableView fx:id="table" editable="true" layoutX="309.0" layoutY="96.0" prefHeight="443.0" prefWidth="456.0" style="-fx-font-size: 14;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="309.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
+        <TableView fx:id="table" editable="true" layoutX="310.0" layoutY="96.0" prefHeight="391.0" prefWidth="455.0" style="-fx-font-size: 14;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="96.0">
             <placeholder>
                 <Label text="Tidak Ada Data" />
             </placeholder>
             <columns>
-                <TableColumn fx:id="tanggal" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Tanggal" />
-                <TableColumn fx:id="kode_transaksi" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Kode Transaksi" />
-                <TableColumn fx:id="kategori" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Kategori" />
-            <TableColumn fx:id="akun_keuangan" prefWidth="75.0" text="Akun Keuangan" />
-                <TableColumn fx:id="nama" prefWidth="152.0" style="-fx-alignment: CENTER;" text="Nama" />
-            <TableColumn fx:id="jumlah" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Jumlah" />
-            <TableColumn fx:id="keterangan" prefWidth="75.0" text="Keterangan" />
+                <TableColumn fx:id="kode" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Kode Akun" />
+                <TableColumn fx:id="nama" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Nama Akun" />
+            <TableColumn fx:id="keterangan" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Keterangan" />
             </columns>
             <opaqueInsets>
                 <Insets bottom="10.0" left="10.0" right="10.0" />
