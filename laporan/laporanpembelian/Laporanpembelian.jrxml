@@ -82,7 +82,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="31" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="311" height="25" uuid="678783d3-b0e2-448c-92fe-05c5bdfdc355"/>
 				<textElement>
@@ -93,44 +93,47 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="24">
+		<band height="29">
 			<staticText>
-				<reportElement x="0" y="0" width="63" height="20" uuid="bf511fe7-ebec-4ead-b3c4-61c9d9f3b165"/>
+				<reportElement x="0" y="5" width="63" height="20" uuid="bf511fe7-ebec-4ead-b3c4-61c9d9f3b165"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Tanggal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="63" y="0" width="95" height="20" uuid="91b18027-9b7f-474b-9898-21c2fd78a061"/>
+				<reportElement x="63" y="5" width="95" height="20" uuid="91b18027-9b7f-474b-9898-21c2fd78a061"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Kode Transaksi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="158" y="0" width="79" height="20" uuid="5bff6cd7-2847-4319-829f-f3bb3adbea90"/>
+				<reportElement x="158" y="5" width="79" height="20" uuid="5bff6cd7-2847-4319-829f-f3bb3adbea90"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Kode Bahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="237" y="0" width="114" height="20" uuid="9a2936b7-9243-483f-8b28-d3fcda4a7a2a"/>
+				<reportElement x="237" y="5" width="114" height="20" uuid="9a2936b7-9243-483f-8b28-d3fcda4a7a2a"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama Bahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="0" width="56" height="20" uuid="e6151b64-3a0b-4917-8b92-1fd1cf4ca385"/>
+				<reportElement x="351" y="5" width="56" height="20" uuid="e6151b64-3a0b-4917-8b92-1fd1cf4ca385"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[G/ml]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="407" y="0" width="67" height="20" uuid="44c7b168-4928-4018-87bd-4ac871835f3a"/>
+				<reportElement x="407" y="5" width="67" height="20" uuid="44c7b168-4928-4018-87bd-4ac871835f3a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[KG / L]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="474" y="0" width="79" height="20" uuid="a525817e-8e8b-4c62-8866-6256bf508293"/>
+				<reportElement x="474" y="5" width="79" height="20" uuid="a525817e-8e8b-4c62-8866-6256bf508293"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Harga]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="22" width="555" height="1" uuid="dec3f9f6-dd56-46cd-8c1f-c8bd3f8b34ab"/>
+				<reportElement x="0" y="26" width="555" height="1" uuid="dec3f9f6-dd56-46cd-8c1f-c8bd3f8b34ab"/>
+			</line>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="271b63dd-ef90-42ec-99f2-4ecd954b6f1c"/>
 			</line>
 		</band>
 	</columnHeader>

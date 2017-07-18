@@ -211,9 +211,10 @@ public class CatatanController implements Initializable {
                     + "akun_keuangan.nama_akun_keuangan,akun_keuangan.kode_akun_keuangan FROM catatan "
                     + "INNER JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan "
                     + "INNER JOIN akun_keuangan ON catatan.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan"
-                    + " ORDER BY tanggal DESC LIMIT ?";
+                    + " WHERE catatan.kode_user=? ORDER BY tanggal DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            pre.setInt(1, Integer.parseInt(tlimit.getText()));
+            pre.setString(1, sh.getKode_user());
+            pre.setInt(2, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
 
@@ -304,8 +305,8 @@ public class CatatanController implements Initializable {
                     pregetno.close();
                     resno.close();
                     ch.close();
-                    String sql = "INSERT INTO catatan(kode,kode_perkiraan,kode_akun_keuangan,tanggal,nama,jumlah,keterangan) "
-                            + "VALUES(?,?,?,?::date,?,?,?)";
+                    String sql = "INSERT INTO catatan(kode,kode_perkiraan,kode_akun_keuangan,tanggal,nama,jumlah,keterangan,kode_user) "
+                            + "VALUES(?,?,?,?::date,?,?,?,?)";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, kode_transaksi);
                     pre.setString(2, ckategori.getEditor().getText().split("-")[0]);
@@ -314,6 +315,7 @@ public class CatatanController implements Initializable {
                     pre.setString(5, tnama.getText());
                     pre.setDouble(6, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
                     pre.setString(7, tketerangan.getText());
+                    pre.setString(8, sh.getKode_user());
                     pre.executeUpdate();
                     pre.close();
                     ch.close();
@@ -430,18 +432,19 @@ public class CatatanController implements Initializable {
                     + "akun_keuangan.nama_akun_keuangan,akun_keuangan.kode_akun_keuangan FROM catatan "
                     + "INNER JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan "
                     + "INNER JOIN akun_keuangan ON catatan.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan "
-                    + "WHERE tanggal::character varying ILIKE ? OR "
+                    + "WHERE (tanggal::character varying ILIKE ? OR "
                     + "kode ILIKE ? OR "
                     + "nama ILIKE ? OR "
                     + "jumlah::character varying ILIKE ? OR "
                     + "nama_perkiraan ILIKE ? OR "
                     + "nama_akun_keuangan ILIKE ? OR "
-                    + "keterangan ILIKE ? ORDER BY tanggal DESC LIMIT ?";
+                    + "keterangan ILIKE ?) AND (kode_user=?) ORDER BY tanggal DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             for (int i = 0; i < 7; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
             }
-            pre.setInt(8, Integer.parseInt(tlimit.getText()));
+            pre.setString(8, sh.getKode_user());
+            pre.setInt(9, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String skode_transaksi = res.getString("kode");
@@ -461,7 +464,7 @@ public class CatatanController implements Initializable {
             ch.close();
             tanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
             kode_transaksi.setCellValueFactory(new PropertyValueFactory<>("kode"));
-            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
+            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_perkiraan"));
             akun_keuangan.setCellValueFactory(new PropertyValueFactory<>("nama_akun_keuangan"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             jumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));

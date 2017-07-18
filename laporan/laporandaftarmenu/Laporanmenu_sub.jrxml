@@ -20,14 +20,14 @@
 			<staticText>
 				<reportElement x="26" y="0" width="174" height="20" uuid="6a5acc0b-0e7a-4f78-bce0-8ddcb2112d01"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Menu]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="200" y="0" width="55" height="20" uuid="9ceff51a-98b6-4775-9170-d7aeb7438833"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Harga]]></text>
 			</staticText>
@@ -37,7 +37,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="26" height="20" uuid="dfad7cf3-651b-42f4-a503-f63caf93f52d"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qty]]></text>
 			</staticText>
@@ -48,7 +48,7 @@
 			<textField pattern="Rp #,##0" isBlankWhenNull="true">
 				<reportElement x="200" y="0" width="55" height="20" uuid="9a3d7071-ec98-4837-a01f-8e36c0e83762"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
 			</textField>
@@ -58,7 +58,7 @@
 			<textField>
 				<reportElement x="26" y="0" width="174" height="20" uuid="fe164af4-d204-4375-8daf-03b52935d269"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>

@@ -37,7 +37,7 @@
 			<textField>
 				<reportElement mode="Opaque" x="0" y="7" width="262" height="20" forecolor="#6699FF" backcolor="#CCCCCC" uuid="5f6c903d-bbfa-4043-a7af-9cf82de9145f"/>
 				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kategori}]]></textFieldExpression>
 			</textField>
@@ -47,7 +47,7 @@
 					<subreportParameterExpression><![CDATA[$F{kategori}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Laporanmenu_sub.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "laporandaftarmenu/Laporanmenu_sub.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

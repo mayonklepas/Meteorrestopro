@@ -38,7 +38,6 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -54,8 +53,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JRViewer;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * FXML Controller class
@@ -145,7 +142,7 @@ public class LaporanController implements Initializable {
                         } else {
 
                         }
-                    }else if (res.get().equals("Pembelian")) {
+                    } else if (res.get().equals("Pembelian")) {
                         if (oh.konfirmasi("Hapus") == true) {
                             try {
                                 String sql = "DELETE FROM pembelian;";
@@ -162,7 +159,7 @@ public class LaporanController implements Initializable {
                         } else {
 
                         }
-                    }else if (res.get().equals("Catatan")) {
+                    } else if (res.get().equals("Catatan")) {
                         if (oh.konfirmasi("Hapus") == true) {
                             try {
                                 String sql = "DELETE FROM catatan;";
@@ -204,11 +201,13 @@ public class LaporanController implements Initializable {
 
     private void loadkategori() {
         ObservableList<String> olscombo = FXCollections.observableArrayList();
-        olscombo.add("Laporan Harian");
+        olscombo.add("Laporan Penjualan Harian Pertransaksi");
+        olscombo.add("Laporan Penjualan Harian Perakun Keuangan");
+        olscombo.add("Laporan Penjualan Harian Perkasir");
         olscombo.add("Laporan Harian Permenu");
-        olscombo.add("Laporan Periodik Permenu");
+        olscombo.add("Laporan Periodik Penjualan Menu");
         olscombo.add("Laporan Periodik Pembelian");
-        olscombo.add("Laporan Periodik Catatan Pengeluaran dan Pendapatan");
+        olscombo.add("Laporan Periodik Catatan");
         olscombo.add("Laporan Periodik Rekap Usaha");
         olscombo.add("Daftar Menu");
         olscombo.add("Laporan Stock Bahan");
@@ -228,20 +227,18 @@ public class LaporanController implements Initializable {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(true);
-                    tfilter.setDisable(false);
-                    tfilter.requestFocus();
+                    tfilter.setDisable(true);
                 } else if (newValue.intValue() == 2) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
-                    dke.setDisable(false);
-                    dke.setValue(LocalDate.now());
+                    dke.setDisable(true);
                     tfilter.setDisable(true);
                 } else if (newValue.intValue() == 3) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
-                    dke.setDisable(false);
-                    dke.setValue(LocalDate.now());
-                    tfilter.setDisable(true);
+                    dke.setDisable(true);
+                    tfilter.setDisable(false);
+                    tfilter.requestFocus();
                 } else if (newValue.intValue() == 4) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
@@ -249,6 +246,18 @@ public class LaporanController implements Initializable {
                     dke.setValue(LocalDate.now());
                     tfilter.setDisable(true);
                 } else if (newValue.intValue() == 5) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                } else if (newValue.intValue() == 6) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                } else if (newValue.intValue() == 7) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
@@ -292,7 +301,7 @@ public class LaporanController implements Initializable {
                             hm.put("header", info[0]);
                             hm.put("tanggal", new Date().from(dari));
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
-                            String path = "laporan/laporanharianperkasir/Laporanpenjualanharianmaster.jasper";
+                            String path = "laporan/laporanharianpertransaksi/Laporanpenjualanharianmaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -317,6 +326,73 @@ public class LaporanController implements Initializable {
                             oh.error(ex);
                         }
                     } else if (i == 1) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(3);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal", new Date().from(dari));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/laporanharianperakunkeuangan/Laporanpenjualanharianmaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    } else if (i == 2) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(3);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal", new Date().from(dari));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/laporanharianperkasir/Laporanpenjualanharianmaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    else if (i == 3) {
                         if (tfilter.getText().equals("")) {
                             oh.gagal("Maaf anda belum mengisi kata kunci");
                         } else {
@@ -351,7 +427,7 @@ public class LaporanController implements Initializable {
                                 oh.error(ex);
                             }
                         }
-                    } else if (i == 2) {
+                    } else if (i == 4) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -384,7 +460,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 3) {
+                    } else if (i == 5) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -416,7 +492,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 4) {
+                    } else if (i == 6) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -449,7 +525,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 5) {
+                    } else if (i == 7) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
@@ -481,7 +557,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 6) {
+                    } else if (i == 8) {
                         try {
 
                             HashMap hm = new HashMap(2);
@@ -511,7 +587,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 7) {
+                    } else if (i == 9) {
                         try {
 
                             HashMap hm = new HashMap(1);

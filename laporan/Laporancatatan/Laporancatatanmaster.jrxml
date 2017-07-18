@@ -67,12 +67,12 @@
 			<textField isBlankWhenNull="false">
 				<reportElement mode="Opaque" x="0" y="0" width="555" height="25" forecolor="#6699FF" backcolor="#CCCCCC" uuid="5343cfda-c26b-4b91-80d3-63d91424cf20"/>
 				<textElement verticalAlignment="Middle" markup="none">
-					<font size="14" isBold="true" isItalic="false" isStrikeThrough="false"/>
+					<font size="10" isBold="true" isItalic="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kategori_perkiraan}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="28" width="555" height="50" uuid="4af38cbe-a600-4b18-8876-df3aa3151b5b"/>
+				<reportElement x="0" y="27" width="555" height="50" uuid="4af38cbe-a600-4b18-8876-df3aa3151b5b"/>
 				<subreportParameter name="tanggal_sampai">
 					<subreportParameterExpression><![CDATA[$P{tanggal_sampai}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -83,7 +83,7 @@
 					<subreportParameterExpression><![CDATA[$P{tanggal_dari}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Laporancatatansub.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "laporancatatan/Laporancatatansub.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

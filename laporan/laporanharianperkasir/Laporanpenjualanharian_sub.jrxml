@@ -87,7 +87,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="70" splitType="Stretch">
+		<band height="99" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="29" width="555" height="37" uuid="7641f389-f334-4e93-b04f-737f52dc1152"/>
 				<subreportParameter name="kode_transaksi">

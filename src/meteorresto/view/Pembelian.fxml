@@ -12,7 +12,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="556.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.PembelianController">
+<AnchorPane id="AnchorPane" prefHeight="617.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.PembelianController">
     <children>
         <AnchorPane fx:id="header" layoutX="8.0" layoutY="101.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -58,6 +58,12 @@
                </font>
             </Label>
             <DatePicker fx:id="dtanggal" prefHeight="25.0" prefWidth="295.0" />
+            <Label text="Akun Keuangan">
+               <font>
+                  <Font name="Segoe UI" size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cakunuang" editable="true" prefHeight="25.0" prefWidth="305.0" />
             <Label text="Kode Bahan">
                <font>
                   <Font name="Segoe UI" size="15.0" />
@@ -152,6 +158,7 @@
             <columns>
                 <TableColumn fx:id="tanggal" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Tanggal" />
                 <TableColumn fx:id="kode_transaksi" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Kode Transaksi" />
+            <TableColumn fx:id="akun_keuangan" prefWidth="75.0" text="Akun Keuangan" />
                 <TableColumn fx:id="kode_bahan" prefWidth="152.0" style="-fx-alignment: CENTER;" text="Kode Bahan" />
                 <TableColumn fx:id="nama_bahan" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Nama Bahan" />
             <TableColumn fx:id="jumlah_total" prefWidth="124.0" style="-fx-alignment: CENTER;" text="Jumlah Total (g / ml)" />
