@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanpermenu_sub" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d3ffe1b6-dc7d-4093-b96b-726fd8946e1f">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="233"/>
+	<property name="ireport.x" value="228"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal_dari" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -43,7 +43,7 @@ menu m ON t.kode_menu=m.kode WHERE t.status=1 AND t.tanggal::date >=$P{tanggal_d
 			<staticText>
 				<reportElement x="443" y="0" width="109" height="20" uuid="36365f50-c6e4-4bc6-89e6-7b71c3b27979"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Total Pendapatan]]></text>
+				<text><![CDATA[Total Penjualan]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="21" width="555" height="1" uuid="374ce8f6-e8bb-4e0e-b609-9059d8ade67b"/>

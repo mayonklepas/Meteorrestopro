@@ -184,7 +184,7 @@ public class PembelianController implements Initializable {
         table.getItems().clear();
         try {
             String sql = "SELECT tanggal,pembelian.kode_akun_keuangan,akun_keuangan.nama_akun_keuangan,"
-                    + "kode_transaksi,kode_bahan,nama,jumlah,(jumlah / 100) AS jumlahkg,harga "
+                    + "kode_transaksi,kode_bahan,nama,jumlah,(jumlah / 1000) AS jumlahkg,harga "
                     + "FROM pembelian INNER JOIN akun_keuangan "
                     + "ON pembelian.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan "
                     + "WHERE kode_user = ? ORDER BY tanggal DESC LIMIT ?";

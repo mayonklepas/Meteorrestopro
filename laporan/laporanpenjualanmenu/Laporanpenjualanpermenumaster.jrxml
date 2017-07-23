@@ -78,7 +78,7 @@
 					<subreportParameterExpression><![CDATA[$P{tanggal_dari}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Laporanpenjualanpermenu_sub.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "laporanpenjualanmenu/Laporanpenjualanpermenu_sub.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
 				<reportElement mode="Opaque" x="0" y="8" width="555" height="20" forecolor="#6699FF" backcolor="#CCCCCC" uuid="db25b309-aab7-4e3a-859f-7d678bf3a1da"/>

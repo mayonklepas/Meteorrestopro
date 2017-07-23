@@ -6,6 +6,7 @@
 package meteorresto.controller;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,8 +40,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import meteorresto.helper.Connectionhelper;
+import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * FXML Controller class
@@ -72,6 +80,8 @@ public class BayarController implements Initializable {
     ObservableList<Entitykeuangan> datakeuangan = FXCollections.observableArrayList();
     @FXML
     private Button bcl;
+    FIlehelper fh = new FIlehelper();
+    public static String kode_transaksi,kategorimeja,namameja;
 
     /**
      * Initializes the controller class.
@@ -100,11 +110,39 @@ public class BayarController implements Initializable {
 
     }
 
-    private EventHandler actionmeja(int y) {
+    private EventHandler actionbayar(int y) {
         EventHandler evt = new EventHandler() {
             @Override
             public void handle(Event event) {
                 if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
+                    try {
+                        String[] info = fh.getinfo().split(";");
+                        HashMap hash = new HashMap(11);
+                        hash.put("kode_meja", sh.getKode_meja());
+                        hash.put("slot", sh.getSlot());
+                        hash.put("kode_kasir", sh.getKode_user());
+                        hash.put("nama_kasir", sh.getUsername());
+                        hash.put("kategori_meja", kategorimeja);
+                        hash.put("nama_meja", namameja);
+                        hash.put("perusahaan", info[0]);
+                        hash.put("alamat", info[1]);
+                        hash.put("nohp", info[3]);
+                        hash.put("kode_transaksi", kode_transaksi);
+                        double jumlahuang=0;
+                        if(ljumlahuang.getText().equals("0")||ljumlahuang.getText().equals("")){
+                            jumlahuang=total_belanja;
+                        }else{
+                            jumlahuang=Double.parseDouble(ljumlahuang.getText());
+                        }
+                        hash.put("uang",jumlahuang);
+                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir2.jasper"));
+                        JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                        JasperPrintManager.printReport(jp, false);
+                        ch.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        oh.error(e);
+                    }
                     rawclearpembayaran(datakeuangan.get(y).kode_akun_keuangan);
                     Node node = (Node) event.getSource();
                     Stage st = (Stage) node.getScene().getWindow();
@@ -144,7 +182,7 @@ public class BayarController implements Initializable {
                 bt.setContentDisplay(ContentDisplay.TOP);
                 btlist.add(bt);
                 btlist.get(i).setPadding(new Insets(3));
-                btlist.get(i).setOnAction(actionmeja(y));
+                btlist.get(i).setOnAction(actionbayar(y));
                 btlist.get(i).setId("button-meja");
             }
             fpakunuang.getChildren().addAll(btlist);
@@ -158,7 +196,7 @@ public class BayarController implements Initializable {
     }
 
     private void loadtotaluang() {
-        total_belanja = sh.getTotal_bayar() + (sh.getTotal_bayar() * sh.getTax() / 100);
+        total_belanja = sh.getTotal_bayar();
         ltotal.setText("Rp " + nf.format(total_belanja));
     }
 

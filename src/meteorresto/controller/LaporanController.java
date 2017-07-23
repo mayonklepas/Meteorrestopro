@@ -201,14 +201,14 @@ public class LaporanController implements Initializable {
 
     private void loadkategori() {
         ObservableList<String> olscombo = FXCollections.observableArrayList();
-        olscombo.add("Laporan Penjualan Harian Pertransaksi");
-        olscombo.add("Laporan Penjualan Harian Perakun Keuangan");
-        olscombo.add("Laporan Penjualan Harian Perkasir");
+        olscombo.add("Laporan Harian Penjualan Pertransaksi");
+        olscombo.add("Laporan Harian Penjualan Perakun Keuangan");
+        olscombo.add("Laporan Harian Penjualan Perkasir");
         olscombo.add("Laporan Harian Permenu");
         olscombo.add("Laporan Periodik Penjualan Menu");
         olscombo.add("Laporan Periodik Pembelian");
         olscombo.add("Laporan Periodik Catatan");
-        olscombo.add("Laporan Periodik Rekap Usaha");
+        olscombo.add("Laporan Periodik Penjualan");
         olscombo.add("Daftar Menu");
         olscombo.add("Laporan Stock Bahan");
         ckategori.setItems(olscombo);
@@ -402,7 +402,7 @@ public class LaporanController implements Initializable {
                                 hm.put("header", info[0]);
                                 hm.put("tanggal", new Date().from(dari));
                                 hm.put("key", "%" + tfilter.getText() + "%");
-                                String path = "laporan/Laporanharianpermenu.jasper";
+                                String path = "laporan/laporanmenuharian/Laporanharianpermenu.jasper";
                                 loadrepot lr = new loadrepot(path, hm);
                                 Thread th = new Thread(lr);
                                 th.setDaemon(true);
@@ -436,7 +436,7 @@ public class LaporanController implements Initializable {
                             hm.put("tanggal_dari", new Date().from(dari));
                             hm.put("tanggal_sampai", new Date().from(ke));
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
-                            String path = "laporan/Laporanpenjualanpermenumaster.jasper";
+                            String path = "laporan/laporanpenjualanmenu/Laporanpenjualanpermenumaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -468,7 +468,7 @@ public class LaporanController implements Initializable {
                             hm.put("header", info[0]);
                             hm.put("tanggal_dari", new Date().from(dari));
                             hm.put("tanggal_sampai", new Date().from(ke));
-                            String path = "laporan/Laporanpembelian.jasper";
+                            String path = "laporan/laporanpembelian/Laporanpembelian.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -501,7 +501,7 @@ public class LaporanController implements Initializable {
                             hm.put("tanggal_dari", new Date().from(dari));
                             hm.put("tanggal_sampai", new Date().from(ke));
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
-                            String path = "laporan/Laporancatatanmaster.jasper";
+                            String path = "laporan/laporancatatan/Laporancatatanmaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -532,8 +532,8 @@ public class LaporanController implements Initializable {
                             HashMap hm = new HashMap(3);
                             hm.put("header", info[0]);
                             hm.put("tanggal_dari", new Date().from(dari));
-                            hm.put("tanggal_sampai", new Date().from(ke));
-                            String path = "laporan/Laporanrekap.jasper";
+                            hm.put("tanggal_hingga", new Date().from(ke));
+                            String path = "laporan/laporanpenjualanbulanan/laporanpenjualanbulanan.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -563,7 +563,7 @@ public class LaporanController implements Initializable {
                             HashMap hm = new HashMap(2);
                             hm.put("header", info[0]);
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
-                            String path = "laporan/Laporanmenumaster.jasper";
+                            String path = "laporan/laporandaftarmenu/Laporanmenumaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);
@@ -592,7 +592,7 @@ public class LaporanController implements Initializable {
 
                             HashMap hm = new HashMap(1);
                             hm.put("header", info[0]);
-                            String path = "laporan/Laporanstockbahan.jasper";
+                            String path = "laporan/laporanstock/Laporanstockbahan.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);

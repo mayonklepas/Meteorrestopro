@@ -31,10 +31,12 @@ public class FIlehelper {
     File configstyle = new File("configstyle");
     File reg=new File("reg");
     File akunumum=new File("akunumum");
+    File diskon=new File("diskon");
 
     public FIlehelper() {
         if (!koneksi.exists() || !kategorimeja.exists() || !kategorimenu.exists()
-                || !dirimage.exists() || !slot.exists() || !info.exists() || !configstyle.exists() || !reg.exists() || 
+                || !dirimage.exists() || !slot.exists() || !info.exists() || 
+                !configstyle.exists() || !reg.exists() || !diskon.exists() ||
                 !akunumum.exists()) {
             try {
                 koneksi.createNewFile();
@@ -46,6 +48,7 @@ public class FIlehelper {
                 configstyle.createNewFile();
                 reg.createNewFile();
                 akunumum.createNewFile();
+                diskon.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -178,6 +181,27 @@ public class FIlehelper {
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(slot));
+            while ((line = br.readLine()) != null) {
+                data.append(line);
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FIlehelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data.toString();
+
+    }
+    
+    
+    public String getdiskon() {
+        StringBuilder data = new StringBuilder();
+        String line = "";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(diskon));
             while ((line = br.readLine()) != null) {
                 data.append(line);
             }

@@ -44,7 +44,7 @@
 				<textElement>
 					<font size="17"/>
 				</textElement>
-				<text><![CDATA[Laporan Penjualan Harian]]></text>
+				<text><![CDATA[Laporan Penjualan Harian Perakun Keuangan]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

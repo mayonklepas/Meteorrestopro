@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporanpenjualanhariannew_subreport" pageWidth="554" pageHeight="842" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9bddad5a-9531-485c-be60-7af3cae03183">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="tanggal" class="java.util.Date">
@@ -9,47 +9,65 @@
 	<parameter name="kode_transaksi" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="diskon_transaksi" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pajak" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT m.nama,t.jumlah,(t.jumlah*t.harga_masing) as total FROM transaksi t LEFT JOIN 
+		<![CDATA[SELECT m.nama,t.jumlah,diskon,(t.jumlah*t.harga_masing - (diskon/100*(t.jumlah*t.harga_masing))) as total FROM transaksi t LEFT JOIN 
 menu m ON t.kode_menu=m.kode WHERE status=1 AND tanggal::date=$P{tanggal} AND t.kode_transaksi=$P{kode_transaksi} ORDER BY t.kode_transaksi]]>
 	</queryString>
 	<field name="nama" class="java.lang.String"/>
 	<field name="jumlah" class="java.lang.Integer"/>
+	<field name="diskon" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
+	<variable name="total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
 		<band height="27" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="333" height="20" forecolor="#006633" backcolor="#99FF99" uuid="e413dbf8-79e5-426a-b11c-0d37e9fe2a2a"/>
+				<reportElement mode="Transparent" x="0" y="3" width="268" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="e413dbf8-79e5-426a-b11c-0d37e9fe2a2a"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama Menu]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="333" y="0" width="78" height="20" forecolor="#006633" backcolor="#99FF99" uuid="112cbe25-9a18-4f5b-b473-6a51ca6577b0"/>
+				<reportElement mode="Transparent" x="268" y="3" width="78" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="112cbe25-9a18-4f5b-b473-6a51ca6577b0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[jumlah]]></text>
+				<text><![CDATA[Jumlah]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="411" y="0" width="142" height="20" forecolor="#006633" backcolor="#99FF99" uuid="29ef59d3-a698-45c0-9ab7-6fff8c561193"/>
+				<reportElement mode="Transparent" x="411" y="3" width="142" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="29ef59d3-a698-45c0-9ab7-6fff8c561193"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Total ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="23" width="554" height="1" uuid="4fa8a6d0-fca4-461e-bcd2-e32fc2491947"/>
+				<reportElement x="0" y="24" width="554" height="1" uuid="4fa8a6d0-fca4-461e-bcd2-e32fc2491947"/>
 			</line>
+			<line>
+				<reportElement x="0" y="1" width="554" height="1" uuid="8aaeac21-0a0c-454d-8224-78dc57f535df"/>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="347" y="3" width="64" height="20" forecolor="#333333" backcolor="#FFFFFF" uuid="868bf331-34e2-4a61-894b-fee823656491"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Diskon %]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="24" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="333" height="20" uuid="a88a740e-accf-4381-8477-9946fab50c15"/>
+				<reportElement x="0" y="0" width="268" height="20" uuid="a88a740e-accf-4381-8477-9946fab50c15"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="333" y="0" width="78" height="20" uuid="2959fef8-db52-494b-814d-c425da32485f"/>
+				<reportElement x="268" y="0" width="78" height="20" uuid="2959fef8-db52-494b-814d-c425da32485f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
 			</textField>
@@ -64,6 +82,33 @@ menu m ON t.kode_menu=m.kode WHERE status=1 AND tanggal::date=$P{tanggal} AND t.
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
+			<textField pattern="###0">
+				<reportElement x="347" y="0" width="64" height="20" uuid="d96e13b1-bea3-4c06-b338-9179103061f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diskon}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="30">
+			<line>
+				<reportElement x="0" y="1" width="554" height="1" uuid="4bd40da1-f0ba-481d-80c1-a152b7aa5533"/>
+			</line>
+			<textField pattern="Rp #,##0">
+				<reportElement x="459" y="7" width="95" height="20" uuid="37137f26-7de5-4a40-901b-2673f75c2684"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{total_1}-($P{diskon_transaksi}/100*($V{total_1})))+
+($P{pajak}/100*($V{total_1}-($P{diskon_transaksi}/100*($V{total_1}))))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="256" y="7" width="203" height="20" uuid="dd75e9b6-58e0-4f9b-957f-b7326b8ad7ff"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Total termasuk diskon dan pajak :]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>

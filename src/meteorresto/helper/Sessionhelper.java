@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 public class Sessionhelper {
 
     public static String username, tipe, kode_user, kode_meja, slot;
-    public static int status_meja, tax, status_tax;
-    public static double total_bayar;
+    public static int status_meja,status_tax;
+    public static double total_bayar,tax;
     public static Stage st;
     Connectionhelper ch = new Connectionhelper();
 
@@ -30,7 +30,7 @@ public class Sessionhelper {
     }
 
     public Sessionhelper(String username, String tipe, String kode_user,
-            int status_meja, String kode_meja, double total_bayar, String slot, Stage st, int tax) {
+            int status_meja, String kode_meja, double total_bayar, String slot, Stage st, double tax) {
         this.username = username;
         this.tipe = tipe;
         this.kode_user = kode_user;
@@ -107,11 +107,11 @@ public class Sessionhelper {
         this.slot = slot;
     }
 
-    public int getTax() {
+    public double getTax() {
         return tax;
     }
 
-    public void setTax(int tax) {
+    public void setTax(double tax) {
         this.tax = tax;
     }
 

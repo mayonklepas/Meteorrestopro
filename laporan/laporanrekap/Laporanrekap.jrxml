@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="688a05dc-494e-4f25-8e99-75502e5ef88e">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="65"/>
-	<property name="ireport.y" value="336"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="header" class="java.lang.String"/>
 	<parameter name="tanggal_dari" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -14,18 +14,28 @@
 		<defaultValueExpression><![CDATA["D:\\Workspace\\Netbeans\\MeteorRestopro\\laporan\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT (SELECT SUM(harga_masing*jumlah) FROM transaksi WHERE  tanggal::date >= $P{tanggal_dari} AND tanggal::date <= $P{tanggal_sampai} AND status=1) AS penjualan,
+		<![CDATA[SELECT (select (SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))-
+(diskon_transaksi/100*( SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing))))))+
+(tax/100*(SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))-
+(diskon_transaksi/100*( SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))))))
+FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,tax ) AS penjualan ,
 
 (SELECT SUM(harga) FROM pembelian WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pembelian,
 
 (SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pendapatan' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pendapatan_lain,
 
-(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pengeluaran' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pengeluaran_lain]]>
+(SELECT SUM(jumlah) FROM catatan LEFT JOIN perkiraan ON catatan.kode_perkiraan=perkiraan.kode_perkiraan WHERE perkiraan.kategori_perkiraan = 'pengeluaran' AND tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}) AS pengeluaran_lain
+
+from transaksi t
+]]>
 	</queryString>
 	<field name="penjualan" class="java.lang.Double"/>
 	<field name="pembelian" class="java.lang.Double"/>
 	<field name="pendapatan_lain" class="java.lang.Double"/>
 	<field name="pengeluaran_lain" class="java.lang.Double"/>
+	<variable name="penjualan_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{penjualan}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -96,75 +106,11 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="98" splitType="Stretch">
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="4" width="370" height="20" uuid="56b9dbd1-25f6-4ee1-b3b1-3b6333589c4e"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{penjualan}!=null) ? $F{penjualan}: 0.00]]></textFieldExpression>
+		<band height="50">
+			<textField>
+				<reportElement x="35" y="25" width="100" height="20" uuid="d2c6f249-8391-42b4-babb-542f870e2797"/>
+				<textFieldExpression><![CDATA[$F{penjualan}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="27" width="370" height="20" uuid="4f4975ce-b9d8-4aec-ad20-4135a47fa5e0"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{pembelian}!=null) ? $F{pembelian}: 0.00]]></textFieldExpression>
-			</textField>
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="50" width="370" height="20" uuid="695be9df-99c7-4ea1-af9f-2c4a86c33e9c"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{pendapatan_lain}!=null) ? $F{pendapatan_lain}: 0.00]]></textFieldExpression>
-			</textField>
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="73" width="370" height="20" uuid="64703373-d2f5-4e61-a552-0ebf4a71c0c5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{pengeluaran_lain}!=null) ? $F{pengeluaran_lain}: 0.00]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="4" width="185" height="20" uuid="a481d6c8-8fec-40c4-9e17-c24b2ad2ab9f"/>
-				<textElement verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<text><![CDATA[Total Pendapatan Penjualan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="27" width="185" height="20" uuid="75a3e4e1-cddd-4071-b257-c9cec5c55567"/>
-				<textElement verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<text><![CDATA[Total Pengeluaran Pembelian]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="50" width="185" height="20" uuid="58010e7d-1e36-49b6-af15-96c37bc121f8"/>
-				<textElement verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<text><![CDATA[Total Pendapatan Lain]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="73" width="185" height="20" uuid="b98af9f8-6551-4686-a192-558f85cf9cc5"/>
-				<textElement verticalAlignment="Middle">
-					<font size="11"/>
-				</textElement>
-				<text><![CDATA[Total Pengeluaran Lain]]></text>
-			</staticText>
-			<line>
-				<reportElement x="0" y="25" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="52ea7b0f-4627-42d3-abec-b05929b9ea0a"/>
-			</line>
-			<line>
-				<reportElement x="0" y="48" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="e11c43d1-73c0-4e5d-9f33-ee0dc002d35f"/>
-			</line>
-			<line>
-				<reportElement x="0" y="71" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="241113ce-6450-4208-8d61-50d8fbc8e278"/>
-			</line>
-			<line>
-				<reportElement x="0" y="93" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="7f148c3e-c2e7-46f5-98fe-8ae8666f99e0"/>
-			</line>
 		</band>
 	</detail>
 	<pageFooter>
@@ -191,50 +137,118 @@
 	<summary>
 		<band height="292">
 			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="54" width="370" height="20" uuid="6a3b43f0-9d08-4426-9eb0-81f7411c01dd"/>
+				<reportElement x="185" y="154" width="370" height="20" uuid="6a3b43f0-9d08-4426-9eb0-81f7411c01dd"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[(($F{pembelian}!=null) ? $F{pembelian}: 0.00) + (($F{pengeluaran_lain}!=null) ? $F{pengeluaran_lain}: 0.00)]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="31" width="185" height="20" uuid="8443ed51-03f4-462c-97b1-3b1d3a40c344"/>
+				<reportElement x="0" y="131" width="185" height="20" uuid="8443ed51-03f4-462c-97b1-3b1d3a40c344"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Total Pendapatan Keseluruhan]]></text>
 			</staticText>
 			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="31" width="370" height="20" uuid="744bdc0e-b330-4498-bb8b-0604bb217d65"/>
+				<reportElement x="185" y="131" width="370" height="20" uuid="744bdc0e-b330-4498-bb8b-0604bb217d65"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[(($F{penjualan}!=null) ? $F{penjualan}: 0.00) + (($F{pendapatan_lain}!=null) ? $F{pendapatan_lain}: 0.00)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(($F{penjualan}!=null) ? $V{penjualan_1}: 0.00) + (($F{pendapatan_lain}!=null) ? $F{pendapatan_lain}: 0.00)]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="54" width="185" height="20" uuid="53fb11e0-5425-4b7e-b91b-c520c5ea5bf8"/>
+				<reportElement x="0" y="154" width="185" height="20" uuid="53fb11e0-5425-4b7e-b91b-c520c5ea5bf8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Total Pengeluaran Keseluruhan]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="75" width="555" height="1" uuid="da00b0bc-646f-4bd5-a3c1-584766911347"/>
+				<reportElement x="0" y="175" width="555" height="1" uuid="da00b0bc-646f-4bd5-a3c1-584766911347"/>
 			</line>
 			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="185" y="76" width="370" height="20" uuid="21ef2f70-36bd-41e9-8340-c3f50fe0a008"/>
+				<reportElement x="185" y="176" width="370" height="20" uuid="21ef2f70-36bd-41e9-8340-c3f50fe0a008"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[((($F{penjualan}!=null) ? $F{penjualan}: 0.00) + (($F{pendapatan_lain}!=null) ? $F{pendapatan_lain}: 0.00)) - ((($F{pengeluaran_lain}!=null) ? $F{pengeluaran_lain}: 0.00) + (($F{pembelian}!=null) ? $F{pembelian}: 0.00))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="76" width="185" height="20" uuid="01b7daf4-09b2-44ed-b382-1e5498b15995"/>
+				<reportElement x="0" y="176" width="185" height="20" uuid="01b7daf4-09b2-44ed-b382-1e5498b15995"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Laba / Rugi]]></text>
 			</staticText>
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
+				<reportElement x="185" y="16" width="370" height="20" uuid="56b9dbd1-25f6-4ee1-b3b1-3b6333589c4e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{penjualan_1}!=null) ? $V{penjualan_1}: 0.00]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
+				<reportElement x="185" y="39" width="370" height="20" uuid="4f4975ce-b9d8-4aec-ad20-4135a47fa5e0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{pembelian}!=null) ? $F{pembelian}: 0.00]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
+				<reportElement x="185" y="62" width="370" height="20" uuid="695be9df-99c7-4ea1-af9f-2c4a86c33e9c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{pendapatan_lain}!=null) ? $F{pendapatan_lain}: 0.00]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
+				<reportElement x="185" y="85" width="370" height="20" uuid="64703373-d2f5-4e61-a552-0ebf4a71c0c5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{pengeluaran_lain}!=null) ? $F{pengeluaran_lain}: 0.00]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="16" width="185" height="20" uuid="a481d6c8-8fec-40c4-9e17-c24b2ad2ab9f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Total Pendapatan Penjualan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="39" width="185" height="20" uuid="75a3e4e1-cddd-4071-b257-c9cec5c55567"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Total Pengeluaran Pembelian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="62" width="185" height="20" uuid="58010e7d-1e36-49b6-af15-96c37bc121f8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Total Pendapatan Lain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="185" height="20" uuid="b98af9f8-6551-4686-a192-558f85cf9cc5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Total Pengeluaran Lain]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="37" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="52ea7b0f-4627-42d3-abec-b05929b9ea0a"/>
+			</line>
+			<line>
+				<reportElement x="0" y="60" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="e11c43d1-73c0-4e5d-9f33-ee0dc002d35f"/>
+			</line>
+			<line>
+				<reportElement x="0" y="83" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="241113ce-6450-4208-8d61-50d8fbc8e278"/>
+			</line>
+			<line>
+				<reportElement x="0" y="105" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="7f148c3e-c2e7-46f5-98fe-8ae8666f99e0"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

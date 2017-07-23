@@ -45,7 +45,7 @@
 				<textElement>
 					<font size="17"/>
 				</textElement>
-				<text><![CDATA[Laporan Penjualan Harian]]></text>
+				<text><![CDATA[Laporan Penjualan Harian Perkasir]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -66,7 +66,7 @@
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="23" width="555" height="45" uuid="0a6934a2-347b-4bf0-9a09-bb8bd9571eb4"/>
+				<reportElement x="0" y="22" width="555" height="45" uuid="0a6934a2-347b-4bf0-9a09-bb8bd9571eb4"/>
 				<subreportParameter name="kode_user">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>

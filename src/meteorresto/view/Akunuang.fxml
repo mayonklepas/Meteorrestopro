@@ -16,7 +16,7 @@
     <children>
         <AnchorPane fx:id="header" layoutX="8.0" layoutY="101.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="191.0" text="DATA MEJA" textFill="WHITE">
+                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="347.0" text="DATA AKUN KEUANGAN" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="28.0" />
                     </font>

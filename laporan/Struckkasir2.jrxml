@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="120"/>
+	<property name="ireport.y" value="211"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -31,6 +31,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="kode_transaksi" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="uang" class="java.lang.Double">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -230,23 +233,23 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="74" splitType="Stretch">
+		<band height="218" splitType="Stretch">
 			<textField pattern="Rp #,##0">
 				<reportElement x="76" y="44" width="60" height="11" uuid="dea2aa62-7715-4a12-8e9b-e28932f76cbb"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))+(($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="44" width="66" height="11" uuid="7f47747a-88ec-4424-8e01-87366abdfb54"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Grand Total :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="60" width="136" height="12" uuid="f052d0f8-4797-4d6a-b8ec-732021597d38"/>
+				<reportElement x="0" y="82" width="136" height="12" uuid="f052d0f8-4797-4d6a-b8ec-732021597d38"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -295,7 +298,7 @@
 				<textFieldExpression><![CDATA[$F{diskon_transaksi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="128" y="22" width="8" height="11" uuid="1fc91277-2d48-46c0-aede-d18efbaacd88"/>
+				<reportElement x="128" y="11" width="8" height="11" uuid="1fc91277-2d48-46c0-aede-d18efbaacd88"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -316,11 +319,39 @@
 				<text><![CDATA[Pajak :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="11" width="8" height="11" uuid="90b7a7f8-7b86-4d7c-991b-fa9a04f1c561"/>
+				<reportElement x="128" y="22" width="8" height="11" uuid="90b7a7f8-7b86-4d7c-991b-fa9a04f1c561"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[%]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="76" y="55" width="60" height="11" uuid="a854335f-ed99-47e8-be77-f198c5b92228"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{uang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="55" width="28" height="11" uuid="197e2502-4367-45da-8ded-301929e966b5"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Uang :]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="76" y="66" width="60" height="11" uuid="8b8aa124-7bb7-469a-be3e-ecfe5f0da0cd"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{uang} - (($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))+(($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100))) ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="66" width="47" height="11" uuid="ebf3a61a-77f5-4e5c-8fcb-f372afa331f2"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kembalian :]]></text>
 			</staticText>
 		</band>
 	</summary>

@@ -16,7 +16,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,18 +36,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,22 +55,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.swing.JOptionPane;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * FXML Controller class
@@ -81,7 +74,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author user
  */
 public class TransaksiController implements Initializable {
-    
+
     @FXML
     FlowPane fpmeja;
     @FXML
@@ -122,9 +115,9 @@ public class TransaksiController implements Initializable {
     ObservableList<String> olsslot = FXCollections.observableArrayList();
     NumberFormat nf = NumberFormat.getInstance();
     String ids, kategorimeja, namameja, statusmeja;
-    int tax, status_tax;
-    String kode_transaksi;
-    double total_belanja = 0;
+    int status_tax = 0;
+    String kode_transaksi, diskon_transaksi;
+    double total_belanja = 0.0, tax = 0.0;
     File imgfile;
     FileInputStream fis;
     @FXML
@@ -148,6 +141,10 @@ public class TransaksiController implements Initializable {
     int pajak = Integer.parseInt(fh.getinfo().split(";")[5]);
     @FXML
     private TextField tcari;
+    @FXML
+    private TableColumn<Entity, String> diskon;
+    @FXML
+    private ComboBox<?> cdiskon_transaksi;
 
     /**
      * Initializes the controller class.
@@ -171,6 +168,8 @@ public class TransaksiController implements Initializable {
         cetakbill();
         popupmenu();
         batalkanpesanan();
+        gantidiskon();
+        loaddiskontransaksi();
         ctipemeja.getEditor().setDisable(true);
         ckategorimenu.getEditor().setDisable(true);
         cslot.getEditor().setDisable(true);
@@ -207,7 +206,16 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
+    private void loaddiskontransaksi() {
+        ObservableList olstransdiskon = FXCollections.observableArrayList();
+        String datatransdiskon = fh.getdiskon();
+        for (int i = 0; i < datatransdiskon.split(";").length; i++) {
+            olstransdiskon.add(datatransdiskon.split(";")[i]);
+        }
+        cdiskon_transaksi.setItems(olstransdiskon);
+    }
+
     private void kembali() {
         pkembali.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -225,7 +233,7 @@ public class TransaksiController implements Initializable {
                     FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Main.fxml"));
                     Parent root = fxl.load();
                     sh.getSt().getScene().setRoot(root);
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
                     oh.error(ex);
@@ -233,35 +241,35 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void loadcombomeja() {
-        
+
         String[] datameja = fh.getkategorimeja().split(";");
         for (int i = 0; i < datameja.length; i++) {
             olsmeja.add(datameja[i]);
         }
         ctipemeja.setItems(olsmeja);
     }
-    
+
     private void loadcombomenu() {
-        
+
         String[] datamenu = fh.getkategorimenu().split(";");
         for (int i = 0; i < datamenu.length; i++) {
             olsmenu.add(datamenu[i]);
         }
         ckategorimenu.setItems(olsmenu);
     }
-    
+
     private void loadcomboslot() {
-        
+
         String[] dataslot = fh.getslot().split(";");
         for (int i = 0; i < dataslot.length; i++) {
             olsslot.add(dataslot[i]);
         }
         cslot.setItems(olsslot);
-        
+
     }
-    
+
     public void setterkodetransaksi(String kode_meja, String slot) {
         try {
             String sqlgetno = "SELECT kode_transaksi FROM transaksi WHERE kode_meja=? AND slot=? AND status=0 LIMIT 1";
@@ -278,9 +286,9 @@ public class TransaksiController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     private EventHandler actionmeja(int y) {
         EventHandler evt = new EventHandler() {
             @Override
@@ -294,20 +302,22 @@ public class TransaksiController implements Initializable {
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
                 setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
+                diskon_transaksi = "0";
                 loaddatatransaksi();
-                
+                cdiskon_transaksi.getEditor().setText(diskon_transaksi);
+
             }
         };
-        
+
         return evt;
-        
+
     }
-    
+
     private EventHandler actionmejadetail(int y) {
         EventHandler evt = new EventHandler() {
             @Override
             public void handle(Event event) {
-                
+
                 loadmejadetailraw(ctipemeja.getEditor().getText());
                 btl.get(y).setId("button-meja-pilih");
                 sh.setKode_meja(datameja.get(y).kode);
@@ -317,15 +327,17 @@ public class TransaksiController implements Initializable {
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
                 setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
+                diskon_transaksi = "0";
                 loaddatatransaksi();
-                
+                cdiskon_transaksi.getEditor().setText(diskon_transaksi);
+
             }
         };
-        
+
         return evt;
-        
+
     }
-    
+
     private void loadmeja() {
         try {
             datameja.clear();
@@ -369,9 +381,9 @@ public class TransaksiController implements Initializable {
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void loadmejadetailraw(String key) {
         try {
             datameja.clear();
@@ -415,9 +427,9 @@ public class TransaksiController implements Initializable {
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void gantikategorimeja() {
         ctipemeja.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -426,7 +438,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void rawclear() {
         ctipemeja.getEditor().clear();
         sh.setKode_meja("");
@@ -437,8 +449,9 @@ public class TransaksiController implements Initializable {
         loaddatatransaksi();
         kategorimeja = "";
         namameja = "";
+        cdiskon_transaksi.getEditor().clear();
     }
-    
+
     private void rawclear2() {
         //ctipemeja.getEditor().clear();
         //sh.setKode_meja("");
@@ -450,7 +463,7 @@ public class TransaksiController implements Initializable {
         //kategorimeja = "";
         //namameja = "";
     }
-    
+
     private void clearmeja() {
         bclear.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -461,7 +474,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private EventHandler actionmenu(int y) {
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
             @Override
@@ -498,8 +511,8 @@ public class TransaksiController implements Initializable {
                             preupdate.close();
                             ch.close();
                         } else {
-                            String sqlinsert = "INSERT INTO transaksi(kode_menu,harga_masing,jumlah,kode_meja,slot,kode_user) "
-                                    + "VALUES (?,?,?,?,?,?);"
+                            String sqlinsert = "INSERT INTO transaksi(kode_menu,harga_masing,jumlah,kode_meja,slot,kode_user,diskon) "
+                                    + "VALUES (?,?,?,?,?,?,0);"
                                     + "UPDATE meja SET status=1 WHERE kode=?";
                             PreparedStatement pre = ch.connect().prepareStatement(sqlinsert);
                             pre.setString(1, datamenu.get(y).getKode());
@@ -513,7 +526,7 @@ public class TransaksiController implements Initializable {
                             pre.close();
                             ch.close();
                         }
-                        
+
                         PreparedStatement preconnect = ch.connect().prepareStatement("SELECT COUNT(*) as total FROM "
                                 + "pg_stat_activity");
                         ResultSet resconnect = preconnect.executeQuery();
@@ -529,16 +542,16 @@ public class TransaksiController implements Initializable {
                         ch.close();
                     }
                     loaddatatransaksi();
-                    
+
                 }
-                
+
             }
         };
-        
+
         return handler;
-        
+
     }
-    
+
     private void loadmenu() {
         try {
             datamenu.clear();
@@ -577,7 +590,7 @@ public class TransaksiController implements Initializable {
                 btlmenu.get(i).setPadding(new Insets(3));
                 btlmenu.get(i).setId("button-menu");
                 btlmenu.get(i).setOnAction(actionmenu(i));
-                
+
             }
             fpmenu.getChildren().addAll(btlmenu);
             fis.close();
@@ -587,9 +600,9 @@ public class TransaksiController implements Initializable {
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void loadmenudetailraw(String key) {
         try {
             datamenu.clear();
@@ -635,9 +648,9 @@ public class TransaksiController implements Initializable {
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void gantikategorimenu() {
         ckategorimenu.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -646,7 +659,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void loadcarimenuraw(String key) {
         try {
             datamenu.clear();
@@ -692,9 +705,9 @@ public class TransaksiController implements Initializable {
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void carimenu() {
         tcari.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -705,7 +718,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void clearmenu() {
         bclear2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -713,16 +726,17 @@ public class TransaksiController implements Initializable {
                 ckategorimenu.getSelectionModel().clearSelection();
                 tcari.clear();
                 loadmenu();
-                
+
             }
         });
     }
-    
+
     private void loaddatatransaksi() {
         olstable.clear();
         tableview.getItems().clear();
         try {
-            String sql = "SELECT t.id,m.nama,t.jumlah,t.tax,t.statustax,t.kode_transaksi,(t.harga_masing*t.jumlah) as harga FROM transaksi t INNER JOIN "
+            String sql = "SELECT t.id,m.nama,t.jumlah,t.diskon,t.tax,t.statustax,t.kode_transaksi,t.diskon_transaksi,"
+                    + "(t.harga_masing*t.jumlah-(diskon/100*(t.harga_masing*t.jumlah))) as harga FROM transaksi t INNER JOIN "
                     + "menu m on t.kode_menu=m.kode WHERE t.status=0 AND t.kode_meja=? AND t.slot=? ORDER BY t.id";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, sh.getKode_meja());
@@ -733,10 +747,12 @@ public class TransaksiController implements Initializable {
                 String nama = res.getString("nama");
                 String jumlah = res.getString("jumlah");
                 String harga = nf.format(res.getDouble("harga"));
-                tax = res.getInt("tax");
+                String diskonmenu = res.getString("diskon");
+                tax = res.getDouble("tax");
                 status_tax = res.getInt("statustax");
                 kode_transaksi = res.getString("kode_transaksi");
-                olstable.add(new Entity(id, nama, jumlah, harga));
+                diskon_transaksi=res.getString("diskon_transaksi");
+                olstable.add(new Entity(id, nama, jumlah, harga, diskonmenu));
             }
             pre.close();
             res.close();
@@ -745,21 +761,28 @@ public class TransaksiController implements Initializable {
             menu.setCellValueFactory(new PropertyValueFactory<>("menu"));
             qty.setCellValueFactory(new PropertyValueFactory<>("qty"));
             harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
+            diskon.setCellValueFactory(new PropertyValueFactory<>("diskon"));
             tableview.setItems(olstable);
             total_belanja = 0;
             for (int i = 0; i < olstable.size(); i++) {
                 total_belanja = total_belanja + Double.parseDouble(harga.getCellData(i).replaceAll("[.,]", ""));
             }
-            
+            double truediskon = 0;
+            if (diskon_transaksi == null || diskon_transaksi.equals("")) {
+                truediskon = 0;
+            } else {
+                truediskon = Double.parseDouble(diskon_transaksi);
+            }
+            total_belanja = total_belanja - (truediskon / 100 * (total_belanja)) + (tax / 100 * (total_belanja - (truediskon / 100 * (total_belanja))));
             ljumlah.setText("Rp. " + nf.format(total_belanja));
         } catch (SQLException ex) {
             Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ch.close();
         }
-        
+
     }
-    
+
     private void gantislot() {
         cslot.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -775,7 +798,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void select() {
         tableview.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -788,11 +811,11 @@ public class TransaksiController implements Initializable {
                     ids = olstable.get(i).id;
                     System.out.println(ids);
                 }
-                
+
             }
         });
     }
-    
+
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
@@ -810,10 +833,10 @@ public class TransaksiController implements Initializable {
             } finally {
                 ch.close();
             }
-            
+
         }
     }
-    
+
     private void hapus() {
         tableview.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -824,7 +847,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void pindahmeja() {
         bpindah.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -852,7 +875,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void simpan() {
         border.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -860,79 +883,56 @@ public class TransaksiController implements Initializable {
                 if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
                     oh.gagal("Maaf anda harus memilih meja dan slot lebih dulu");
                 } else {
-                    rawclear();
+                    try {
+                        double ddiskontrans = 0;
+                        if (cdiskon_transaksi.getEditor().getText().equals("")) {
+                            ddiskontrans = 0;
+                        } else {
+                            ddiskontrans = Double.parseDouble(cdiskon_transaksi.getEditor().getText());
+                        }
+                        if (kode_transaksi == null || kode_transaksi.equals("")) {
+                            String sql = "UPDATE transaksi SET kode_transaksi=?"
+                                    + "WHERE kode_meja=? AND slot=? AND kode_transaksi IS NULL ;"
+                                    + "UPDATE transaksi SET tax=?,statustax=1,diskon_transaksi=? WHERE kode_transaksi=?";
+                            PreparedStatement pre = ch.connect().prepareStatement(sql);
+                            String kode_transaksil = setnotransaksi();
+                            pre.setString(1, kode_transaksil);
+                            pre.setString(2, sh.getKode_meja());
+                            pre.setString(3, cslot.getEditor().getText());
+                            pre.setInt(4, pajak);
+                            pre.setDouble(5, ddiskontrans);
+                            pre.setString(6, kode_transaksil);
+                            pre.executeUpdate();
+                            pre.close();
+                            rawclear();
+                        } else {
+                            String sql = "UPDATE transaksi SET diskon_transaksi=? WHERE kode_transaksi=?";
+                            PreparedStatement pre = ch.connect().prepareStatement(sql);
+                            pre.setDouble(1, ddiskontrans);
+                            pre.setString(2, kode_transaksi);
+                            pre.executeUpdate();
+                            pre.close();
+                            rawclear();
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
+                        oh.error(ex);
+                    }
                 }
-                
+
             }
         });
     }
-    
+
     private void cetakbillraw() {
         if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("")) {
             oh.gagal("Maaf anda harus memilih meja dan slot");
         } else {
-            try {
-                if (kode_transaksi == null || kode_transaksi.equals("")) {
-                    ObservableList<Integer> olstax = FXCollections.observableArrayList();
-                    olstax.add(5);
-                    olstax.add(10);
-                    olstax.add(15);
-                    olstax.add(20);
-                    olstax.add(25);
-                    ChoiceDialog<Integer> cd = new ChoiceDialog<>(0, olstax);
-                    cd.setTitle("Konfirmasi");
-                    cd.setHeaderText("Pilih jumlah TAX yang dipakai");
-                    cd.setContentText("TAX : ");
-                    Optional<Integer> res = cd.showAndWait();
-                    if (res.isPresent()) {
-                        String sql = "UPDATE transaksi SET kode_transaksi=?"
-                                + "WHERE kode_meja=? AND slot=? AND kode_transaksi IS NULL ;"
-                                + "UPDATE transaksi SET tax=?,statustax=1 WHERE kode_transaksi=?";
-                        PreparedStatement pre = ch.connect().prepareStatement(sql);
-                        String kode_transaksil = setnotransaksi();
-                        pre.setString(1, kode_transaksil);
-                        pre.setString(2, sh.getKode_meja());
-                        pre.setString(3, cslot.getEditor().getText());
-                        pre.setInt(4, res.get());
-                        pre.setString(5, kode_transaksil);
-                        pre.executeUpdate();
-                        pre.close();
-                    }
-                }
-                /*else {
-                            String sql = "UPDATE transaksi SET tax=? WHERE kode_transaksi=?";
-                            PreparedStatement pre = ch.connect().prepareStatement(sql);
-                            pre.setInt(1, res.get());
-                            pre.setString(2, kode_transaksi);
-                            pre.executeUpdate();
-                            pre.close();
-                        }*/
-                String[] info = fh.getinfo().split(";");
-                HashMap hash = new HashMap(9);
-                hash.put("kode_meja", sh.getKode_meja());
-                hash.put("slot", cslot.getEditor().getText());
-                hash.put("kode_kasir", sh.getKode_user());
-                hash.put("nama_kasir", sh.getUsername());
-                hash.put("kategori_meja", kategorimeja);
-                hash.put("nama_meja", namameja);
-                hash.put("perusahaan", info[0]);
-                hash.put("alamat", info[1]);
-                hash.put("nohp", info[3]);
-                JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir.jasper"));
-                JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
-                JasperPrintManager.printReport(jp, false);
-                ch.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                oh.error(ex);
-            } finally {
-                ch.close();
-            }
-            
-            rawclear();
+
         }
+
     }
-    
+
     public String setnotransaksi() {
         String setkode = "";
         try {
@@ -960,7 +960,7 @@ public class TransaksiController implements Initializable {
         }
         return setkode;
     }
-    
+
     private void cetakbill() {
         bcetakbil.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -970,35 +970,50 @@ public class TransaksiController implements Initializable {
                     oh.gagal("Maaf anda harus memilih meja dan slot yang terisi lebih dulu");
                 } else {
                     try {
-                        if (kode_transaksi==null || kode_transaksi.equals("")) {
-                            /*ObservableList<Integer> olstax = FXCollections.observableArrayList();
-                            olstax.add(0);
-                            olstax.add(5);
-                            olstax.add(10);
-                            olstax.add(15);
-                            olstax.add(20);
-                            olstax.add(25);
-                            ChoiceDialog<Integer> cd = new ChoiceDialog<>(0, olstax);
+                        if (kode_transaksi == null || kode_transaksi.equals("")) {
+                            oh.gagal("Anda belum menyimpan data");
+
+                            /*ObservableList<String> olstransdiskon = FXCollections.observableArrayList();
+                            String datatransdiskon = fh.getdiskon();
+                            for (int i = 0; i < datatransdiskon.split(";").length; i++) {
+                                olstransdiskon.add(datatransdiskon.split(";")[i]);
+                            }
+                            ChoiceDialog<String> cd = new ChoiceDialog<>("0", olstransdiskon);
                             cd.setTitle("Konfirmasi");
-                            cd.setHeaderText("Pilih jumlah TAX yang dipakai");
-                            cd.setContentText("TAX : ");
-                            Optional<Integer> res = cd.showAndWait();
+                            cd.setHeaderText("Pilih jumlah diskon yang dipakai");
+                            cd.setContentText("Diskon : ");
+                            Optional<String> res = cd.showAndWait();
                             if (res.isPresent()) {
                                 String sql = "UPDATE transaksi SET kode_transaksi=?"
                                         + "WHERE kode_meja=? AND slot=? AND kode_transaksi IS NULL ;"
-                                        + "UPDATE transaksi SET tax=?,statustax=1 WHERE kode_transaksi=?";
+                                        + "UPDATE transaksi SET tax=?,statustax=1,diskon_transaksi=? WHERE kode_transaksi=?";
                                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                                 String kode_transaksil = setnotransaksi();
                                 pre.setString(1, kode_transaksil);
                                 pre.setString(2, sh.getKode_meja());
                                 pre.setString(3, cslot.getEditor().getText());
-                                pre.setInt(4, res.get());
-                                pre.setString(5, kode_transaksil);
+                                pre.setInt(4, pajak);
+                                pre.setDouble(5, Double.parseDouble(res.get()));
+                                pre.setString(6, kode_transaksil);
                                 pre.executeUpdate();
                                 pre.close();
-                            }*/
-                            
-                            String sql = "UPDATE transaksi SET kode_transaksi=?"
+
+                                String[] info = fh.getinfo().split(";");
+                                HashMap hash = new HashMap(9);
+                                hash.put("kode_meja", sh.getKode_meja());
+                                hash.put("slot", cslot.getEditor().getText());
+                                hash.put("kode_kasir", sh.getKode_user());
+                                hash.put("nama_kasir", sh.getUsername());
+                                hash.put("kategori_meja", kategorimeja);
+                                hash.put("nama_meja", namameja);
+                                hash.put("perusahaan", info[0]);
+                                hash.put("alamat", info[1]);
+                                hash.put("nohp", info[3]);
+                                JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir.jasper"));
+                                JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                                JasperPrintManager.printReport(jp, false);
+                                ch.close();
+                            }String sql = "UPDATE transaksi SET kode_transaksi=?"
                                     + "WHERE kode_meja=? AND slot=? AND kode_transaksi IS NULL ;"
                                     + "UPDATE transaksi SET tax=?,statustax=1 WHERE kode_transaksi=?";
                             PreparedStatement pre = ch.connect().prepareStatement(sql);
@@ -1010,36 +1025,53 @@ public class TransaksiController implements Initializable {
                             pre.setString(5, kode_transaksil);
                             pre.executeUpdate();
                             pre.close();
-                            
+                            String[] info = fh.getinfo().split(";");
+                            HashMap hash = new HashMap(9);
+                            hash.put("kode_meja", sh.getKode_meja());
+                            hash.put("slot", cslot.getEditor().getText());
+                            hash.put("kode_kasir", sh.getKode_user());
+                            hash.put("nama_kasir", sh.getUsername());
+                            hash.put("kategori_meja", kategorimeja);
+                            hash.put("nama_meja", namameja);
+                            hash.put("perusahaan", info[0]);
+                            hash.put("alamat", info[1]);
+                            hash.put("nohp", info[3]);
+                            JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir.jasper"));
+                            JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                            JasperPrintManager.printReport(jp, false);
+                            ch.close();*/
+                        } else {
+                            String[] info = fh.getinfo().split(";");
+                            HashMap hash = new HashMap(10);
+                            hash.put("kode_meja", sh.getKode_meja());
+                            hash.put("slot", cslot.getEditor().getText());
+                            hash.put("kode_kasir", sh.getKode_user());
+                            hash.put("nama_kasir", sh.getUsername());
+                            hash.put("kategori_meja", kategorimeja);
+                            hash.put("nama_meja", namameja);
+                            hash.put("perusahaan", info[0]);
+                            hash.put("alamat", info[1]);
+                            hash.put("nohp", info[3]);
+                            hash.put("kode_transaksi", kode_transaksi);
+                            JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir.jasper"));
+                            JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                            JasperPrintManager.printReport(jp, false);
+                            ch.close();
                         }
-                        String[] info = fh.getinfo().split(";");
-                        HashMap hash = new HashMap(9);
-                        hash.put("kode_meja", sh.getKode_meja());
-                        hash.put("slot", cslot.getEditor().getText());
-                        hash.put("kode_kasir", sh.getKode_user());
-                        hash.put("nama_kasir", sh.getUsername());
-                        hash.put("kategori_meja", kategorimeja);
-                        hash.put("nama_meja", namameja);
-                        hash.put("perusahaan", info[0]);
-                        hash.put("alamat", info[1]);
-                        hash.put("nohp", info[3]);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir.jasper"));
-                        JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
-                        JasperPrintManager.printReport(jp, false);
-                        ch.close();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         oh.error(ex);
                     } finally {
                         ch.close();
                     }
-                    
+
                     rawclear2();
+
                 }
             }
         });
     }
-    
+
     private void bayar() {
         bbayar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1047,12 +1079,15 @@ public class TransaksiController implements Initializable {
                 if (sh.getStatus_meja() == 0 || cslot.getEditor().getText().equals("") || statusmeja.equals("0")) {
                     oh.gagal("Maaf anda harus memilih meja dan slot yang terisi lebih dulu");
                 } else if (status_tax == 0) {
-                    oh.gagal("Maaf anda belum mencetak bil");
+                    oh.gagal("Maaf anda belum menyimpan pesanan");
                 } else {
                     try {
                         sh.setTotal_bayar(total_belanja);
                         sh.setSlot(cslot.getEditor().getText());
                         sh.setTax(tax);
+                        BayarController.kode_transaksi=kode_transaksi;
+                        BayarController.namameja=namameja;
+                        BayarController.kategorimeja=kategorimeja;
                         Stage st = new Stage(StageStyle.UTILITY);
                         st.setTitle("Pembayaran");
                         st.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/favico.png").toString()));
@@ -1072,7 +1107,7 @@ public class TransaksiController implements Initializable {
             }
         });
     }
-    
+
     private void popupmenu() {
         ContextMenu cm = new ContextMenu();
         MenuItem hapus = new MenuItem("Hapus");
@@ -1084,7 +1119,7 @@ public class TransaksiController implements Initializable {
                 rawhapus();
             }
         });
-        
+
         kurangi.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -1106,7 +1141,7 @@ public class TransaksiController implements Initializable {
                 }
             }
         });
-        
+
         tableview.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -1115,9 +1150,9 @@ public class TransaksiController implements Initializable {
                 }
             }
         });
-        
+
     }
-    
+
     private void batalkanpesanan() {
         bbatal.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1145,62 +1180,92 @@ public class TransaksiController implements Initializable {
                         }
                         rawclear();
                     }
-                    
+
                 }
-                
+
             }
         });
     }
-    
+
+    private void gantidiskon() {
+        ObservableList olsdiskon = FXCollections.observableArrayList();
+        String datadiskon = fh.getdiskon();
+        for (int i = 0; i < datadiskon.split(";").length; i++) {
+            olsdiskon.add(datadiskon.split(";")[i]);
+        }
+        diskon.setCellFactory(ComboBoxTableCell.forTableColumn(olsdiskon));
+        diskon.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Entity, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Entity, String> event) {
+                String sql = "UPDATE transaksi SET diskon=? WHERE id=?";
+                PreparedStatement pre;
+                try {
+                    pre = ch.connect().prepareStatement(sql);
+                    pre.setDouble(1, Double.parseDouble(event.getNewValue()));
+                    pre.setInt(2, Integer.parseInt(ids));
+                    pre.executeUpdate();
+                    pre.close();
+                    ch.close();
+                    loaddatatransaksi();
+                } catch (SQLException ex) {
+                    Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    ch.close();
+                }
+
+            }
+        });
+    }
+
     public class Entitymeja {
-        
+
         String kode, nama, kategori, status;
-        
+
         public Entitymeja(String kode, String nama, String kategori, String status) {
             this.kode = kode;
             this.nama = nama;
             this.kategori = kategori;
             this.status = status;
         }
-        
+
         public String getKode() {
             return kode;
         }
-        
+
         public void setKode(String kode) {
             this.kode = kode;
         }
-        
+
         public String getNama() {
             return nama;
         }
-        
+
         public void setNama(String nama) {
             this.nama = nama;
         }
-        
+
         public String getKategori() {
             return kategori;
         }
-        
+
         public void setKategori(String kategori) {
             this.kategori = kategori;
         }
-        
+
         public String getStatus() {
             return status;
         }
-        
+
         public void setStatus(String status) {
             this.status = status;
         }
-        
+
     }
-    
+
     public class Entitymenu {
-        
+
         String kode, nama, harga, karegori, gambar;
-        
+
         public Entitymenu(String kode, String nama, String harga, String karegori, String gambar) {
             this.kode = kode;
             this.nama = nama;
@@ -1208,92 +1273,101 @@ public class TransaksiController implements Initializable {
             this.karegori = karegori;
             this.gambar = gambar;
         }
-        
+
         public String getKode() {
             return kode;
         }
-        
+
         public void setKode(String kode) {
             this.kode = kode;
         }
-        
+
         public String getNama() {
             return nama;
         }
-        
+
         public void setNama(String nama) {
             this.nama = nama;
         }
-        
+
         public String getHarga() {
             return harga;
         }
-        
+
         public void setHarga(String harga) {
             this.harga = harga;
         }
-        
+
         public String getKaregori() {
             return karegori;
         }
-        
+
         public void setKaregori(String karegori) {
             this.karegori = karegori;
         }
-        
+
         public String getGambar() {
             return gambar;
         }
-        
+
         public void setGambar(String gambar) {
             this.gambar = gambar;
         }
-        
+
     }
-    
+
     public class Entity {
-        
-        String id, menu, qty, harga;
-        
-        public Entity(String id, String menu, String qty, String harga) {
+
+        String id, menu, qty, harga, diskon;
+
+        public Entity(String id, String menu, String qty, String harga, String diskon) {
             this.id = id;
             this.menu = menu;
             this.qty = qty;
             this.harga = harga;
+            this.diskon = diskon;
         }
-        
+
         public String getId() {
             return id;
         }
-        
+
         public void setId(String id) {
             this.id = id;
         }
-        
+
         public String getMenu() {
             return menu;
         }
-        
+
         public void setMenu(String menu) {
             this.menu = menu;
         }
-        
+
         public String getQty() {
             return qty;
         }
-        
+
         public void setQty(String qty) {
             this.qty = qty;
         }
-        
+
         public String getHarga() {
             return harga;
         }
-        
+
         public void setHarga(String harga) {
             this.harga = harga;
         }
-        
+
+        public String getDiskon() {
+            return diskon;
+        }
+
+        public void setDiskon(String diskon) {
+            this.diskon = diskon;
+        }
+
     }
-    
+
 }

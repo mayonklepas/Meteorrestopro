@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5720cf4f-eb96-48d2-8774-6f01d01c5906">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="header" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT kode,nama,jumlah,(jumlah/1000) AS jumlah_kg FROM bahan ORDER BY jumlah ASC]]>
@@ -37,30 +37,33 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="24" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="116" height="20" uuid="8c04bc86-d2ad-4aa3-9691-b04eff3f8a2a"/>
+				<reportElement x="0" y="5" width="116" height="20" uuid="8c04bc86-d2ad-4aa3-9691-b04eff3f8a2a"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Kode Bahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="116" y="0" width="231" height="20" uuid="ff700e54-c6f9-4129-9305-dab385ebddef"/>
+				<reportElement x="116" y="5" width="231" height="20" uuid="ff700e54-c6f9-4129-9305-dab385ebddef"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama Bahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="0" width="120" height="20" uuid="99cf8394-177c-4636-be1a-10dffd5d3f32"/>
+				<reportElement x="347" y="5" width="120" height="20" uuid="99cf8394-177c-4636-be1a-10dffd5d3f32"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Jumlah / gram / mililiter]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="21" width="555" height="1" uuid="8645a74a-f78c-40f3-bb66-0343eb7f2377"/>
+				<reportElement x="0" y="26" width="555" height="1" uuid="8645a74a-f78c-40f3-bb66-0343eb7f2377"/>
 			</line>
 			<staticText>
-				<reportElement x="467" y="1" width="88" height="20" uuid="493a6e24-4081-4bde-af2c-77fc3c6f9fb0"/>
+				<reportElement x="467" y="5" width="88" height="20" uuid="493a6e24-4081-4bde-af2c-77fc3c6f9fb0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Jumlah Kg / L]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="be57f3df-0d92-4a6c-a1d9-53e3328bcc35"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
@@ -81,7 +84,10 @@
 				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="21" width="555" height="1" forecolor="#CCCCCC" uuid="677a2a0b-b26f-4ac0-ab1a-9ed3a08f2f72"/>
+				<reportElement mode="Transparent" x="0" y="21" width="555" height="1" forecolor="#000000" uuid="677a2a0b-b26f-4ac0-ab1a-9ed3a08f2f72"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
 			</line>
 			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="467" y="1" width="88" height="20" uuid="240a9dcd-8a65-4cb5-a697-78f330416143"/>
