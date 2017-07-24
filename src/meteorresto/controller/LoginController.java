@@ -5,7 +5,9 @@
  */
 package meteorresto.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -61,7 +63,7 @@ public class LoginController implements Initializable {
     private AnchorPane footer;
     @FXML
     private ComboBox<String> cuser;
-    ObservableList<String> olscombo=FXCollections.observableArrayList();
+    ObservableList<String> olscombo = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -74,7 +76,7 @@ public class LoginController implements Initializable {
         blogin.setId("bc");
         header.setId("tema");
         footer.setId("tema");
-        
+
     }
 
     @FXML
@@ -135,23 +137,22 @@ public class LoginController implements Initializable {
         }
     }
 
-    
-    private void loadcombo(){
+    private void loadcombo() {
         try {
-            PreparedStatement pre=ch.connect().prepareStatement("SELECT username FROM akun");
-            ResultSet res=pre.executeQuery();
-            while (res.next()) {                
+            PreparedStatement pre = ch.connect().prepareStatement("SELECT username FROM akun");
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
                 olscombo.add(res.getString("username"));
             }
             cuser.setItems(olscombo);
             ch.close();
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             ch.close();
         }
     }
-    
+
     private void login() {
         blogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override

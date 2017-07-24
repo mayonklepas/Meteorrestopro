@@ -1,0 +1,394 @@
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+
+
+CREATE TABLE akun (
+    id character varying(10) NOT NULL,
+    nama character varying(50),
+    username character varying(15),
+    password character varying(15),
+    tipe character varying(10)
+);
+
+
+ALTER TABLE akun OWNER TO postgres;
+
+CREATE TABLE akun_keuangan (
+    kode_akun_keuangan character varying(15) NOT NULL,
+    nama_akun_keuangan character varying(100),
+    keterangan_akun_keuangan text
+);
+
+
+ALTER TABLE akun_keuangan OWNER TO postgres;
+
+
+CREATE TABLE bahan (
+    kode character varying(10) NOT NULL,
+    nama character varying(50),
+    jumlah double precision
+);
+
+
+ALTER TABLE bahan OWNER TO postgres;
+
+
+CREATE TABLE catatan (
+    kode character varying(15) NOT NULL,
+    kode_perkiraan character varying(15),
+    tanggal date,
+    nama character varying(100),
+    keterangan text,
+    jumlah double precision,
+    kode_akun_keuangan character varying(15),
+    kode_user character varying(15)
+);
+
+
+ALTER TABLE catatan OWNER TO postgres;
+
+CREATE TABLE kategori_meja (
+    kode_kategori_meja character varying(10),
+    nama_kategori_meja character varying(30)
+);
+
+
+ALTER TABLE kategori_meja OWNER TO postgres;
+
+CREATE TABLE kategori_menu (
+    kode_kategori_menu character varying(10),
+    nama_kategori_menu character varying(30)
+);
+
+
+ALTER TABLE kategori_menu OWNER TO postgres;
+
+CREATE TABLE meja (
+    nama character varying(25),
+    kategori character varying(15),
+    status integer DEFAULT 0,
+    kode character varying(10) NOT NULL
+);
+
+
+ALTER TABLE meja OWNER TO postgres;
+
+
+CREATE TABLE menu (
+    kode character varying(10) NOT NULL,
+    nama character varying(100),
+    kategori character varying(25),
+    harga double precision,
+    gambar character varying(20),
+    kode_master_resep character varying(15)
+);
+
+
+ALTER TABLE menu OWNER TO postgres;
+
+CREATE TABLE pembelian (
+    tanggal date,
+    kode_transaksi character varying(15) NOT NULL,
+    kode_bahan character varying(15),
+    nama character varying(50),
+    jumlah double precision,
+    harga double precision,
+    kode_akun_keuangan character varying(15),
+    kode_user character varying(15)
+);
+
+
+ALTER TABLE pembelian OWNER TO postgres;
+
+
+CREATE TABLE perkiraan (
+    kode_perkiraan character varying(15) NOT NULL,
+    kategori_perkiraan character varying(15),
+    nama_perkiraan character varying(100)
+);
+
+
+ALTER TABLE perkiraan OWNER TO postgres;
+
+CREATE TABLE resep_detail (
+    kode_master character varying(15),
+    kode_bahan character varying(15),
+    jumlah_pakai double precision,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE resep_detail OWNER TO postgres;
+
+CREATE SEQUENCE resep_detail_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE resep_detail_id_seq OWNER TO postgres;
+
+ALTER SEQUENCE resep_detail_id_seq OWNED BY resep_detail.id;
+
+CREATE TABLE resep_master (
+    kode_resep character varying(15) NOT NULL,
+    nama_resep character varying(100),
+    status integer DEFAULT 0
+);
+
+
+ALTER TABLE resep_master OWNER TO postgres;
+
+CREATE TABLE transaksi (
+    kode_transaksi character varying(15),
+    kode_menu character varying(15),
+    harga_masing double precision,
+    jumlah integer,
+    tanggal timestamp without time zone DEFAULT now(),
+    status integer DEFAULT 0,
+    kode_user character varying(15),
+    slot character varying(15),
+    kode_meja character varying(15),
+    tax double precision DEFAULT 0,
+    statustax integer DEFAULT 0,
+    kode_akun_keuangan character varying(15),
+    diskon double precision DEFAULT 0,
+    diskon_transaksi double precision DEFAULT 0,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE transaksi OWNER TO postgres;
+
+CREATE SEQUENCE transaksi_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE transaksi_id_seq OWNER TO postgres;
+
+ALTER SEQUENCE transaksi_id_seq OWNED BY transaksi.id;
+
+ALTER TABLE ONLY resep_detail ALTER COLUMN id SET DEFAULT nextval('resep_detail_id_seq'::regclass);
+
+ALTER TABLE ONLY transaksi ALTER COLUMN id SET DEFAULT nextval('transaksi_id_seq'::regclass);
+
+INSERT INTO akun (id, nama, username, password, tipe) VALUES ('K001', 'Kasir 1', 'kasir1', 'kasir1', 'kasir');
+INSERT INTO akun (id, nama, username, password, tipe) VALUES ('admin', 'Mulyadi', 'admin', 'admin', 'admin');
+INSERT INTO akun (id, nama, username, password, tipe) VALUES ('AK002', 'iwan', 'iwan', 'bk201', 'admin');
+
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('003', 'BNI', 'Akun Bank BNI');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('001', 'KAS', 'Kas Di kasir');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('004', 'BRI', 'Akun BANK BRI');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('002', 'MDRI', 'Akun Bank Mandiri');
+
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('BR001', 'Beras Bermutu', 95300);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('DNB001', 'Daun Bawang', 9054.6000000000004);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('MRC001', 'Merica bubuk', 11081);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('AYM001', 'Ayam Potong', 114720);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('GRM001', 'Garam Biasa', 1978.2499999999982);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('CKN', 'Chicken', 2980);
+
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1705012', '003', '2017-05-01', 'Biaya bensin karyawan', 'biaya bensin bulanan untuk karyawan', 100000, '001', 'admin');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1706111', '003', '2017-06-11', 'Beli bensin untuk motor delivery', 'yo', 20000, '003', 'admin');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707171', '001', '2017-07-17', 'gaji lok budi', 'test', 150000, '001', 'admin');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707181', '003', '2017-07-18', 'pembelian bensin', 'pembelian bensin', 120000, '001', 'AK002');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707182', '003', '2017-07-18', '5 liter', '', 90000, '001', 'AK002');
+
+
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('TA', 'Take Away', 0, 'A001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('1', 'BERUGAK', 0, 'BM001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('14', 'RUANG 1', 0, 'R1M004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('7', 'BERUGAK', 0, 'BM007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('10', 'BERUGAK', 0, 'BM010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('30', 'RUANG 2', 0, 'R2M010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('28', 'RUANG 2', 0, 'R2M008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('3', 'BERUGAK', 0, 'BM003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('27', 'RUANG 2', 0, 'R2M007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('29', 'RUANG 2', 0, 'R2M009');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('24', 'RUANG 2', 0, 'R2M004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('VIP', 'VIP', 0, 'VIP');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('20', 'RUANG 1', 0, 'R1M010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('4', 'BERUGAK', 0, 'BM004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('16', 'RUANG 1', 0, 'R1M006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('15', 'RUANG 1', 0, 'R1M005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('26', 'RUANG 2', 0, 'R2M006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('21', 'RUANG 2', 0, 'R2M001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('12', 'RUANG 1', 0, 'R1M002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('19', 'RUANG 1', 0, 'R1M009');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('8', 'BERUGAK', 0, 'BM008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('17', 'RUANG 1', 0, 'R1M007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('18', 'RUANG 1', 0, 'R1M008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('23', 'RUANG 2', 0, 'R2M003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('5', 'BERUGAK', 0, 'BM005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('22', 'RUANG 2', 0, 'R2M002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('25', 'RUANG 2', 0, 'R2M005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('6', 'BERUGAK', 0, 'BM006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('2', 'BERUGAK', 0, 'BM002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('11', 'RUANG 1', 0, 'R1M001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('13', 'RUANG 1', 0, 'R1M003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('9', 'BERUGAK', 0, 'BM009');
+
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH003', 'Teh Panas Madu', 'Minuman', 10000, 'TH003.png', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SS001', 'Susu Panas', 'Minuman', 10000, 'SS001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH001', 'Teh Panas Manis', 'Minuman', 6000, 'TH001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SY004', 'Urap Timun', 'Makanan', 7500, 'SY004.jpg', 'RS007');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK007', 'Nila Bumbu Rajang', 'Makanan', 50000, 'IK007.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SUP001', 'Sup Kikil Sapi', 'Makanan', 40000, 'SUP001.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SD003', 'Teh Botol / Fruitea', 'Minuman', 6000, 'SD003.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SF001', 'Udang Goreng Tepung', 'Makanan', 30000, 'SF001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SF002', 'Udang Bakar Madu', 'Makanan', 30000, 'SF002.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TM001', 'Tumis Jamur', 'Makanan', 20000, 'TM001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL006', 'Tempe  Goreng', 'Makanan', 10000, 'LL006.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL004', 'Telur Dadar', 'Makanan', 20000, 'LL004.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH004', 'Teh Tarik Panas', 'Minuman', 15000, 'TH004.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH002', 'Teh Panas Tawar', 'Minuman', 5000, 'TH002.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL005', 'Tahu Goreng', 'Makanan', 10000, 'LL005.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SD001', 'Sprite/Cocacola/Fanta', 'Minuman', 8000, 'SD001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SY003', 'Sayur Lebui ', 'Makanan', 10000, 'SY003.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL007', 'Sate Jeroan', 'Makanan', 15000, 'LL007.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SY005', 'Sambel Terong Bakar / Beberok', 'Makanan', 7500, 'SY005.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SY001', 'Pelecing Kangkung', 'Makanan', 7500, 'SY001.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SY002', 'Pecel', 'Makanan', 10000, 'SY002.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL003', 'Paru Goreng', 'Makanan', 40000, 'LL003.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('PK003', 'Paket Kotak 3', 'Paket', 35000, 'PK003.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK006', 'Nila Goreng', 'Makanan', 50000, 'IK006.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK009', 'Nila Bakar Pedas Manis', 'Makanan', 50000, 'IK009.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK010', 'Nila Bakar Pedas', 'Makanan', 50000, 'IK010.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK008', 'Nila Bakar Madu', 'Makanan', 50000, 'IK008.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('NP001', 'Nasi Putih ', 'Makanan', 7500, 'NP001.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL001', 'Nasi Goreng Irama', 'Makanan', 40000, 'LL001.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL002', 'Mie Goreng Irama', 'Makanan', 40000, 'LL002.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('AY008', 'Mesre taliwang', 'Makanan', 50000, 'AY008.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK001', 'Gurami Goreng', 'Makanan', 50000, 'IK001.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK005', 'Gurami Bakar Pedas Manis', 'Makanan', 50000, 'IK005.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK002', 'Gurami Bakar Pedas', 'Makanan', 50000, 'IK002.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK004', 'Gurami Bakar pedas', 'Makanan', 50000, 'IK004.jpg', 'RS003');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('IK003', 'Gurami Bakar Madu', 'Makanan', 50000, 'IK003.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('ES004', 'Es Kelapa Muda Gula Merah', 'Minuman', 15000, 'ES004.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SF004', 'Cumi Pelecingan Goreng', 'Makanan', 40000, 'SF004.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SF003', 'Cumi Goreng / Bakar Madu', 'Makanan', 40000, 'SF003.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SUP002', 'Bebalung Taliwang', 'Makanan', 40000, 'SUP002.jpg', 'RS001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('AT005', 'ayam taliwang', 'Makanan', 12000, 'AT005.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('09865', 'asdadas', 'Makanan', 120000, '09865.jpg', 'RS004');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('PL001', 'Pelecing', 'Makanan', 12000, 'PL001.png', 'PL001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('FRC001', 'Fried Chicken Original', 'Makanan', 12000, 'FRC001.png', 'FRC001');
+
+
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707181', 'AYM001', 'Ayam Potong', 12000, 120000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707182', 'AYM001', 'Ayam Potong', 12000, 8000000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707183', 'BR001', 'Beras Bermutus', 9000, 1900000, '001', 'AK002');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707184', 'AYM001', 'Ayam Potong', 120000, 1200000, '001', 'AK002');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-19', '1707191', 'CKN', 'Chicken', 3000, 200000, '001', 'admin');
+
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('001', 'pengeluaran', 'Gaji Karyawan');
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('003', 'pengeluaran', 'Biaya Bensin');
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('002', 'pendapatan', 'Pendapatan Lain');
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('555', 'pendapatan', 'Penjualan Usaha');
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('777', 'pengeluaran', 'Pengeluaran Usaha');
+
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'MRC001', 0.5, 11);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS003', 'MRC001', 0, 18);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS002', 'DNB001', 0.5, 19);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'DNB001', 3.5, 10);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'DNB001', 0.5, 20);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'AYM001', 100, 21);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'GRM001', 0.050000000000000003, 22);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS002', 'AYM001', 10, 12);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS002', 'GRM001', 20, 13);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS003', 'AYM001', 500, 15);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS003', 'GRM001', 10, 14);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'AYM001', 100, 1);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'BR001', 100, 8);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'GRM001', 5, 9);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('PL001', 'DNB001', 2, 23);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('PL001', 'MRC001', 1, 24);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'CKN', 10, 25);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'GRM001', 0.5, 26);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'DNB001', 0.20000000000000001, 27);
+
+SELECT pg_catalog.setval('resep_detail_id_seq', 27, true);
+
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS001', 'Resep Nasi Goreng', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS002', 'Nasi Rawon', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS003', 'Resep Mia Ayam', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS004', 'Semur balado', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS007', 'No resep', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('PL001', 'Pelecing', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('FRC001', 'Fried Chicken Original', 0);
+
+
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TH003', 10000, 1, '2017-07-23 12:45:59.41689', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 15, 3);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TM001', 20000, 2, '2017-07-23 12:45:58.404907', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 15, 1);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TH004', 15000, 2, '2017-07-23 12:45:59.009288', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 5, 15, 2);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TH004', 15000, 1, '2017-07-23 12:50:09.984598', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 10, 5);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TH003', 10000, 1, '2017-07-23 12:50:10.502939', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 10, 6);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TM001', 20000, 1, '2017-07-23 12:50:09.629424', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 15, 10, 4);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707233', 'TM001', 20000, 1, '2017-07-23 12:52:24.190855', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 5, 7);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707233', 'TH004', 15000, 1, '2017-07-23 12:52:24.497156', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 5, 8);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707234', 'TH004', 15000, 1, '2017-07-23 12:53:28.931021', 1, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 10, 10);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707234', 'TM001', 20000, 1, '2017-07-23 12:53:28.524768', 1, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 5, 10, 9);
+
+
+SELECT pg_catalog.setval('transaksi_id_seq', 10, true);
+
+ALTER TABLE ONLY akun_keuangan
+    ADD CONSTRAINT akun_uang_pkey PRIMARY KEY (kode_akun_keuangan);
+
+ALTER TABLE ONLY akun
+    ADD CONSTRAINT akunpkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY bahan
+    ADD CONSTRAINT bahanpkey PRIMARY KEY (kode);
+
+ALTER TABLE ONLY catatan
+    ADD CONSTRAINT catatanpkey PRIMARY KEY (kode);
+
+ALTER TABLE ONLY meja
+    ADD CONSTRAINT mejapkey PRIMARY KEY (kode);
+
+ALTER TABLE ONLY menu
+    ADD CONSTRAINT menupkey PRIMARY KEY (kode);
+
+ALTER TABLE ONLY pembelian
+    ADD CONSTRAINT pembelianpkey PRIMARY KEY (kode_transaksi);
+
+ALTER TABLE ONLY perkiraan
+    ADD CONSTRAINT perkirann_pkey PRIMARY KEY (kode_perkiraan);
+
+
+ALTER TABLE ONLY resep_detail
+    ADD CONSTRAINT resep_detailpk PRIMARY KEY (id);
+
+ALTER TABLE ONLY resep_master
+    ADD CONSTRAINT resep_masterkey PRIMARY KEY (kode_resep);
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+

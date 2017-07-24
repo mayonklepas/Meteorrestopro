@@ -332,6 +332,7 @@ public class LaporanController implements Initializable {
                             hm.put("header", info[0]);
                             hm.put("tanggal", new Date().from(dari));
                             hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            System.out.println(new File("laporan").getPath() + "/");
                             String path = "laporan/laporanharianperakunkeuangan/Laporanpenjualanharianmaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
@@ -562,7 +563,7 @@ public class LaporanController implements Initializable {
 
                             HashMap hm = new HashMap(2);
                             hm.put("header", info[0]);
-                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            hm.put("SUBREPORT_DIR", new File("laporan/laporandaftarmenu").getPath() + "/");
                             String path = "laporan/laporandaftarmenu/Laporanmenumaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="688a05dc-494e-4f25-8e99-75502e5ef88e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="header" class="java.lang.String"/>
+	<parameter name="tanggal_dari" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tanggal_sampai" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Workspace\\Netbeans\\MeteorRestopro\\laporan\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT kategori_perkiraan FROM perkiraan GROUP BY kategori_perkiraan]]>
+	</queryString>
+	<field name="kategori_perkiraan" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="386" y="0" width="60" height="20" uuid="b6108435-9d68-422b-ae85-642d038973ad"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Pertanggal : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="17" height="20" uuid="31a91638-b583-4998-b1ad-47d5e2266eda"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="446" y="0" width="44" height="20" uuid="7b685551-8cfa-4131-9ed7-95cb505ad959"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{tanggal_dari}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="507" y="0" width="48" height="20" uuid="58ab6867-b150-4b79-ad3f-13a37fb65424"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{tanggal_sampai}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="27" width="413" height="31" uuid="ce86fdc9-3eac-402f-a2bf-dde868a431b7"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="490" height="25" uuid="a70ab309-b099-47be-8d12-e0b025ade1d5"/>
+				<textElement>
+					<font size="17"/>
+				</textElement>
+				<text><![CDATA[Laporan Catatan Pengeluaran dan Pedapatan Lain]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="83" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="25" forecolor="#6699FF" backcolor="#CCCCCC" uuid="5343cfda-c26b-4b91-80d3-63d91424cf20"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="10" isBold="true" isItalic="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kategori_perkiraan}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="27" width="555" height="50" uuid="4af38cbe-a600-4b18-8876-df3aa3151b5b"/>
+				<subreportParameter name="tanggal_sampai">
+					<subreportParameterExpression><![CDATA[$P{tanggal_sampai}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="kategori">
+					<subreportParameterExpression><![CDATA[$F{kategori_perkiraan}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tanggal_dari">
+					<subreportParameterExpression><![CDATA[$P{tanggal_dari}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "laporancatatan/Laporancatatansub.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="217" y="17" width="80" height="20" backcolor="#CCCCCC" uuid="3f7cd1d7-29ef-40e1-a9d0-0a3db02478ca"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement mode="Opaque" x="0" y="17" width="217" height="20" backcolor="#CCCCCC" uuid="e8667217-56d3-4e05-b4a0-bc01f549bada"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="297" y="17" width="258" height="20" backcolor="#CCCCCC" uuid="bfc5d354-59c0-46c9-87ed-e51ae1ab94e6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="168" splitType="Stretch"/>
+	</summary>
+</jasperReport>

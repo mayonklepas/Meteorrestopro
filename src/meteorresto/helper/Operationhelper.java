@@ -108,8 +108,9 @@ public class Operationhelper {
             for (int i = 0; i < col.size(); i++) {
                 System.out.println(col.get(i));
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DialogaktivasiController.class.getName()).log(Level.SEVERE, null, ex);
+            error(ex);
         }
         return col.get(2).replace(" ", "");
     }

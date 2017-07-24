@@ -5,17 +5,9 @@
  */
 package meteorresto.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Base64;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,13 +50,19 @@ public class DialogaktivasiController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
-                    String srcencode = oh.gethddid() + "bk201!@#";
+                    String srcencode = "";
+                    try {
+                        srcencode=oh.gethddid() + "bk201!@#";
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        oh.error(e);
+                    }
                     String base64res = Base64.getEncoder().encodeToString(srcencode.getBytes());
                     if (base64res.equals(tasn.getText())) {
                         fh.setreg(tasn.getText());
                         oh.info("Registrasi Berhasil,Silahkan Buka Kembali");
                         System.exit(0);
-                    }else{
+                    } else {
                         oh.gagal("Registrasi Gagal, Key Tidak Cocok");
                     }
 

@@ -7,9 +7,11 @@ package meteorresto;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.PreparedStatement;
 import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,6 +42,7 @@ public class MeteorResto extends Application {
     Connectionhelper ch = new Connectionhelper();
     FIlehelper fh = new FIlehelper();
     Operationhelper oh = new Operationhelper();
+    StringBuilder data = new StringBuilder();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -66,15 +69,20 @@ public class MeteorResto extends Application {
                 }
             }
         });
-
         ls.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
                 try {
-                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
                     stage.close();
+                    String srcencode = "";
                     Stage st2 = new Stage();
-                    String srcencode = oh.gethddid() + "bk201!@#";
+                    try {
+                       srcencode=oh.gethddid() + "bk201!@#"; 
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        oh.error(e);
+                    }                    
                     String base64res = Base64.getEncoder().encodeToString(srcencode.getBytes());
                     if (fh.getreg().equals(base64res)) {
                         st2.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/icon.png").toString()));
@@ -100,7 +108,7 @@ public class MeteorResto extends Application {
                         st2.show();
                     }
 
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(MeteorResto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -121,10 +129,26 @@ public class MeteorResto extends Application {
         protected Void call() throws Exception {
             if (ch.checkconnection() == 0) {
                 ch.createdb();
-                System.out.println("Database telah dibuat");
-                String pathdata = new File("dbrestopro.backup").getAbsolutePath();
-                String cmd = "pg_restore -U " + fh.getkoneksi().split(";")[1] + " --dbname=dbrestopro --create --verbose " + "\"" + pathdata + "\"";
-                Runtime.getRuntime().exec(cmd);
+                System.out.println("Database Telah Dibuat");
+                //String pathdata = new File("dbrestopro.backup").getAbsolutePath();
+                //System.out.println(pathdata);
+                //String cmd = "pg_restore -U " + fh.getkoneksi().split(";")[1] + " --dbname=dbrestopro --create --verbose " + "\"" + pathdata + "\"";
+                //Runtime.getRuntime().exec(cmd);
+                try {
+                    File datasql = new File("dbrestopro.txt");
+                    String line = "";
+                    BufferedReader br = new BufferedReader(new FileReader(datasql));
+                    while ((line = br.readLine()) != null) {
+                        data.append(line);
+                    }
+                    PreparedStatement pre = ch.connect().prepareStatement(data.toString());
+                    pre.executeUpdate();
+                    ch.connect().close();
+                    System.out.println("Table Telah Dibuat");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             Thread.sleep(3 * 1000);
             return null;
