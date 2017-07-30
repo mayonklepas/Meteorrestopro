@@ -206,7 +206,7 @@ public class BayarController implements Initializable {
                 total_kembali = 0;
                 lkembalian.setText(nf.format(total_kembali));
             } else {
-                total_kembali = Double.parseDouble(ljumlahuang.getText().replaceAll("[,.]", "")) - total_belanja;
+                total_kembali = Double.parseDouble(oh.digitinputreplacer(ljumlahuang.getText())) - total_belanja;
                 lkembalian.setText(nf.format(total_kembali));
             }
         } catch (Exception e) {

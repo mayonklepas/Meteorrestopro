@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="211"/>
+	<property name="ireport.y" value="190"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -233,7 +233,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="218" splitType="Stretch">
+		<band height="97" splitType="Stretch">
 			<textField pattern="Rp #,##0">
 				<reportElement x="76" y="44" width="60" height="11" uuid="dea2aa62-7715-4a12-8e9b-e28932f76cbb"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
@@ -344,7 +344,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{uang} - (($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))+(($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100))) ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{uang} - (($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))+(($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100)))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="29" y="66" width="47" height="11" uuid="ebf3a61a-77f5-4e5c-8fcb-f372afa331f2"/>

@@ -69,6 +69,9 @@
 				<subreportParameter name="kode_akun_keuangan">
 					<subreportParameterExpression><![CDATA[$F{kode_akun_keuangan}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="tanggal">
 					<subreportParameterExpression><![CDATA[$P{tanggal}]]></subreportParameterExpression>
 				</subreportParameter>

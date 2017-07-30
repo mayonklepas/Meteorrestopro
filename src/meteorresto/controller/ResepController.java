@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Types;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +96,7 @@ public class ResepController implements Initializable {
     String ids, idsresep;
     @FXML
     private Button btambah;
+    NumberFormat nf=NumberFormat.getInstance();
 
     /**
      * Initializes the controller class.
@@ -165,8 +165,10 @@ public class ResepController implements Initializable {
 
                 } catch (IOException ex) {
                     Logger.getLogger(ResepController.class.getName()).log(Level.SEVERE, null, ex);
+                    oh.error(ex);
                 } catch (SQLException ex) {
                     Logger.getLogger(ResepController.class.getName()).log(Level.SEVERE, null, ex);
+                    oh.error(ex);
                 }
             }
         });
@@ -508,7 +510,7 @@ public class ResepController implements Initializable {
                         String sql = "UPDATE resep_detail SET kode_master=?,jumlah_pakai=? WHERE id=?";
                         PreparedStatement pre = ch.connect().prepareStatement(sql);
                         pre.setString(1, tkode.getText());
-                        pre.setDouble(2, Double.parseDouble(event.getNewValue().replaceAll("[.,]", ".")));
+                        pre.setDouble(2, Double.parseDouble(oh.digitinputreplacer(event.getNewValue())));
                         pre.setInt(3, Integer.parseInt(event.getRowValue().id));
                         pre.executeUpdate();
                         ch.close();
@@ -537,7 +539,7 @@ public class ResepController implements Initializable {
             while (res.next()) {
                 String sid = res.getString("id");
                 String snama_bahan = res.getString("nama");
-                String sjumlahpakai = res.getString("jumlah_pakai");
+                String sjumlahpakai = nf.format(res.getDouble("jumlah_pakai"));
                 tabledatabahan.add(new Entitybahan(sid, snama_bahan, sjumlahpakai));
             }
             pre.close();

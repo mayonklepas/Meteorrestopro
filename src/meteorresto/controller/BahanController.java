@@ -188,7 +188,7 @@ public class BahanController implements Initializable {
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, tkode.getText());
                 pre.setString(2, tnama.getText());
-                pre.setDouble(3, Double.parseDouble(tjumlah.getText().replaceAll("[,.]", "")));
+                pre.setDouble(3, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
                 pre.executeUpdate();
                 pre.close();
                 ch.close();
@@ -209,7 +209,7 @@ public class BahanController implements Initializable {
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
-                    pre.setDouble(3, Double.parseDouble(tjumlah.getText().replaceAll("[,.]", "")));
+                    pre.setDouble(3, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
                     pre.setString(4, ids);
                     pre.executeUpdate();
                     pre.close();

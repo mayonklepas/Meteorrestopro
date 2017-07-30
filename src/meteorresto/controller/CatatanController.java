@@ -313,7 +313,7 @@ public class CatatanController implements Initializable {
                     pre.setString(3, cakunuang.getEditor().getText().split("-")[0]);
                     pre.setString(4, dtanggal.getValue().toString());
                     pre.setString(5, tnama.getText());
-                    pre.setDouble(6, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
+                    pre.setDouble(6, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
                     pre.setString(7, tketerangan.getText());
                     pre.setString(8, sh.getKode_user());
                     pre.executeUpdate();
@@ -339,7 +339,7 @@ public class CatatanController implements Initializable {
                         pre.setString(2, cakunuang.getEditor().getText().split("-")[0]);
                         pre.setString(3, dtanggal.getValue().toString());
                         pre.setString(4, tnama.getText());
-                        pre.setDouble(5, Double.parseDouble(tjumlah.getText().replaceAll("[.,]", "")));
+                        pre.setDouble(5, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
                         pre.setString(6, tketerangan.getText());
                         pre.setString(7, ids);
                         pre.executeUpdate();

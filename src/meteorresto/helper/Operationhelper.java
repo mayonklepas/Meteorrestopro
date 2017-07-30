@@ -114,5 +114,11 @@ public class Operationhelper {
         }
         return col.get(2).replace(" ", "");
     }
+    
+    public String digitinputreplacer(String kata){
+        String res1=kata.replace(".", "");
+        String res2=res1.replace(",", ".");
+        return res2;
+    }
 
 }
