@@ -97,6 +97,11 @@ public class SettingController implements Initializable {
     private Button bsimpanakun;
     @FXML
     private TextField tpajak;
+    @FXML
+    private TextField tstruck;
+    String struck,slip;
+    @FXML
+    private TextField tslip;
 
     /**
      * Initializes the controller class.
@@ -165,6 +170,8 @@ public class SettingController implements Initializable {
         ttelp.setText(info[3]);
         tnohp.setText(info[4]);
         tpajak.setText(info[5]);
+        struck=info[6];
+        slip=info[7];
 
     }
 
@@ -172,6 +179,8 @@ public class SettingController implements Initializable {
         tkelompokmeja.setText(fh.getkategorimeja());
         tkelompokmakanan.setText(fh.getkategorimenu());
         tslot.setText(fh.getslot());
+        tstruck.setText(struck);
+        tslip.setText(slip);
     }
 
     private void loadtema() {
@@ -208,7 +217,9 @@ public class SettingController implements Initializable {
                     sb.append(temail.getText() + ";\n");
                     sb.append(ttelp.getText() + ";\n");
                     sb.append(tnohp.getText() + ";\n");
-                    sb.append(tpajak.getText());
+                    sb.append(tpajak.getText()+";\n");
+                    sb.append(tstruck.getText()+";\n");
+                    sb.append(tslip.getText());
                     fh.setall("info", sb.toString());
                     oh.sukses("Berhasil Disimpan");
                 }

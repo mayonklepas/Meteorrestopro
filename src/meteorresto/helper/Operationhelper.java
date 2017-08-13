@@ -6,7 +6,6 @@
 package meteorresto.helper;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -14,12 +13,9 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import meteorresto.controller.DialogaktivasiController;
-import org.jfree.chart.plot.dial.DialBackground;
 
 /**
  *

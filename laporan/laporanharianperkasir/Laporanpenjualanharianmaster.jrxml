@@ -11,7 +11,7 @@
 	</parameter>
 	<parameter name="header" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT id,nama,(SELECT SUM(jumlah*harga_masing) FROM transaksi WHERE transaksi.kode_user=a.id AND status=1 AND tanggal::date=$P{tanggal}) AS total_pendapatan FROM akun a]]>
+		<![CDATA[SELECT id,nama,(SELECT SUM(jumlah*harga_masing) FROM transaksi WHERE transaksi.kode_user2=a.id AND status=1 AND tanggal::date=$P{tanggal}) AS total_pendapatan FROM akun a]]>
 	</queryString>
 	<field name="id" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String"/>

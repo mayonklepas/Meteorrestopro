@@ -209,6 +209,7 @@ public class LaporanController implements Initializable {
         olscombo.add("Laporan Periodik Pembelian");
         olscombo.add("Laporan Periodik Catatan");
         olscombo.add("Laporan Periodik Penjualan");
+        olscombo.add("Laporan Void Transaksi");
         olscombo.add("Daftar Menu");
         olscombo.add("Laporan Stock Bahan");
         ckategori.setItems(olscombo);
@@ -262,6 +263,11 @@ public class LaporanController implements Initializable {
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
                     dke.setValue(LocalDate.now());
+                    tfilter.setDisable(true);
+                } else if (newValue.intValue() == 8) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(true);
                     tfilter.setDisable(true);
                 } else {
                     ddari.setDisable(true);
@@ -388,12 +394,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    }
-                    
-                    
-                    
-                    
-                    else if (i == 3) {
+                    } else if (i == 3) {
                         if (tfilter.getText().equals("")) {
                             oh.gagal("Maaf anda belum mengisi kata kunci");
                         } else {
@@ -560,6 +561,37 @@ public class LaporanController implements Initializable {
                         }
                     } else if (i == 8) {
                         try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(3);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal", new Date().from(dari));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/laporanharianpertransaksivoid/Laporanpenjualanharianmaster.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    } else if (i == 9) {
+                        try {
 
                             HashMap hm = new HashMap(2);
                             hm.put("header", info[0]);
@@ -588,7 +620,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    } else if (i == 9) {
+                    } else if (i == 10) {
                         try {
 
                             HashMap hm = new HashMap(1);

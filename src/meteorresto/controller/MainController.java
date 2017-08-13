@@ -5,10 +5,7 @@
  */
 package meteorresto.controller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -40,12 +37,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.FIlehelper;
 import meteorresto.helper.Operationhelper;
@@ -146,6 +145,7 @@ public class MainController implements Initializable {
         perkiraan();
         about();
         akunuang();
+        closeapp();
         lnamacafe.setText(fh.getinfo().split(";")[0]);
         luser.setText(sh.getUsername());
         mainpane.setId("tema");
@@ -463,7 +463,7 @@ public class MainController implements Initializable {
         plaporan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (sh.getTipe().equals("admin")) {
+                if (sh.getTipe().equals("admin") || sh.getTipe().equals("spv")) {
                     try {
                         FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Laporan.fxml"));
                         Parent root = fxl.load();
@@ -616,6 +616,29 @@ public class MainController implements Initializable {
             this.jumlah_kg = jumlah_kg;
         }
 
+    }
+
+    private void closeapp() {
+        sh.getSt().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    Stage st = new Stage();
+                    st.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/icon.png").toString()));
+                    st.resizableProperty().setValue(Boolean.FALSE);
+                    st.setTitle("Restoku Login");
+                    Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Login.fxml"));
+                    Scene sc = new Scene(root);
+                    st.setScene(sc);
+                    String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
+                    st.getScene().getStylesheets().clear();
+                    st.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
+                    st.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
 }

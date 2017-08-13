@@ -5,16 +5,13 @@
  */
 package meteorresto.controller;
 
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -33,9 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -81,7 +76,7 @@ public class BayarController implements Initializable {
     @FXML
     private Button bcl;
     FIlehelper fh = new FIlehelper();
-    public static String kode_transaksi,kategorimeja,namameja;
+    public static String kode_transaksi, kategorimeja, namameja;
 
     /**
      * Initializes the controller class.
@@ -116,6 +111,15 @@ public class BayarController implements Initializable {
             public void handle(Event event) {
                 if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
                     try {
+                        String sql = "UPDATE transaksi SET kode_user2=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
+                        PreparedStatement pre = ch.connect().prepareStatement(sql);
+                        pre.setString(1, sh.getKode_user());
+                        pre.setString(2, sh.getKode_meja());
+                        pre.setString(3, sh.getSlot());
+                        pre.setString(4, kode_transaksi);
+                        pre.executeUpdate();
+                        pre.close();
+                        ch.close();
                         String[] info = fh.getinfo().split(";");
                         HashMap hash = new HashMap(11);
                         hash.put("kode_meja", sh.getKode_meja());
@@ -128,16 +132,16 @@ public class BayarController implements Initializable {
                         hash.put("alamat", info[1]);
                         hash.put("nohp", info[3]);
                         hash.put("kode_transaksi", kode_transaksi);
-                        double jumlahuang=0;
-                        if(ljumlahuang.getText().equals("0")||ljumlahuang.getText().equals("")){
-                            jumlahuang=total_belanja;
-                        }else{
-                            jumlahuang=Double.parseDouble(ljumlahuang.getText());
+                        double jumlahuang = 0;
+                        if (ljumlahuang.getText().equals("0") || ljumlahuang.getText().equals("")) {
+                            jumlahuang = total_belanja;
+                        } else {
+                            jumlahuang = Double.parseDouble(oh.digitinputreplacer(ljumlahuang.getText()));
                         }
-                        hash.put("uang",jumlahuang);
-                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/Struckkasir2.jasper"));
+                        hash.put("uang", jumlahuang);
+                        JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/" + info[6]));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
-                        JasperPrintManager.printReport(jp, false);
+                         JasperPrintManager.printReport(jp, false);
                         ch.close();
                     } catch (Exception e) {
                         e.printStackTrace();

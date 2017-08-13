@@ -31,8 +31,8 @@ FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY tax,diskon_transak
 (diskon_transaksi/100*( SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))))))
 FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,tax ) AS total_dengan_pajak 
 
-FROM transaksi t INNER JOIN akun ak ON t.kode_user=ak.id 
-WHERE tanggal::date=$P{tanggal} AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi]]>
+FROM transaksi t INNER JOIN akun ak ON t.kode_user2=ak.id 
+WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String"/>
@@ -141,32 +141,32 @@ WHERE tanggal::date=$P{tanggal} AND kode_akun_keuangan=$P{kode_akun_keuangan} GR
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"laporanharianperakunkeuangan/Laporanpenjualanharian_subinsub.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="5" width="92" height="20" forecolor="#006600" backcolor="#66FF66" uuid="3f2d6a72-b386-47d7-b880-f0086634d6ca"/>
+				<reportElement mode="Opaque" x="0" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="3f2d6a72-b386-47d7-b880-f0086634d6ca"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{kode_transaksi}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="92" y="5" width="92" height="20" forecolor="#006600" backcolor="#66FF66" uuid="95573a44-99cd-46fa-96ad-41d6ccbf8b4c"/>
+				<reportElement mode="Opaque" x="92" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="95573a44-99cd-46fa-96ad-41d6ccbf8b4c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="237" y="5" width="92" height="20" forecolor="#006600" backcolor="#66FF66" uuid="08f625cb-3dd8-456b-bad3-2b6f3a30534e"/>
+				<reportElement mode="Opaque" x="237" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="08f625cb-3dd8-456b-bad3-2b6f3a30534e"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement mode="Opaque" x="329" y="5" width="63" height="20" forecolor="#006600" backcolor="#66FF66" uuid="9ba33e75-e099-474f-8ab1-39a0fb5d9a54"/>
+				<reportElement mode="Opaque" x="329" y="5" width="63" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="9ba33e75-e099-474f-8ab1-39a0fb5d9a54"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{pajak}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="392" y="5" width="68" height="20" forecolor="#006600" backcolor="#66FF66" uuid="534b7f84-0a05-46b9-8c0a-00c0d0ccbeee"/>
+				<reportElement mode="Opaque" x="392" y="5" width="68" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="534b7f84-0a05-46b9-8c0a-00c0d0ccbeee"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_pajak}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="460" y="5" width="95" height="20" forecolor="#006600" backcolor="#66FF66" uuid="567fc78f-4e86-4fc7-a8d7-1e9832787676"/>
+				<reportElement mode="Opaque" x="460" y="5" width="95" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="567fc78f-4e86-4fc7-a8d7-1e9832787676"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_dengan_pajak}]]></textFieldExpression>
 			</textField>
@@ -184,7 +184,7 @@ WHERE tanggal::date=$P{tanggal} AND kode_akun_keuangan=$P{kode_akun_keuangan} GR
 				<text><![CDATA[Detail Pesanan]]></text>
 			</staticText>
 			<textField pattern="###0">
-				<reportElement mode="Opaque" x="184" y="5" width="53" height="20" forecolor="#006600" backcolor="#66FF66" uuid="03b34903-f6e1-4877-b3dd-ff87b09b4aaf"/>
+				<reportElement mode="Opaque" x="184" y="5" width="53" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="03b34903-f6e1-4877-b3dd-ff87b09b4aaf"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{diskon_transaksi}]]></textFieldExpression>
 			</textField>

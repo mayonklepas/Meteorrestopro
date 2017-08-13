@@ -29,7 +29,7 @@ FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY tax,diskon_transak
 (diskon_transaksi/100*( SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))))))
 FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,tax ) AS total_dengan_pajak 
 
-FROM transaksi t INNER JOIN akun_keuangan ak ON t.kode_akun_keuangan=ak.kode_akun_keuangan INNER JOIN akun a ON t.kode_user=a.id  
+FROM transaksi t INNER JOIN akun_keuangan ak ON t.kode_akun_keuangan=ak.kode_akun_keuangan INNER JOIN akun a ON t.kode_user2=a.id  
 WHERE tanggal::date >=$P{tanggal_dari} AND tanggal::date <= $P{tanggal_hingga} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama_akun_keuangan,diskon_transaksi,nama]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>

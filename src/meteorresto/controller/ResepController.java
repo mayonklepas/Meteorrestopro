@@ -82,8 +82,6 @@ public class ResepController implements Initializable {
     @FXML
     private TableColumn<Entity, String> nama;
     @FXML
-    private TableColumn<Entity, String> status;
-    @FXML
     private Pane detail;
     @FXML
     private TextField tcari;
@@ -93,10 +91,11 @@ public class ResepController implements Initializable {
     ObservableList tabledata = FXCollections.observableArrayList();
     ObservableList<Entitybahan> tabledatabahan = FXCollections.observableArrayList();
     ObservableList olscombobahan = FXCollections.observableArrayList();
+    ObservableList<Entitybahanlist> tabledatabahanlist = FXCollections.observableArrayList();
     String ids, idsresep;
     @FXML
     private Button btambah;
-    NumberFormat nf=NumberFormat.getInstance();
+    NumberFormat nf = NumberFormat.getInstance();
 
     /**
      * Initializes the controller class.
@@ -193,7 +192,6 @@ public class ResepController implements Initializable {
             ch.close();
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            status.setCellValueFactory(new PropertyValueFactory<>("status"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(ResepController.class.getName()).log(Level.SEVERE, null, ex);
@@ -360,7 +358,6 @@ public class ResepController implements Initializable {
             ch.close();
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            status.setCellValueFactory(new PropertyValueFactory<>("status"));
             table.setItems(tabledata);
 
         } catch (SQLException ex) {
@@ -424,6 +421,15 @@ public class ResepController implements Initializable {
                 } finally {
                     ch.close();
                 }
+            }
+        });
+    }
+
+    private void tambahbahanlist() {
+        btambah.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                tabledatabahanlist.add(new Entitybahanlist("0", "Klik Disini", "0", "0"));
             }
         });
     }
@@ -670,6 +676,51 @@ public class ResepController implements Initializable {
 
         public void setNama_bahan(String nama_bahan) {
             this.nama_bahan = nama_bahan;
+        }
+
+    }
+
+    public class Entitybahanlist {
+
+        String id, nama_bahan, jumlah, status;
+
+        public Entitybahanlist(String id, String nama_bahan, String jumlah, String status) {
+            this.id = id;
+            this.nama_bahan = nama_bahan;
+            this.jumlah = jumlah;
+            this.status = status;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getNama_bahan() {
+            return nama_bahan;
+        }
+
+        public void setNama_bahan(String nama_bahan) {
+            this.nama_bahan = nama_bahan;
+        }
+
+        public String getJumlah() {
+            return jumlah;
+        }
+
+        public void setJumlah(String jumlah) {
+            this.jumlah = jumlah;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
 
     }

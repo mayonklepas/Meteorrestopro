@@ -49,7 +49,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="82" splitType="Stretch">
+		<band height="88" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="7" width="136" height="16" uuid="bdda05ed-6702-4b74-b3c5-90bd4b4f2562"/>
 				<textElement verticalAlignment="Middle">
@@ -104,7 +104,7 @@
 				<textElement>
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Kasir]]></text>
+				<text><![CDATA[Waiters]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="45" y="58" width="8" height="9" uuid="a8147420-2701-4024-b4f9-804a27a25b0f"/>
@@ -230,98 +230,6 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="74" splitType="Stretch">
-			<textField pattern="Rp #,##0">
-				<reportElement x="76" y="44" width="60" height="11" uuid="dea2aa62-7715-4a12-8e9b-e28932f76cbb"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))+(($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100))]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="10" y="44" width="66" height="11" uuid="7f47747a-88ec-4424-8e01-87366abdfb54"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Grand Total :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="60" width="136" height="12" uuid="f052d0f8-4797-4d6a-b8ec-732021597d38"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Terima Kasih Atas Kunjungan Anda]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="29" y="0" width="47" height="11" uuid="862fb402-6e98-403e-a740-419cf96a69eb"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Sub Total :]]></text>
-			</staticText>
-			<textField pattern="Rp #,##0">
-				<reportElement x="76" y="0" width="60" height="11" uuid="e27bd46f-5195-4487-88bc-bdb8c19c23ce"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="10" y="33" width="66" height="11" uuid="62aa1242-74aa-4c63-af93-80d1e1538d1d"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Jumlah Pajak :]]></text>
-			</staticText>
-			<textField pattern="Rp #,##0">
-				<reportElement x="76" y="33" width="60" height="11" uuid="9ba2b5e0-6463-4320-9bb0-509b35049a88"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($V{total_1}-($F{diskon_transaksi}/100*$V{total_1}))*($F{tax}/100)]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="11" width="76" height="11" uuid="be7541c2-082f-4ba8-a149-8616302a5c4f"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Diskon Transaksi :]]></text>
-			</staticText>
-			<textField pattern="###0">
-				<reportElement x="76" y="11" width="52" height="11" uuid="adefb598-dd42-4988-908f-460f232809fb"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{diskon_transaksi}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="128" y="22" width="8" height="11" uuid="1fc91277-2d48-46c0-aede-d18efbaacd88"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[%]]></text>
-			</staticText>
-			<textField pattern="###0">
-				<reportElement x="76" y="22" width="52" height="11" uuid="54255295-aa60-45cd-a7a3-28f9eb8e3d5a"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{tax}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="29" y="22" width="47" height="11" uuid="67cf2fa9-7ce7-4626-b717-442336475196"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Pajak :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="128" y="11" width="8" height="11" uuid="90b7a7f8-7b86-4d7c-991b-fa9a04f1c561"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[%]]></text>
-			</staticText>
-		</band>
+		<band height="3" splitType="Stretch"/>
 	</summary>
 </jasperReport>

@@ -9,7 +9,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +58,7 @@ public class PindahmejaController implements Initializable {
     private AnchorPane header;
     @FXML
     private AnchorPane footer;
+    public static String kode_transaksi;
 
     /**
      * Initializes the controller class.
@@ -71,7 +71,7 @@ public class PindahmejaController implements Initializable {
         loadmeja();
         pindahmeja();
         pindahkan.setId("bc");
-        
+
         header.setId("tema");
         footer.setId("tema");
     }
@@ -126,7 +126,6 @@ public class PindahmejaController implements Initializable {
                         status_meja = 1;
                         kode_meja = datameja.get(y).getKode();
                         cslotasal.getEditor().setText("Slot 1");
-                        
 
                     }
                 });
@@ -150,12 +149,16 @@ public class PindahmejaController implements Initializable {
                     oh.gagal("Maaf anda harus memilih slot");
                 } else {
                     try {
-                        String sql = "UPDATE transaksi SET kode_meja=?,slot=? WHERE kode_meja=? AND slot=?";
+                        String sql = "UPDATE transaksi SET kode_meja=?,slot=? WHERE kode_meja=? AND slot=?;"
+                                + "UPDATE transaksi SET kode_transaksi=? WHERE kode_meja=? AND slot=?";
                         PreparedStatement pre = ch.connect().prepareStatement(sql);
                         pre.setString(1, kode_meja);
                         pre.setString(2, cslotasal.getEditor().getText());
                         pre.setString(3, sh.getKode_meja());
                         pre.setString(4, sh.getSlot());
+                        pre.setString(5, kode_transaksi);
+                        pre.setString(6, kode_meja);
+                        pre.setString(7, cslotasal.getEditor().getText());
                         pre.executeUpdate();
                         pre.close();
                         ch.close();
@@ -180,19 +183,19 @@ public class PindahmejaController implements Initializable {
                             ch.close();
                         }
                         String sqlupdatemeja2 = "UPDATE meja SET status=1 WHERE kode=?";
-                            PreparedStatement preupdatemeja2 = ch.connect().prepareStatement(sqlupdatemeja2);
-                            preupdatemeja2.setString(1, kode_meja);
-                            preupdatemeja2.executeUpdate();
-                            preupdatemeja2.close();
-                            ch.close();
+                        PreparedStatement preupdatemeja2 = ch.connect().prepareStatement(sqlupdatemeja2);
+                        preupdatemeja2.setString(1, kode_meja);
+                        preupdatemeja2.executeUpdate();
+                        preupdatemeja2.close();
+                        ch.close();
                         oh.sukses("Meja berhasil di pindah");
-                        Node n=(Node) event.getSource();
-                        Stage st=(Stage) n.getScene().getWindow();
+                        Node n = (Node) event.getSource();
+                        Stage st = (Stage) n.getScene().getWindow();
                         st.close();
                     } catch (SQLException ex) {
                         Logger.getLogger(PindahmejaController.class.getName()).log(Level.SEVERE, null, ex);
                         oh.error(ex);
-                    }finally{
+                    } finally {
                         ch.close();
                     }
                 }

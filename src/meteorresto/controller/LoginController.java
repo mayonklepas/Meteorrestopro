@@ -5,9 +5,7 @@
  */
 package meteorresto.controller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -35,7 +33,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import meteorresto.helper.Connectionhelper;
 import meteorresto.helper.Operationhelper;
 import meteorresto.helper.Sessionhelper;
@@ -113,7 +110,6 @@ public class LoginController implements Initializable {
                     Parent root = FXMLLoader.load(getClass().getResource("/meteorresto/view/Main.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
-                    //stage.setFullScreen(true);
                     String css = new File("style.css").getAbsolutePath().replace(" ", "%20");
                     stage.getScene().getStylesheets().clear();
                     stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
@@ -124,7 +120,6 @@ public class LoginController implements Initializable {
                     Node node = (Node) event.getSource();
                     Stage st = (Stage) node.getScene().getWindow();
                     st.close();
-
                 }
 
             } catch (SQLException ex) {
