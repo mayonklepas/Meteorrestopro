@@ -31,7 +31,7 @@ FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,t
 
 FROM transaksi t INNER JOIN akun_keuangan ak ON t.kode_akun_keuangan=ak.kode_akun_keuangan 
 INNER JOIN akun a ON t.kode_user2=a.id
-WHERE tanggal::date=$P{tanggal} AND status = 1 GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama_akun_keuangan,diskon_transaksi,a.nama]]>
+WHERE tanggal::date=$P{tanggal} AND status = 1 GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama_akun_keuangan,diskon_transaksi,a.nama ORDER BY t.kode_transaksi DESC]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>
 	<field name="nama_akun_keuangan" class="java.lang.String"/>

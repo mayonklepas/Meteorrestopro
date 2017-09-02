@@ -32,7 +32,7 @@ FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY tax,diskon_transak
 FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,tax ) AS total_dengan_pajak 
 
 FROM transaksi t INNER JOIN akun ak ON t.kode_user2=ak.id 
-WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi]]>
+WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi ORDER BY t.kode_transaksi DESC]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String"/>

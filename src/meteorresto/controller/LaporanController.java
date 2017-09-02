@@ -212,6 +212,7 @@ public class LaporanController implements Initializable {
         olscombo.add("Laporan Void Transaksi");
         olscombo.add("Daftar Menu");
         olscombo.add("Laporan Stock Bahan");
+        olscombo.add("Laporan Periodik Catatan Detail");
         ckategori.setItems(olscombo);
     }
 
@@ -268,6 +269,12 @@ public class LaporanController implements Initializable {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(true);
+                    tfilter.setDisable(true);
+                }else if (newValue.intValue() == 11) {
+                    ddari.setDisable(false);
+                    ddari.setValue(LocalDate.now());
+                    dke.setDisable(false);
+                    dke.setValue(LocalDate.now());
                     tfilter.setDisable(true);
                 } else {
                     ddari.setDisable(true);
@@ -626,6 +633,39 @@ public class LaporanController implements Initializable {
                             HashMap hm = new HashMap(1);
                             hm.put("header", info[0]);
                             String path = "laporan/laporanstock/Laporanstockbahan.jasper";
+                            loadrepot lr = new loadrepot(path, hm);
+                            Thread th = new Thread(lr);
+                            th.setDaemon(true);
+                            th.start();
+                            ch.connect().close();
+                            lr.setOnRunning(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.showAndWait();
+                                }
+                            });
+                            lr.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                @Override
+                                public void handle(WorkerStateEvent event) {
+                                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    st2.close();
+                                }
+                            });
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            oh.error(ex);
+                        }
+                    }else if (i == 11) {
+                        try {
+                            Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));
+                            HashMap hm = new HashMap(4);
+                            hm.put("header", info[0]);
+                            hm.put("tanggal_dari", new Date().from(dari));
+                            hm.put("tanggal_sampai", new Date().from(ke));
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
+                            String path = "laporan/laporancatatandetail/Laporancatatanmasterdetail.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
                             th.setDaemon(true);

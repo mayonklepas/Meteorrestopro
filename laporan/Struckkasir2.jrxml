@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="341"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -34,6 +34,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="uang" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="kode_cc" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -258,7 +261,7 @@ kode_user2=$P{kode_kasir}]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="97" splitType="Stretch">
+		<band height="127" splitType="Stretch">
 			<textField pattern="Rp #,##0">
 				<reportElement x="76" y="44" width="60" height="11" uuid="dea2aa62-7715-4a12-8e9b-e28932f76cbb"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
@@ -274,7 +277,7 @@ kode_user2=$P{kode_kasir}]]>
 				<text><![CDATA[Grand Total :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="82" width="136" height="12" uuid="f052d0f8-4797-4d6a-b8ec-732021597d38"/>
+				<reportElement x="0" y="102" width="136" height="12" uuid="f052d0f8-4797-4d6a-b8ec-732021597d38"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -378,6 +381,20 @@ kode_user2=$P{kode_kasir}]]>
 				</textElement>
 				<text><![CDATA[Kembalian :]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="29" y="77" width="47" height="11" uuid="03bb8820-aa07-4d64-8877-780e485a01e7"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode CC :]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0">
+				<reportElement x="76" y="77" width="60" height="11" uuid="f93f98b9-abe9-4e29-8322-de29a4fccaeb"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{kode_cc}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

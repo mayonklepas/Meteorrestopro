@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -109,19 +111,21 @@ public class BayarController implements Initializable {
         EventHandler evt = new EventHandler() {
             @Override
             public void handle(Event event) {
-                if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
+
+                if (datakeuangan.get(y).kode_akun_keuangan.equals("cash")) {
                     try {
-                        String sql = "UPDATE transaksi SET kode_user2=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
+                        String sql = "UPDATE transaksi SET kode_user2=?,kode_cc=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
                         PreparedStatement pre = ch.connect().prepareStatement(sql);
                         pre.setString(1, sh.getKode_user());
-                        pre.setString(2, sh.getKode_meja());
-                        pre.setString(3, sh.getSlot());
-                        pre.setString(4, kode_transaksi);
+                        pre.setString(2, "CASH");
+                        pre.setString(3, sh.getKode_meja());
+                        pre.setString(4, sh.getSlot());
+                        pre.setString(5, kode_transaksi);
                         pre.executeUpdate();
                         pre.close();
                         ch.close();
                         String[] info = fh.getinfo().split(";");
-                        HashMap hash = new HashMap(11);
+                        HashMap hash = new HashMap(12);
                         hash.put("kode_meja", sh.getKode_meja());
                         hash.put("slot", sh.getSlot());
                         hash.put("kode_kasir", sh.getKode_user());
@@ -132,6 +136,7 @@ public class BayarController implements Initializable {
                         hash.put("alamat", info[1]);
                         hash.put("nohp", info[3]);
                         hash.put("kode_transaksi", kode_transaksi);
+                        hash.put("kode_cc", "CASH");
                         double jumlahuang = 0;
                         if (ljumlahuang.getText().equals("0") || ljumlahuang.getText().equals("")) {
                             jumlahuang = total_belanja;
@@ -141,7 +146,7 @@ public class BayarController implements Initializable {
                         hash.put("uang", jumlahuang);
                         JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/" + info[6]));
                         JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
-                         JasperPrintManager.printReport(jp, false);
+                        JasperPrintManager.printReport(jp, false);
                         ch.close();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -151,7 +156,61 @@ public class BayarController implements Initializable {
                     Node node = (Node) event.getSource();
                     Stage st = (Stage) node.getScene().getWindow();
                     st.close();
+
+                } else {
+                    if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
+                        try {
+                            TextInputDialog ti = new TextInputDialog();
+                            ti.setTitle("Konfirmasi Kode CC");
+                            ti.setHeaderText("Masukan Kode Credit Card / No. Rekening");
+                            Optional<String> opt = ti.showAndWait();
+                            if (opt.isPresent()) {
+                                String sql = "UPDATE transaksi SET kode_user2=?,kode_cc=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
+                                PreparedStatement pre = ch.connect().prepareStatement(sql);
+                                pre.setString(1, sh.getKode_user());
+                                pre.setString(2, opt.get());
+                                pre.setString(3, sh.getKode_meja());
+                                pre.setString(4, sh.getSlot());
+                                pre.setString(5, kode_transaksi);
+                                pre.executeUpdate();
+                                pre.close();
+                                ch.close();
+                                String[] info = fh.getinfo().split(";");
+                                HashMap hash = new HashMap(12);
+                                hash.put("kode_meja", sh.getKode_meja());
+                                hash.put("slot", sh.getSlot());
+                                hash.put("kode_kasir", sh.getKode_user());
+                                hash.put("nama_kasir", sh.getUsername());
+                                hash.put("kategori_meja", kategorimeja);
+                                hash.put("nama_meja", namameja);
+                                hash.put("perusahaan", info[0]);
+                                hash.put("alamat", info[1]);
+                                hash.put("nohp", info[3]);
+                                hash.put("kode_transaksi", kode_transaksi);
+                                hash.put("kode_cc", opt.get());
+                                double jumlahuang = 0;
+                                if (ljumlahuang.getText().equals("0") || ljumlahuang.getText().equals("")) {
+                                    jumlahuang = total_belanja;
+                                } else {
+                                    jumlahuang = Double.parseDouble(oh.digitinputreplacer(ljumlahuang.getText()));
+                                }
+                                hash.put("uang", jumlahuang);
+                                JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/" + info[6]));
+                                JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                                JasperPrintManager.printReport(jp, false);
+                                ch.close();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            oh.error(e);
+                        }
+                        rawclearpembayaran(datakeuangan.get(y).kode_akun_keuangan);
+                        Node node = (Node) event.getSource();
+                        Stage st = (Stage) node.getScene().getWindow();
+                        st.close();
+                    }
                 }
+
             }
         };
 
@@ -164,7 +223,7 @@ public class BayarController implements Initializable {
             datakeuangan.clear();
             btlist.clear();
             fpakunuang.getChildren().clear();
-            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan FROM akun_keuangan ORDER BY kode_akun_keuangan ASC";
+            String sql = "SELECT kode_akun_keuangan,nama_akun_keuangan FROM akun_keuangan ORDER BY kode_akun_keuangan DESC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             while (res.next()) {

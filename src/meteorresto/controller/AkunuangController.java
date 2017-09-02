@@ -24,7 +24,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -240,25 +239,30 @@ public class AkunuangController implements Initializable {
     }
 
     private void rawhapus() {
-        if (oh.konfirmasi("hapus") == true) {
-            try {
-                String sql = "DELETE FROM akun_keuangan WHERE kode_akun_keuangan=?";
-                PreparedStatement pre = ch.connect().prepareStatement(sql);
-                pre.setString(1, ids);
-                pre.executeUpdate();
-                oh.sukses("Data Berhasil Dihapus");
-                pre.close();
-                ch.close();
-                loaddata();
-                loadtotaldata();
-            } catch (SQLException ex) {
-                Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
-                oh.error(ex);
-            } finally {
-                ch.close();
-            }
+        if (ids.equals("cash")) {
+            oh.info("Maaf akun CASH tidak bisa dihapus");
+        } else {
+            if (oh.konfirmasi("hapus") == true) {
+                try {
+                    String sql = "DELETE FROM akun_keuangan WHERE kode_akun_keuangan=?";
+                    PreparedStatement pre = ch.connect().prepareStatement(sql);
+                    pre.setString(1, ids);
+                    pre.executeUpdate();
+                    oh.sukses("Data Berhasil Dihapus");
+                    pre.close();
+                    ch.close();
+                    loaddata();
+                    loadtotaldata();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AkunuangController.class.getName()).log(Level.SEVERE, null, ex);
+                    oh.error(ex);
+                } finally {
+                    ch.close();
+                }
 
+            }
         }
+
     }
 
     private void hapus() {
@@ -334,7 +338,7 @@ public class AkunuangController implements Initializable {
 
     public class Entity {
 
-       String kode_akun_keuangan,nama_akun_keuangan,keterangan_akun_keuangan;
+        String kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan;
 
         public Entity(String kode_akun_keuangan, String nama_akun_keuangan, String keterangan_akun_keuangan) {
             this.kode_akun_keuangan = kode_akun_keuangan;
@@ -365,10 +369,6 @@ public class AkunuangController implements Initializable {
         public void setKeterangan_akun_keuangan(String keterangan_akun_keuangan) {
             this.keterangan_akun_keuangan = keterangan_akun_keuangan;
         }
-       
-       
-       
-       
 
     }
 }
