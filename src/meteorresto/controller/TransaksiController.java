@@ -1108,7 +1108,7 @@ public class TransaksiController implements Initializable {
             while (resno.next()) {
                 setkode = resno.getString("kode_transaksi");
             }
-            System.out.println(setkode.substring(0, 6));
+            //System.out.println(setkode.substring(0, 6));
             if (setkode == null || setkode.equals("")) {
                 setkode = tglhariini+"0001";
             }else if(setkode.substring(0, 6).equals(tglhariini)){

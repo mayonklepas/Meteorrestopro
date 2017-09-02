@@ -98,11 +98,11 @@ WHERE tanggal::date=$P{tanggal} AND status=2  GROUP BY t.kode_transaksi,t.kode_a
 				<text><![CDATA[Kasir]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="162" y="4" width="50" height="20" uuid="f353d1e6-b13d-4771-8e66-81eb93fb7006"/>
+				<reportElement x="162" y="4" width="55" height="20" uuid="f353d1e6-b13d-4771-8e66-81eb93fb7006"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Disc Trx]]></text>
+				<text><![CDATA[Disc Trx %]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="315" y="4" width="54" height="20" uuid="02b244ff-6f99-4379-8b7e-2f067f417db8"/>
@@ -118,7 +118,7 @@ WHERE tanggal::date=$P{tanggal} AND status=2  GROUP BY t.kode_transaksi,t.kode_a
 				<reportElement x="0" y="2" width="555" height="1" uuid="14ea4a3b-6cee-4063-8100-44940b23c759"/>
 			</line>
 			<staticText>
-				<reportElement x="212" y="4" width="103" height="20" uuid="0aaba3f4-0d8f-41b4-ba23-b1910b9b931f"/>
+				<reportElement x="217" y="4" width="98" height="20" uuid="0aaba3f4-0d8f-41b4-ba23-b1910b9b931f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -170,7 +170,7 @@ WHERE tanggal::date=$P{tanggal} AND status=2  GROUP BY t.kode_transaksi,t.kode_a
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement mode="Opaque" x="162" y="7" width="50" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="461334aa-ea77-4b35-911c-f9295f3269d9"/>
+				<reportElement mode="Opaque" x="162" y="7" width="55" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="461334aa-ea77-4b35-911c-f9295f3269d9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{diskon_transaksi}]]></textFieldExpression>
 			</textField>
@@ -193,7 +193,7 @@ WHERE tanggal::date=$P{tanggal} AND status=2  GROUP BY t.kode_transaksi,t.kode_a
 				<text><![CDATA[Detail Pesanan]]></text>
 			</staticText>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="212" y="7" width="103" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="176084b8-3d2e-4769-977c-ba83d40d4a7f"/>
+				<reportElement mode="Opaque" x="217" y="7" width="98" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="176084b8-3d2e-4769-977c-ba83d40d4a7f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>

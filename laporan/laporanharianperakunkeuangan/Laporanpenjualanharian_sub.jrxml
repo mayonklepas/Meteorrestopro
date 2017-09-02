@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA["D:\\Workspace\\Netbeans\\MeteorRestopro\\laporan\\laporanharianperkasir\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT t.kode_transaksi,ak.nama,diskon_transaksi,
+		<![CDATA[SELECT t.kode_transaksi,t.kode_cc,ak.nama,diskon_transaksi,
 (select SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))-
 (diskon_transaksi/100*( SUM(jumlah*harga_masing-(diskon/100*(jumlah*harga_masing)))))
 FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi ) AS total,
@@ -32,9 +32,10 @@ FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY tax,diskon_transak
 FROM transaksi WHERE kode_transaksi=t.kode_transaksi GROUP BY diskon_transaksi,tax ) AS total_dengan_pajak 
 
 FROM transaksi t INNER JOIN akun ak ON t.kode_user2=ak.id 
-WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi ORDER BY t.kode_transaksi DESC]]>
+WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun_keuangan} GROUP BY t.kode_transaksi,t.kode_akun_keuangan,ak.nama,diskon_transaksi,t.kode_cc ORDER BY t.kode_transaksi DESC]]>
 	</queryString>
 	<field name="kode_transaksi" class="java.lang.String"/>
+	<field name="kode_cc" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String"/>
 	<field name="diskon_transaksi" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
@@ -59,35 +60,35 @@ WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun
 	<columnHeader>
 		<band height="29" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="4" width="92" height="20" forecolor="#000000" backcolor="#66FF66" uuid="cf8e5cda-a138-41fe-a009-dc10b17c2321"/>
+				<reportElement mode="Transparent" x="0" y="4" width="78" height="20" forecolor="#000000" backcolor="#66FF66" uuid="cf8e5cda-a138-41fe-a009-dc10b17c2321"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[No Transaksi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="92" y="4" width="92" height="20" forecolor="#000000" backcolor="#66FF66" uuid="77bf9197-2336-4e57-ae63-c9dfe676aa1b"/>
+				<reportElement mode="Transparent" x="78" y="4" width="53" height="20" forecolor="#000000" backcolor="#66FF66" uuid="77bf9197-2336-4e57-ae63-c9dfe676aa1b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kasir]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="237" y="4" width="92" height="20" forecolor="#000000" backcolor="#66FF66" uuid="55aef079-b151-41b3-9d02-383b836a416c"/>
+				<reportElement mode="Transparent" x="280" y="4" width="70" height="20" forecolor="#000000" backcolor="#66FF66" uuid="55aef079-b151-41b3-9d02-383b836a416c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="329" y="4" width="63" height="20" forecolor="#000000" backcolor="#66FF66" uuid="0434ca6f-5043-4781-ae8d-0385e51702a8"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement mode="Transparent" x="350" y="4" width="50" height="20" forecolor="#000000" backcolor="#66FF66" uuid="0434ca6f-5043-4781-ae8d-0385e51702a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Pajak %]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="392" y="4" width="68" height="20" forecolor="#000000" backcolor="#66FF66" uuid="d94ccdf0-e440-4d4b-878c-83cf2ac3aac6"/>
+				<reportElement mode="Transparent" x="400" y="4" width="60" height="20" forecolor="#000000" backcolor="#66FF66" uuid="d94ccdf0-e440-4d4b-878c-83cf2ac3aac6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -107,11 +108,18 @@ WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun
 				<reportElement x="0" y="1" width="555" height="1" uuid="7d682108-b249-412e-a86e-d1670b219735"/>
 			</line>
 			<staticText>
-				<reportElement mode="Transparent" x="184" y="4" width="53" height="20" forecolor="#000000" backcolor="#66FF66" uuid="e8eaea0f-ab21-4199-ba4e-8be2396c5c1d"/>
+				<reportElement mode="Transparent" x="227" y="4" width="53" height="20" forecolor="#000000" backcolor="#66FF66" uuid="e8eaea0f-ab21-4199-ba4e-8be2396c5c1d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Disc Trx %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="131" y="4" width="96" height="20" forecolor="#000000" backcolor="#66FF66" uuid="0e77be59-8747-4012-aa66-f37b5d901752"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode CC]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -141,27 +149,27 @@ WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"laporanharianperakunkeuangan/Laporanpenjualanharian_subinsub.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="3f2d6a72-b386-47d7-b880-f0086634d6ca"/>
+				<reportElement mode="Opaque" x="0" y="5" width="78" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="3f2d6a72-b386-47d7-b880-f0086634d6ca"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{kode_transaksi}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="92" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="95573a44-99cd-46fa-96ad-41d6ccbf8b4c"/>
+				<reportElement mode="Opaque" x="78" y="5" width="53" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="95573a44-99cd-46fa-96ad-41d6ccbf8b4c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="237" y="5" width="92" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="08f625cb-3dd8-456b-bad3-2b6f3a30534e"/>
+				<reportElement mode="Opaque" x="280" y="5" width="70" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="08f625cb-3dd8-456b-bad3-2b6f3a30534e"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement mode="Opaque" x="329" y="5" width="63" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="9ba33e75-e099-474f-8ab1-39a0fb5d9a54"/>
+				<reportElement mode="Opaque" x="350" y="5" width="50" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="9ba33e75-e099-474f-8ab1-39a0fb5d9a54"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{pajak}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
-				<reportElement mode="Opaque" x="392" y="5" width="68" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="534b7f84-0a05-46b9-8c0a-00c0d0ccbeee"/>
+				<reportElement mode="Opaque" x="400" y="5" width="60" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="534b7f84-0a05-46b9-8c0a-00c0d0ccbeee"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_pajak}]]></textFieldExpression>
 			</textField>
@@ -184,9 +192,14 @@ WHERE tanggal::date=$P{tanggal} AND status=1 AND kode_akun_keuangan=$P{kode_akun
 				<text><![CDATA[Detail Pesanan]]></text>
 			</staticText>
 			<textField pattern="###0">
-				<reportElement mode="Opaque" x="184" y="5" width="53" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="03b34903-f6e1-4877-b3dd-ff87b09b4aaf"/>
+				<reportElement mode="Opaque" x="227" y="5" width="53" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="03b34903-f6e1-4877-b3dd-ff87b09b4aaf"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{diskon_transaksi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="131" y="5" width="96" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="415b9599-1606-43e9-a571-7e7ad55dac32"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_cc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
