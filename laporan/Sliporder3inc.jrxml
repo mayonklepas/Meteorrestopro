@@ -34,8 +34,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT m.nama,t.jumlah,diskon,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir}]]>
+		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah,diskon,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir}]]>
 	</queryString>
+	<field name="tanggal" class="java.sql.Timestamp"/>
 	<field name="nama" class="java.lang.String"/>
 	<field name="jumlah" class="java.lang.Integer"/>
 	<field name="diskon" class="java.lang.Double"/>
@@ -139,7 +140,7 @@
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="2" width="93" height="11" uuid="d64a2651-a233-433c-a256-94589e7c0a7d"/>
+				<reportElement x="27" y="2" width="66" height="11" uuid="d64a2651-a233-433c-a256-94589e7c0a7d"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -178,12 +179,19 @@
 				</textElement>
 				<text><![CDATA[Disc]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="27" height="11" uuid="8745c1bf-806a-4462-ad37-b6c969a0f567"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tgl]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="93" height="20" uuid="e8e06568-f67f-4716-a42c-6505e72d2a28"/>
+				<reportElement x="27" y="0" width="66" height="20" uuid="e8e06568-f67f-4716-a42c-6505e72d2a28"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -215,6 +223,13 @@
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{diskon}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="27" height="20" uuid="3edac09a-279a-4b9b-859f-82db768dabdf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tanggal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -147,6 +148,8 @@ public class TransaksiController implements Initializable {
     private TableColumn<Entity, String> diskon;
     @FXML
     private ComboBox<?> cdiskon_transaksi;
+    @FXML
+    private TableColumn<Entity, String> tanggal;
 
     /**
      * Initializes the controller class.
@@ -741,7 +744,7 @@ public class TransaksiController implements Initializable {
         olstable.clear();
         tableview.getItems().clear();
         try {
-            String sql = "SELECT t.id,m.nama,t.jumlah,t.diskon,t.tax,t.statustax,t.kode_transaksi,t.diskon_transaksi,"
+            String sql = "SELECT t.id,t.tanggal::date,m.nama,t.jumlah,t.diskon,t.tax,t.statustax,t.kode_transaksi,t.diskon_transaksi,"
                     + "(t.harga_masing*t.jumlah-(diskon/100*(t.harga_masing*t.jumlah))) as harga FROM transaksi t INNER JOIN "
                     + "menu m on t.kode_menu=m.kode WHERE t.status=0 AND t.kode_meja=? AND t.slot=? ORDER BY t.id DESC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
@@ -754,16 +757,24 @@ public class TransaksiController implements Initializable {
                 String jumlah = res.getString("jumlah");
                 String harga = nf.format(res.getDouble("harga"));
                 String diskonmenu = res.getString("diskon");
+                String tanggal = "";
+                try {
+                    Date datefromdb = new SimpleDateFormat("yyyy-MM-dd").parse(res.getString("tanggal"));
+                    tanggal = new SimpleDateFormat("dd/MM/yy").format(datefromdb);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TransaksiController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 tax = res.getDouble("tax");
                 status_tax = res.getInt("statustax");
                 kode_transaksi = res.getString("kode_transaksi");
                 diskon_transaksi = res.getString("diskon_transaksi");
-                olstable.add(new Entity(id, nama, jumlah, harga, diskonmenu));
+                olstable.add(new Entity(id, nama, jumlah, harga, diskonmenu, tanggal));
             }
             pre.close();
             res.close();
             ch.close();
             //id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            tanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
             menu.setCellValueFactory(new PropertyValueFactory<>("menu"));
             qty.setCellValueFactory(new PropertyValueFactory<>("qty"));
             harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
@@ -970,7 +981,12 @@ public class TransaksiController implements Initializable {
                                 JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                                 JasperPrintManager.printReport(jp, false);
                                 ch.close();
-
+                                String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 1 "
+                                        + "WHERE kode_transaksi=?";
+                                PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
+                                preupdatestatuscetak.setString(1, kode_transaksi);
+                                preupdatestatuscetak.executeUpdate();
+                                ch.close();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 oh.error(ex);
@@ -1083,6 +1099,12 @@ public class TransaksiController implements Initializable {
                     JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                     JasperPrintManager.printReport(jp, false);
                     ch.close();
+                    String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 1 "
+                            + "WHERE kode_transaksi=?";
+                    PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
+                    preupdatestatuscetak.setString(1, kode_transaksi);
+                    preupdatestatuscetak.executeUpdate();
+                    ch.close();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -1110,11 +1132,11 @@ public class TransaksiController implements Initializable {
             }
             //System.out.println(setkode.substring(0, 6));
             if (setkode == null || setkode.equals("")) {
-                setkode = tglhariini+"0001";
-            }else if(setkode.substring(0, 6).equals(tglhariini)){
+                setkode = tglhariini + "0001";
+            } else if (setkode.substring(0, 6).equals(tglhariini)) {
                 setkode = String.valueOf(Integer.parseInt(setkode) + 1);
             } else {
-                setkode = tglhariini+"0001";
+                setkode = tglhariini + "0001";
                 /*if(setkode.length()==1){
                     setkode="000"+setkode;
                 }else if(setkode.length()==2){
@@ -1122,7 +1144,6 @@ public class TransaksiController implements Initializable {
                 }else if(setkode.length()==3){
                     setkode="0"+setkode;
                 }*/
-                
 
             }
             pregetno.close();
@@ -1465,14 +1486,15 @@ public class TransaksiController implements Initializable {
 
     public class Entity {
 
-        String id, menu, qty, harga, diskon;
+        String id, menu, qty, harga, diskon, tanggal;
 
-        public Entity(String id, String menu, String qty, String harga, String diskon) {
+        public Entity(String id, String menu, String qty, String harga, String diskon, String tanggal) {
             this.id = id;
             this.menu = menu;
             this.qty = qty;
             this.harga = harga;
             this.diskon = diskon;
+            this.tanggal = tanggal;
         }
 
         public String getId() {
@@ -1513,6 +1535,14 @@ public class TransaksiController implements Initializable {
 
         public void setDiskon(String diskon) {
             this.diskon = diskon;
+        }
+
+        public String getTanggal() {
+            return tanggal;
+        }
+
+        public void setTanggal(String tanggal) {
+            this.tanggal = tanggal;
         }
 
     }

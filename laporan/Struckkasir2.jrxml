@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="341"/>
+	<property name="ireport.y" value="101"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -40,10 +40,11 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT m.nama,t.jumlah,diskon,t.kode_user,a.nama AS nama_user ,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode
+		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah,diskon,t.kode_user,a.nama AS nama_user ,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode
 INNER JOIN akun a ON t.kode_user=a.id WHERE kode_transaksi=$P{kode_transaksi} AND 
 kode_user2=$P{kode_kasir}]]>
 	</queryString>
+	<field name="tanggal" class="java.sql.Timestamp"/>
 	<field name="nama" class="java.lang.String"/>
 	<field name="jumlah" class="java.lang.Integer"/>
 	<field name="diskon" class="java.lang.Double"/>
@@ -170,7 +171,7 @@ kode_user2=$P{kode_kasir}]]>
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="2" width="68" height="10" uuid="d64a2651-a233-433c-a256-94589e7c0a7d"/>
+				<reportElement x="23" y="2" width="45" height="10" uuid="d64a2651-a233-433c-a256-94589e7c0a7d"/>
 				<textElement>
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -209,12 +210,19 @@ kode_user2=$P{kode_kasir}]]>
 				</textElement>
 				<text><![CDATA[Disc]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="3" y="2" width="20" height="10" uuid="b70b61c8-a338-4e58-aeb2-4bb0ac6ea0cf"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tgl]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="68" height="20" uuid="e8e06568-f67f-4716-a42c-6505e72d2a28"/>
+				<reportElement x="23" y="0" width="45" height="20" uuid="e8e06568-f67f-4716-a42c-6505e72d2a28"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -246,6 +254,13 @@ kode_user2=$P{kode_kasir}]]>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{diskon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="23" height="20" uuid="42ad7352-85b7-421d-8a26-6be61250afa0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tanggal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
