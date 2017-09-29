@@ -85,10 +85,6 @@ public class Kategori_mejaController implements Initializable {
     private AnchorPane footer;
     @FXML
     private Pane detail;
-    @FXML
-    private ComboBox<?> ckategori;
-    @FXML
-    private TableColumn<?, ?> kategori;
 
     /**
      * Initializes the controller class.
@@ -136,7 +132,7 @@ public class Kategori_mejaController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja ORDER BY nama_kategori DESC LIMIT ?";
+            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja ORDER BY nama_kategori_meja DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
@@ -236,7 +232,7 @@ public class Kategori_mejaController implements Initializable {
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
-                String sql = "DELETE FROM kategori_meja WHERE kode=?";
+                String sql = "DELETE FROM kategori_meja WHERE kode_kategori_meja=?";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, ids);
                 pre.executeUpdate();
@@ -295,7 +291,7 @@ public class Kategori_mejaController implements Initializable {
             for (int i = 0; i < 2; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
             }
-            pre.setInt(4, Integer.parseInt(tlimit.getText()));
+            pre.setInt(3, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String skode = res.getString("kode_kategori_meja");
@@ -303,8 +299,8 @@ public class Kategori_mejaController implements Initializable {
                 tabledata.add(new Entity(skode, snama));
             }
             ch.connect().close();
-            kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+            kode.setCellValueFactory(new PropertyValueFactory<>("kode_kategori_meja"));
+            nama.setCellValueFactory(new PropertyValueFactory<>("nama_kategori_meja"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);

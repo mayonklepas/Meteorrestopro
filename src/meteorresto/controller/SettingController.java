@@ -68,9 +68,7 @@ public class SettingController implements Initializable {
     @FXML
     private Button bsimpaninformasi;
     @FXML
-    private TextArea tkelompokmeja;
-    @FXML
-    private TextArea tkelompokmakanan, tslot;
+    private TextArea tslot;
     @FXML
     private Button bsimpanutil;
     FIlehelper fh = new FIlehelper();
@@ -99,7 +97,7 @@ public class SettingController implements Initializable {
     private TextField tpajak;
     @FXML
     private TextField tstruck;
-    String struck,slip;
+    String struck, slip;
     @FXML
     private TextField tslip;
 
@@ -170,14 +168,12 @@ public class SettingController implements Initializable {
         ttelp.setText(info[3]);
         tnohp.setText(info[4]);
         tpajak.setText(info[5]);
-        struck=info[6];
-        slip=info[7];
+        struck = info[6];
+        slip = info[7];
 
     }
 
     private void loadutil() {
-        tkelompokmeja.setText(fh.getkategorimeja());
-        tkelompokmakanan.setText(fh.getkategorimenu());
         tslot.setText(fh.getslot());
         tstruck.setText(struck);
         tslip.setText(slip);
@@ -217,8 +213,8 @@ public class SettingController implements Initializable {
                     sb.append(temail.getText() + ";\n");
                     sb.append(ttelp.getText() + ";\n");
                     sb.append(tnohp.getText() + ";\n");
-                    sb.append(tpajak.getText()+";\n");
-                    sb.append(tstruck.getText()+";\n");
+                    sb.append(tpajak.getText() + ";\n");
+                    sb.append(tstruck.getText() + ";\n");
                     sb.append(tslip.getText());
                     fh.setall("info", sb.toString());
                     oh.sukses("Berhasil Disimpan");
@@ -231,8 +227,6 @@ public class SettingController implements Initializable {
         bsimpanutil.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fh.setall("kategorimeja", tkelompokmeja.getText());
-                fh.setall("kategorimenu", tkelompokmakanan.getText());
                 fh.setall("slot", tslot.getText());
                 oh.sukses("Berhasil Disimpan");
             }

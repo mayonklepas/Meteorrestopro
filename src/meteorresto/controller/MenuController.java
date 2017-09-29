@@ -117,7 +117,7 @@ public class MenuController implements Initializable {
     private ComboBox<String> cresep;
     @FXML
     private TableColumn<Entity, String> nama_resep;
-    NumberFormat nf=NumberFormat.getInstance();
+    NumberFormat nf = NumberFormat.getInstance();
 
     /**
      * Initializes the controller class.
@@ -187,9 +187,10 @@ public class MenuController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-             String sql = "SELECT m.kode,m.nama,m.kategori,m.harga,m.gambar,"
+            String sql = "SELECT m.kode,m.nama,m.kategori,km.nama_kategori_menu,m.harga,m.gambar,"
                     + "m.kode_master_resep,rm.nama_resep FROM menu m "
-                    + "LEFT JOIN resep_master rm ON m.kode_master_resep=rm.kode_resep ORDER BY nama DESC LIMIT ?";
+                    + "LEFT JOIN resep_master rm ON m.kode_master_resep=rm.kode_resep "
+                    + "LEFT JOIN kategori_menu km ON m.kategori=km.kode_kategori_menu  ORDER BY nama DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
@@ -198,10 +199,11 @@ public class MenuController implements Initializable {
                 String snama = res.getString("nama");
                 String sharga = nf.format(res.getDouble("harga"));
                 String skategori = res.getString("kategori");
+                String snamakategori = res.getString("nama_kategori_menu");
                 String sgambar = "image/" + res.getString("gambar");
                 String skode_resep = res.getString("kode_master_resep");
-                String snama_resep= res.getString("nama_resep");
-                tabledata.add(new Entity(skode, snama, sharga, skategori, sgambar,skode_resep,snama_resep));
+                String snama_resep = res.getString("nama_resep");
+                tabledata.add(new Entity(skode, snama, sharga, skategori, snamakategori, sgambar, skode_resep, snama_resep));
             }
             pre.close();
             res.close();
@@ -209,7 +211,7 @@ public class MenuController implements Initializable {
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
-            kategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
+            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
             nama_resep.setCellValueFactory(new PropertyValueFactory<>("nama_resep"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
@@ -221,9 +223,25 @@ public class MenuController implements Initializable {
     }
 
     private void loadcombo() {
-        String[] data = fh.getkategorimenu().split(";");
-        for (int i = 0; i < data.length; i++) {
-            olscombo.add(data[i]);
+        ckategori.getEditor().clear();
+        olscombo.clear();
+        try {
+            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu "
+                    + "ORDER BY kode_kategori_menu";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                olscombo.add(res.getString("kode_kategori_menu") + "-" + res.getString("nama_kategori_menu"));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            ckategori.setItems(olscombo);
+        } catch (SQLException ex) {
+            Logger.getLogger(PembelianController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
         }
         ckategori.setItems(olscombo);
     }
@@ -246,9 +264,9 @@ public class MenuController implements Initializable {
                         gambar = tabledata.get(i).lokasigambar;
                         tkode.setText(kode.getCellData(i));
                         tnama.setText(nama.getCellData(i));
-                        ckategori.getEditor().setText(kategori.getCellData(i));
+                        ckategori.getEditor().setText(tabledata.get(i).kategori + "-" + kategori.getCellData(i));
                         tharga.setText(harga.getCellData(i));
-                        cresep.getEditor().setText(tabledata.get(i).nama_resep+"-"+tabledata.get(i).kode_resep);
+                        cresep.getEditor().setText(tabledata.get(i).nama_resep + "-" + tabledata.get(i).kode_resep);
                         fis.close();
                         if (gambar != null) {
                             fis = new FileInputStream(new File(gambar));
@@ -277,7 +295,7 @@ public class MenuController implements Initializable {
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
-                    pre.setString(3, ckategori.getEditor().getText());
+                    pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                     pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                     pre.setString(5, cresep.getEditor().getText().split("-")[1]);
                     pre.executeUpdate();
@@ -291,7 +309,7 @@ public class MenuController implements Initializable {
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
-                    pre.setString(3, ckategori.getEditor().getText());
+                    pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                     pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                     pre.setString(5, tkode.getText() + "." + extgambar[1]);
                     pre.setString(6, cresep.getEditor().getText().split("-")[1]);
@@ -320,7 +338,7 @@ public class MenuController implements Initializable {
                         PreparedStatement pre = ch.connect().prepareStatement(sql);
                         pre.setString(1, tkode.getText());
                         pre.setString(2, tnama.getText());
-                        pre.setString(3, ckategori.getEditor().getText());
+                        pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                         pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                         pre.setString(5, cresep.getEditor().getText().split("-")[1]);
                         pre.setString(6, ids);
@@ -337,7 +355,7 @@ public class MenuController implements Initializable {
                             PreparedStatement pre = ch.connect().prepareStatement(sql);
                             pre.setString(1, tkode.getText());
                             pre.setString(2, tnama.getText());
-                            pre.setString(3, ckategori.getEditor().getText());
+                            pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                             pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                             pre.setString(5, tkode.getText() + "." + extgambar[1]);
                             pre.setString(6, cresep.getEditor().getText().split("-")[1]);
@@ -355,7 +373,7 @@ public class MenuController implements Initializable {
                             PreparedStatement pre = ch.connect().prepareStatement(sql);
                             pre.setString(1, tkode.getText());
                             pre.setString(2, tnama.getText());
-                            pre.setString(3, ckategori.getEditor().getText());
+                            pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                             pre.setDouble(4, Double.parseDouble(tharga.getText().replaceAll("[,.]", "")));
                             pre.setString(5, tkode.getText() + "." + extgambar[1]);
                             pre.setString(6, cresep.getEditor().getText().split("-")[1]);
@@ -465,9 +483,10 @@ public class MenuController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT m.kode,m.nama,m.kategori,m.harga,m.gambar,"
+            String sql = "SELECT m.kode,m.nama,m.kategori,km.nama_kategori_menu,m.harga,m.gambar,"
                     + "m.kode_master_resep,rm.nama_resep FROM menu m "
-                    + "LEFT JOIN resep_master rm ON m.kode_master_resep=rm.kode_resep WHERE kode ILIKE ? OR "
+                    + "LEFT JOIN resep_master rm ON m.kode_master_resep=rm.kode_resep "
+                    + "LEFT JOIN kategori_menu km ON m.kategori=km.kode_kategori_menu WHERE kode ILIKE ? OR "
                     + "nama ILIKE ? OR "
                     + "kategori ILIKE ? OR "
                     + "harga::character varying ILIKE ? ORDER BY nama DESC LIMIT ?";
@@ -482,10 +501,11 @@ public class MenuController implements Initializable {
                 String snama = res.getString("nama");
                 String sharga = nf.format(res.getDouble("harga"));
                 String skategori = res.getString("kategori");
+                String snamakategori = res.getString("nama_kategori_menu");
                 String sgambar = "image/" + res.getString("gambar");
                 String skode_resep = res.getString("kode_master_resep");
-                String snama_resep= res.getString("nama_resep");
-                tabledata.add(new Entity(skode, snama, sharga, skategori, sgambar,skode_resep,snama_resep));
+                String snama_resep = res.getString("nama_resep");
+                tabledata.add(new Entity(skode, snama, sharga, skategori, snamakategori, sgambar, skode_resep, snama_resep));
             }
             pre.close();
             res.close();
@@ -493,7 +513,7 @@ public class MenuController implements Initializable {
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             harga.setCellValueFactory(new PropertyValueFactory<>("harga"));
-            kategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
+            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
             nama_resep.setCellValueFactory(new PropertyValueFactory<>("nama_resep"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
@@ -567,14 +587,14 @@ public class MenuController implements Initializable {
 
     public class Entity {
 
-        String kode, nama, harga, kategori, lokasigambar, kode_resep, nama_resep;
+        String kode, nama, harga, kategori, nama_kategori, lokasigambar, kode_resep, nama_resep;
 
-        public Entity(String kode, String nama, String harga, String kategori,
-                String lokasigambar, String kode_resep, String nama_resep) {
+        public Entity(String kode, String nama, String harga, String kategori, String nama_kategori, String lokasigambar, String kode_resep, String nama_resep) {
             this.kode = kode;
             this.nama = nama;
             this.harga = harga;
             this.kategori = kategori;
+            this.nama_kategori = nama_kategori;
             this.lokasigambar = lokasigambar;
             this.kode_resep = kode_resep;
             this.nama_resep = nama_resep;
@@ -612,6 +632,14 @@ public class MenuController implements Initializable {
             this.kategori = kategori;
         }
 
+        public String getNama_kategori() {
+            return nama_kategori;
+        }
+
+        public void setNama_kategori(String nama_kategori) {
+            this.nama_kategori = nama_kategori;
+        }
+
         public String getLokasigambar() {
             return lokasigambar;
         }
@@ -635,8 +663,6 @@ public class MenuController implements Initializable {
         public void setNama_resep(String nama_resep) {
             this.nama_resep = nama_resep;
         }
-        
-        
 
     }
 

@@ -132,7 +132,7 @@ public class Kategori_menuController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu ORDER BY nama_kategori DESC LIMIT ?";
+            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu ORDER BY nama_kategori_menu DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
@@ -232,7 +232,7 @@ public class Kategori_menuController implements Initializable {
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
-                String sql = "DELETE FROM kategori_menu WHERE kode=?";
+                String sql = "DELETE FROM kategori_menu WHERE kode_kategori_menu=?";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, ids);
                 pre.executeUpdate();
@@ -291,7 +291,7 @@ public class Kategori_menuController implements Initializable {
             for (int i = 0; i < 2; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
             }
-            pre.setInt(4, Integer.parseInt(tlimit.getText()));
+            pre.setInt(3, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String skode = res.getString("kode_kategori_menu");
@@ -299,8 +299,8 @@ public class Kategori_menuController implements Initializable {
                 tabledata.add(new Entity(skode, snama));
             }
             ch.connect().close();
-            kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+            kode.setCellValueFactory(new PropertyValueFactory<>("kode_kategori_menu"));
+            nama.setCellValueFactory(new PropertyValueFactory<>("nama_kategori_menu"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);

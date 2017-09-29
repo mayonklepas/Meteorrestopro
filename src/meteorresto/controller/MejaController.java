@@ -78,7 +78,7 @@ public class MejaController implements Initializable {
     private TextField tcari;
     Sessionhelper sh = new Sessionhelper();
     Connectionhelper ch = new Connectionhelper();
-    ObservableList tabledata = FXCollections.observableArrayList();
+    ObservableList<Entity> tabledata = FXCollections.observableArrayList();
     ObservableList olscombo = FXCollections.observableArrayList();
     Operationhelper oh = new Operationhelper();
     FIlehelper fh = new FIlehelper();
@@ -138,23 +138,25 @@ public class MejaController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,kategori FROM meja ORDER BY nama DESC LIMIT ?";
+            String sql = "SELECT kode,nama,kategori,nama_kategori_meja FROM meja LEFT JOIN kategori_meja "
+                    + "ON meja.kategori=kategori_meja.kode_kategori_meja ORDER BY nama DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
-            
+
             while (res.next()) {
                 String skode = res.getString("kode");
                 String snama = res.getString("nama");
                 String skategori = res.getString("kategori");
-                tabledata.add(new Entity(skode, snama, skategori));
+                String snamakategori = res.getString("nama_kategori_meja");
+                tabledata.add(new Entity(skode, snama, skategori, snamakategori));
             }
             pre.close();
             res.close();
             ch.close();
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            kategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
+            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
             table.setItems(tabledata);
 
         } catch (SQLException ex) {
@@ -166,9 +168,25 @@ public class MejaController implements Initializable {
     }
 
     private void loadcombo() {
-        String[] data = fh.getkategorimeja().split(";");
-        for (int i = 0; i < data.length; i++) {
-            olscombo.add(data[i]);
+        ckategori.getEditor().clear();
+        olscombo.clear();
+        try {
+            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja "
+                    + "ORDER BY kode_kategori_meja DESC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                olscombo.add(res.getString("kode_kategori_meja") + "-" + res.getString("nama_kategori_meja"));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            ckategori.setItems(olscombo);
+        } catch (SQLException ex) {
+            Logger.getLogger(PembelianController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
         }
         ckategori.setItems(olscombo);
     }
@@ -186,7 +204,12 @@ public class MejaController implements Initializable {
                 ids = kode.getCellData(i);
                 tkode.setText(kode.getCellData(i));
                 tnama.setText(nama.getCellData(i));
-                ckategori.getEditor().setText(kategori.getCellData(i));
+                if (i == -1) {
+
+                } else {
+                    ckategori.getEditor().setText(tabledata.get(i).kode_kategori + "-" + kategori.getCellData(i));
+                }
+
             }
         });
     }
@@ -198,7 +221,7 @@ public class MejaController implements Initializable {
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, tkode.getText());
                 pre.setString(2, tnama.getText());
-                pre.setString(3, ckategori.getEditor().getText());
+                pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                 pre.executeUpdate();
                 pre.close();
                 ch.close();
@@ -219,7 +242,7 @@ public class MejaController implements Initializable {
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
-                    pre.setString(3, ckategori.getEditor().getText());
+                    pre.setString(3, ckategori.getEditor().getText().split("-")[0]);
                     pre.setString(4, ids);
                     pre.executeUpdate();
                     pre.close();
@@ -303,7 +326,8 @@ public class MejaController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,kategori FROM meja "
+            String sql = "SELECT kode,nama,kategori,nama_kategori_meja FROM meja "
+                    + "LEFT JOIN kategori_meja ON meja.kategori=kategori_meja.kode_kategori_meja "
                     + "WHERE kode ILIKE ? OR "
                     + "nama ILIKE ? OR "
                     + "kategori ILIKE ? ORDER BY nama DESC LIMIT ?";
@@ -317,12 +341,13 @@ public class MejaController implements Initializable {
                 String skode = res.getString("kode");
                 String snama = res.getString("nama");
                 String skategori = res.getString("kategori");
-                tabledata.add(new Entity(skode, snama, skategori));
+                String snamakategori = res.getString("nama_kategori_meja");
+                tabledata.add(new Entity(skode, snama, skategori, snamakategori));
             }
             ch.connect().close();
             kode.setCellValueFactory(new PropertyValueFactory<>("kode"));
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-            kategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
+            kategori.setCellValueFactory(new PropertyValueFactory<>("nama_kategori"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(MejaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -342,12 +367,13 @@ public class MejaController implements Initializable {
 
     public class Entity {
 
-        String kode, nama, kategori;
+        String kode, nama, kode_kategori, nama_kategori;
 
-        public Entity(String kode, String nama, String kategori) {
+        public Entity(String kode, String nama, String kode_kategori, String nama_kategori) {
             this.kode = kode;
             this.nama = nama;
-            this.kategori = kategori;
+            this.kode_kategori = kode_kategori;
+            this.nama_kategori = nama_kategori;
         }
 
         public String getKode() {
@@ -366,12 +392,20 @@ public class MejaController implements Initializable {
             this.nama = nama;
         }
 
-        public String getKategori() {
-            return kategori;
+        public String getKode_kategori() {
+            return kode_kategori;
         }
 
-        public void setKategori(String kategori) {
-            this.kategori = kategori;
+        public void setKode_kategori(String kode_kategori) {
+            this.kode_kategori = kode_kategori;
+        }
+
+        public String getNama_kategori() {
+            return nama_kategori;
+        }
+
+        public void setNama_kategori(String nama_kategori) {
+            this.nama_kategori = nama_kategori;
         }
 
     }

@@ -55,25 +55,25 @@ import meteorresto.helper.Sessionhelper;
  * @author user
  */
 public class MainController implements Initializable {
-
+    
     @FXML
     private Pane pmeja;
-
+    
     @FXML
     private Pane pmenu;
-
+    
     @FXML
     private Pane plaporan;
-
+    
     @FXML
     private Pane psetting;
-
+    
     @FXML
     private Pane pakun;
-
+    
     @FXML
     private Label luser;
-
+    
     Sessionhelper sh = new Sessionhelper();
     Operationhelper oh = new Operationhelper();
     @FXML
@@ -128,7 +128,11 @@ public class MainController implements Initializable {
     private ImageView imglogo;
     @FXML
     private Pane puang;
-
+    @FXML
+    private Pane ptipemeja;
+    @FXML
+    private Pane ptipemenu;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -145,6 +149,8 @@ public class MainController implements Initializable {
         perkiraan();
         about();
         akunuang();
+        kategorimeja();
+        kategorimenu();
         closeapp();
         lnamacafe.setText(fh.getinfo().split(";")[0]);
         luser.setText(sh.getUsername());
@@ -160,6 +166,9 @@ public class MainController implements Initializable {
         pbahan.setId("pane");
         presep.setId("pane");
         pcatatan.setId("pane");
+        pperkiraan.setId("pane");
+        ptipemeja.setId("pane");
+        ptipemenu.setId("pane");
         pperkiraan.setId("pane");
         tharian.setText("Grafik Penjualan Harian Bulan " + new SimpleDateFormat("MMMM YYYY").format(new Date()) + " (1000)");
         tbulanan.setText("Grafik Penjualan Bulanan Tahun " + new SimpleDateFormat("YYYY").format(new Date()) + " (1000)");
@@ -179,7 +188,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void about() {
         imglogo.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -200,7 +209,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void loadpenjulanharichart() {
         XYChart.Series linechart = new XYChart.Series();
         linechart.setName("Penjualan Harian");
@@ -237,9 +246,9 @@ public class MainController implements Initializable {
         } finally {
             ch.close();
         }
-
+        
     }
-
+    
     private void loadpenjulanbulanchart() {
         XYChart.Series area = new XYChart.Series();
         try {
@@ -274,9 +283,9 @@ public class MainController implements Initializable {
         } finally {
             ch.close();
         }
-
+        
     }
-
+    
     private void loadtopselling() {
         XYChart.Series bar = new XYChart.Series();
         try {
@@ -288,14 +297,14 @@ public class MainController implements Initializable {
             while (res.next()) {
                 bar.getData().add(new XYChart.Data(res.getString("nama"), res.getDouble("total")));
             }
-
+            
             pre.close();
             res.close();
             ch.close();
             gtopselling.getData().setAll(bar);
             for (XYChart.Series<String, Number> s : gtopselling.getData()) {
                 for (XYChart.Data<String, Number> d : s.getData()) {
-
+                    
                     Tooltip t = new Tooltip();
                     t.setText("Menu : " + d.getXValue().toString() + "\n"
                             + "Terjual : " + d.getYValue().intValue() + " Item");
@@ -315,9 +324,9 @@ public class MainController implements Initializable {
         } finally {
             ch.close();
         }
-
+        
     }
-
+    
     private void loaddatabahan() {
         tablebahan.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tablebahan.getItems().clear();
@@ -347,7 +356,7 @@ public class MainController implements Initializable {
             ch.close();
         }
     }
-
+    
     private void menu() {
         pmenu.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -365,9 +374,9 @@ public class MainController implements Initializable {
                 }
             }
         });
-
+        
     }
-
+    
     private void meja() {
         pmeja.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -386,7 +395,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void akun() {
         pakun.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -405,7 +414,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void akunuang() {
         puang.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -424,7 +433,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void bahan() {
         pbahan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -443,7 +452,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void transaksi() {
         ppenjualan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -458,7 +467,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void laporan() {
         plaporan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -477,7 +486,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void setting() {
         psetting.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -496,7 +505,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void pembelian() {
         ppembelian.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -515,7 +524,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void catatan() {
         pcatatan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -534,7 +543,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void resep() {
         presep.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -553,7 +562,7 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
     private void perkiraan() {
         pperkiraan.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -572,52 +581,90 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
+    private void kategorimeja() {
+        ptipemeja.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (sh.getTipe().equals("admin")) {
+                    try {
+                        FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Kategori_meja.fxml"));
+                        Parent root = fxl.load();
+                        sh.getSt().getScene().setRoot(root);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    oh.gagal("Maaf Akses Ditolak");
+                }
+            }
+        });
+    }
+    
+    private void kategorimenu() {
+        ptipemenu.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (sh.getTipe().equals("admin")) {
+                    try {
+                        FXMLLoader fxl = new FXMLLoader(getClass().getResource("/meteorresto/view/Kategori_menu.fxml"));
+                        Parent root = fxl.load();
+                        sh.getSt().getScene().setRoot(root);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    oh.gagal("Maaf Akses Ditolak");
+                }
+            }
+        });
+    }
+    
     public class Entitybahan {
-
+        
         String kode_bahan, nama_bahan, jumlah_g, jumlah_kg;
-
+        
         public Entitybahan(String kode_bahan, String nama_bahan, String jumlah_g, String jumlah_kg) {
             this.kode_bahan = kode_bahan;
             this.nama_bahan = nama_bahan;
             this.jumlah_g = jumlah_g;
             this.jumlah_kg = jumlah_kg;
         }
-
+        
         public String getKode_bahan() {
             return kode_bahan;
         }
-
+        
         public void setKode_bahan(String kode_bahan) {
             this.kode_bahan = kode_bahan;
         }
-
+        
         public String getNama_bahan() {
             return nama_bahan;
         }
-
+        
         public void setNama_bahan(String nama_bahan) {
             this.nama_bahan = nama_bahan;
         }
-
+        
         public String getJumlah_g() {
             return jumlah_g;
         }
-
+        
         public void setJumlah_g(String jumlah_g) {
             this.jumlah_g = jumlah_g;
         }
-
+        
         public String getJumlah_kg() {
             return jumlah_kg;
         }
-
+        
         public void setJumlah_kg(String jumlah_kg) {
             this.jumlah_kg = jumlah_kg;
         }
-
+        
     }
-
+    
     private void closeapp() {
         sh.getSt().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -640,5 +687,5 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    
 }

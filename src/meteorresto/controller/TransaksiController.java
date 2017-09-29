@@ -252,19 +252,46 @@ public class TransaksiController implements Initializable {
     }
 
     private void loadcombomeja() {
-
-        String[] datameja = fh.getkategorimeja().split(";");
-        for (int i = 0; i < datameja.length; i++) {
-            olsmeja.add(datameja[i]);
+        try {
+            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja "
+                    + "ORDER BY kode_kategori_meja DESC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                olsmeja.add(res.getString("kode_kategori_meja") + "-" + res.getString("nama_kategori_meja"));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            ctipemeja.setItems(olsmeja);
+        } catch (SQLException ex) {
+            Logger.getLogger(PembelianController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
         }
         ctipemeja.setItems(olsmeja);
     }
 
     private void loadcombomenu() {
 
-        String[] datamenu = fh.getkategorimenu().split(";");
-        for (int i = 0; i < datamenu.length; i++) {
-            olsmenu.add(datamenu[i]);
+        try {
+            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu "
+                    + "ORDER BY kode_kategori_menu DESC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while (res.next()) {
+                olsmenu.add(res.getString("kode_kategori_menu") + "-" + res.getString("nama_kategori_menu"));
+            }
+            pre.close();
+            res.close();
+            ch.close();
+            ckategorimenu.setItems(olsmenu);
+        } catch (SQLException ex) {
+            Logger.getLogger(PembelianController.class.getName()).log(Level.SEVERE, null, ex);
+            oh.error(ex);
+        } finally {
+            ch.close();
         }
         ckategorimenu.setItems(olsmenu);
     }
@@ -401,7 +428,11 @@ public class TransaksiController implements Initializable {
             fpmeja.getChildren().clear();
             String sql = "SELECT kode,nama,kategori,status FROM meja WHERE kategori = ? ORDER BY kode ASC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            pre.setString(1, key);
+            if (key == null) {
+                pre.setString(1, "");
+            } else {
+                pre.setString(1, key.split("-")[0]);
+            }
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String kode = res.getString("kode");
@@ -621,7 +652,11 @@ public class TransaksiController implements Initializable {
             fpmenu.getChildren().clear();
             String sql = "SELECT kode,nama,kategori,harga,gambar FROM menu WHERE kategori=? ORDER BY kode DESC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
-            pre.setString(1, key);
+            if (key == null) {
+                pre.setString(1, "");
+            } else {
+                pre.setString(1, key.split("-")[0]);
+            }
             ResultSet res = pre.executeQuery();
             while (res.next()) {
                 String kode = res.getString("kode");

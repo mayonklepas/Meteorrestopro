@@ -56,6 +56,20 @@
                   </Label>
                </children>
             </Pane>
+            <Pane fx:id="ptipemeja" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_view_module_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="7.0" layoutY="60.0" text="TIPE MEJA" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
             <Pane fx:id="pmeja" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
@@ -92,6 +106,20 @@
                      </image>
                   </ImageView>
                   <Label layoutX="23.0" layoutY="59.0" text="RESEP" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="ptipemenu" maxHeight="80.0" maxWidth="80.0" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="13.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/ic_view_quilt_white_48dp.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="7.0" layoutY="60.0" text="TIPE MENU" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Bold" size="11.0" />
                      </font>
