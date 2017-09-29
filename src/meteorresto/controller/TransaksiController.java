@@ -281,7 +281,8 @@ public class TransaksiController implements Initializable {
 
     public void setterkodetransaksi(String kode_meja, String slot) {
         try {
-            String sqlgetno = "SELECT kode_transaksi FROM transaksi WHERE kode_meja=? AND slot=? AND status=0 LIMIT 1";
+            String sqlgetno = "SELECT kode_transaksi FROM transaksi WHERE kode_meja=? AND slot=? AND status=0 "
+                    + "ORDER BY id ASC LIMIT 1";
             PreparedStatement pregetno = ch.connect().prepareStatement(sqlgetno);
             pregetno.setString(1, kode_meja);
             pregetno.setString(2, slot);
@@ -310,7 +311,7 @@ public class TransaksiController implements Initializable {
                 statusmeja = datameja.get(y).status;
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
-                setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
+                //setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
                 diskon_transaksi = "0";
                 loaddatatransaksi();
                 cdiskon_transaksi.getEditor().setText(diskon_transaksi);
@@ -335,7 +336,7 @@ public class TransaksiController implements Initializable {
                 statusmeja = datameja.get(y).status;
                 sh.setStatus_meja(1);
                 cslot.getEditor().setText("Slot 1");
-                setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
+                //setterkodetransaksi(datameja.get(y).kode, cslot.getEditor().getText());
                 diskon_transaksi = "0";
                 loaddatatransaksi();
                 cdiskon_transaksi.getEditor().setText(diskon_transaksi);
@@ -510,7 +511,7 @@ public class TransaksiController implements Initializable {
                         res.close();
                         ch.close();
                         if (countdata > 0) {
-                            String sqlupdate = "UPDATE transaksi SET jumlah=jumlah+1 WHERE "
+                            String sqlupdate = "UPDATE transaksi SET jumlah=jumlah+1,status_cetak=status_cetak+1 WHERE "
                                     + "kode_menu=? AND kode_meja=? AND status=0 AND slot=?";
                             PreparedStatement preupdate = ch.connect().prepareStatement(sqlupdate);
                             preupdate.setString(1, datamenu.get(y).kode);
@@ -520,8 +521,9 @@ public class TransaksiController implements Initializable {
                             preupdate.close();
                             ch.close();
                         } else {
-                            String sqlinsert = "INSERT INTO transaksi(kode_menu,harga_masing,jumlah,kode_meja,slot,kode_user,diskon) "
-                                    + "VALUES (?,?,?,?,?,?,0);"
+                            String sqlinsert = "INSERT INTO transaksi(kode_menu,harga_masing,jumlah,"
+                                    + "kode_meja,slot,kode_user,diskon,status_cetak) "
+                                    + "VALUES (?,?,?,?,?,?,0,1);"
                                     + "UPDATE meja SET status=1 WHERE kode=?";
                             PreparedStatement pre = ch.connect().prepareStatement(sqlinsert);
                             pre.setString(1, datamenu.get(y).getKode());
@@ -746,7 +748,15 @@ public class TransaksiController implements Initializable {
         try {
             String sql = "SELECT t.id,t.tanggal::date,m.nama,t.jumlah,t.diskon,t.tax,t.statustax,t.kode_transaksi,t.diskon_transaksi,"
                     + "(t.harga_masing*t.jumlah-(diskon/100*(t.harga_masing*t.jumlah))) as harga FROM transaksi t INNER JOIN "
-                    + "menu m on t.kode_menu=m.kode WHERE t.status=0 AND t.kode_meja=? AND t.slot=? ORDER BY t.id DESC";
+                    + "menu m on t.kode_menu=m.kode WHERE t.status=0 AND t.kode_meja=? AND t.slot=? ORDER BY id DESC ";
+
+            /*String sql = "SELECT t.kode_menu,MAX(t.id) AS id,MAX(t.tanggal::date) AS tanggal,m.nama,"
+                    + "SUM(t.jumlah) AS jumlah,MAX(t.diskon) AS diskon,MAX(t.tax) AS tax,MAX(t.statustax) AS statustax,"
+                    + "MAX(t.kode_transaksi) AS kode_transaksi,MAX(t.diskon_transaksi) AS diskon_transaksi,"
+                    + "(MAX(t.harga_masing)*SUM(t.jumlah)-(MAX(diskon)/100*(MAX(t.harga_masing)*SUM(t.jumlah))))"
+                    + " as harga FROM transaksi t INNER JOIN "
+                    + "menu m on t.kode_menu=m.kode WHERE t.status=0 AND t.kode_meja=? AND t.slot=?"
+                    + "GROUP BY t.kode_menu,m.nama,jumlah ";*/
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, sh.getKode_meja());
             pre.setString(2, cslot.getEditor().getText());
@@ -951,13 +961,14 @@ public class TransaksiController implements Initializable {
                         } else {
                             String sql = "UPDATE transaksi SET kode_transaksi=? WHERE kode_meja=? "
                                     + "AND slot=? AND status = 0 AND kode_transaksi IS NULL;"
-                                    + "UPDATE transaksi SET diskon_transaksi=? WHERE kode_transaksi = ? ";
+                                    + "UPDATE transaksi SET tax=?,statustax=1,diskon_transaksi=? WHERE kode_transaksi = ? ";
                             PreparedStatement pre = ch.connect().prepareStatement(sql);
                             pre.setString(1, kode_transaksi);
                             pre.setString(2, sh.getKode_meja());
                             pre.setString(3, cslot.getEditor().getText());
-                            pre.setDouble(4, ddiskontrans);
-                            pre.setString(5, kode_transaksi);
+                            pre.setInt(4, pajak);
+                            pre.setDouble(5, ddiskontrans);
+                            pre.setString(6, kode_transaksi);
                             pre.executeUpdate();
                             pre.close();
                         }
@@ -981,7 +992,7 @@ public class TransaksiController implements Initializable {
                                 JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                                 JasperPrintManager.printReport(jp, false);
                                 ch.close();
-                                String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 1 "
+                                String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 0 "
                                         + "WHERE kode_transaksi=?";
                                 PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
                                 preupdatestatuscetak.setString(1, kode_transaksi);
@@ -989,7 +1000,7 @@ public class TransaksiController implements Initializable {
                                 ch.close();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
-                                oh.error(ex);
+                                oh.gagal("Tidak ada data yang bisa dicetak");
                             } finally {
                                 ch.close();
                             }
@@ -1099,7 +1110,7 @@ public class TransaksiController implements Initializable {
                     JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                     JasperPrintManager.printReport(jp, false);
                     ch.close();
-                    String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 1 "
+                    String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 0 "
                             + "WHERE kode_transaksi=?";
                     PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
                     preupdatestatuscetak.setString(1, kode_transaksi);
@@ -1221,7 +1232,7 @@ public class TransaksiController implements Initializable {
             public void handle(ActionEvent event) {
                 try {
                     String sql = "DELETE FROM transaksi WHERE jumlah=1 AND id=?; "
-                            + " UPDATE transaksi SET jumlah=jumlah - 1 WHERE id=?";
+                            + " UPDATE transaksi SET jumlah=jumlah - 1,status_cetak=status_cetak-1 WHERE id=?";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setInt(1, Integer.parseInt(ids));
                     pre.setInt(2, Integer.parseInt(ids));
@@ -1242,7 +1253,7 @@ public class TransaksiController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    String sql = "UPDATE transaksi SET jumlah=jumlah + 1 WHERE id=?";
+                    String sql = "UPDATE transaksi SET jumlah=jumlah + 1, status_cetak=status_cetak+1 WHERE id=?";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setInt(1, Integer.parseInt(ids));
                     pre.executeUpdate();

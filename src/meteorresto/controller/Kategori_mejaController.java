@@ -46,7 +46,7 @@ import meteorresto.helper.Sessionhelper;
  *
  * @author user
  */
-public class Kategori_menuController implements Initializable {
+public class Kategori_mejaController implements Initializable {
 
     @FXML
     private Pane pkembali;
@@ -85,6 +85,10 @@ public class Kategori_menuController implements Initializable {
     private AnchorPane footer;
     @FXML
     private Pane detail;
+    @FXML
+    private ComboBox<?> ckategori;
+    @FXML
+    private TableColumn<?, ?> kategori;
 
     /**
      * Initializes the controller class.
@@ -122,7 +126,7 @@ public class Kategori_menuController implements Initializable {
                     Parent root = fxl.load();
                     sh.getSt().getScene().setRoot(root);
                 } catch (IOException ex) {
-                    Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -132,25 +136,25 @@ public class Kategori_menuController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu ORDER BY nama_kategori DESC LIMIT ?";
+            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja ORDER BY nama_kategori DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
 
             while (res.next()) {
-                String skode = res.getString("kode_kategori_menu");
-                String snama = res.getString("nama_kategori_menu");
+                String skode = res.getString("kode_kategori_meja");
+                String snama = res.getString("nama_kategori_meja");
                 tabledata.add(new Entity(skode, snama));
             }
             pre.close();
             res.close();
             ch.close();
-            kode.setCellValueFactory(new PropertyValueFactory<>("kode_kategori_menu"));
-            nama.setCellValueFactory(new PropertyValueFactory<>("nama_kategori_menu"));
+            kode.setCellValueFactory(new PropertyValueFactory<>("kode_kategori_meja"));
+            nama.setCellValueFactory(new PropertyValueFactory<>("nama_kategori_meja"));
             table.setItems(tabledata);
 
         } catch (SQLException ex) {
-            Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
         } finally {
             ch.close();
@@ -177,7 +181,7 @@ public class Kategori_menuController implements Initializable {
     private void rawsimpan() {
         if (ids == null || ids.equals("")) {
             try {
-                String sql = "INSERT INTO kategori_menu(kode_kategori_menu,nama_kategori_menu) VALUES(?,?)";
+                String sql = "INSERT INTO kategori_meja(kode_kategori_meja,nama_kategori_meja) VALUES(?,?)";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, tkode.getText());
                 pre.setString(2, tnama.getText());
@@ -188,7 +192,7 @@ public class Kategori_menuController implements Initializable {
                 loaddata();
                 loadtotaldata();
             } catch (SQLException ex) {
-                Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
                 oh.error(ex);
             } finally {
                 ch.close();
@@ -197,7 +201,7 @@ public class Kategori_menuController implements Initializable {
         } else {
             if (oh.konfirmasi("ubah") == true) {
                 try {
-                    String sql = "UPDATE kategori_menu SET kode_kategori_menu=?,nama_kategori_menu=? WHERE kode_kategori_menu=?";
+                    String sql = "UPDATE kategori_meja SET kode_kategori_meja=?,nama_kategori_meja=? WHERE kode_kategori_meja=?";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
@@ -209,7 +213,7 @@ public class Kategori_menuController implements Initializable {
                     loaddata();
                     loadtotaldata();
                 } catch (SQLException ex) {
-                    Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
                     oh.error(ex);
                 } finally {
                     ch.close();
@@ -232,7 +236,7 @@ public class Kategori_menuController implements Initializable {
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
-                String sql = "DELETE FROM kategori_menu WHERE kode=?";
+                String sql = "DELETE FROM kategori_meja WHERE kode=?";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, ids);
                 pre.executeUpdate();
@@ -242,7 +246,7 @@ public class Kategori_menuController implements Initializable {
                 loaddata();
                 loadtotaldata();
             } catch (SQLException ex) {
-                Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
                 oh.error(ex);
             } finally {
                 ch.close();
@@ -283,10 +287,10 @@ public class Kategori_menuController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode_kategori_menu,nama_kategori_menu FROM kategori_menu "
-                    + "WHERE kode_kategori_menu ILIKE ? OR "
-                    + "nama_kategori_menu ILIKE ? "
-                    + "ORDER BY nama_kategori_menu DESC LIMIT ?";
+            String sql = "SELECT kode_kategori_meja,nama_kategori_meja FROM kategori_meja "
+                    + "WHERE kode_kategori_meja ILIKE ? OR "
+                    + "nama_kategori_meja ILIKE ? "
+                    + "ORDER BY nama_kategori_meja DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             for (int i = 0; i < 2; i++) {
                 pre.setString(i + 1, "%" + tcari.getText() + "%");
@@ -294,8 +298,8 @@ public class Kategori_menuController implements Initializable {
             pre.setInt(4, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
             while (res.next()) {
-                String skode = res.getString("kode_kategori_menu");
-                String snama = res.getString("nama_kategori_menu");
+                String skode = res.getString("kode_kategori_meja");
+                String snama = res.getString("nama_kategori_meja");
                 tabledata.add(new Entity(skode, snama));
             }
             ch.connect().close();
@@ -303,7 +307,7 @@ public class Kategori_menuController implements Initializable {
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
-            Logger.getLogger(Kategori_menuController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Kategori_mejaController.class.getName()).log(Level.SEVERE, null, ex);
             oh.error(ex);
         }
     }
@@ -320,27 +324,27 @@ public class Kategori_menuController implements Initializable {
 
     public class Entity {
 
-        String kode_kategori_menu, nama_kategori_menu;
+        String kode_kategori_meja, nama_kategori_meja;
 
-        public Entity(String kode_kategori_menu, String nama_kategori_menu) {
-            this.kode_kategori_menu = kode_kategori_menu;
-            this.nama_kategori_menu = nama_kategori_menu;
+        public Entity(String kode_kategori_meja, String nama_kategori_meja) {
+            this.kode_kategori_meja = kode_kategori_meja;
+            this.nama_kategori_meja = nama_kategori_meja;
         }
 
-        public String getKode_kategori_menu() {
-            return kode_kategori_menu;
+        public String getKode_kategori_meja() {
+            return kode_kategori_meja;
         }
 
-        public void setKode_kategori_menu(String kode_kategori_menu) {
-            this.kode_kategori_menu = kode_kategori_menu;
+        public void setKode_kategori_meja(String kode_kategori_meja) {
+            this.kode_kategori_meja = kode_kategori_meja;
         }
 
-        public String getNama_kategori_menu() {
-            return nama_kategori_menu;
+        public String getNama_kategori_meja() {
+            return nama_kategori_meja;
         }
 
-        public void setNama_kategori_menu(String nama_kategori_menu) {
-            this.nama_kategori_menu = nama_kategori_menu;
+        public void setNama_kategori_meja(String nama_kategori_meja) {
+            this.nama_kategori_meja = nama_kategori_meja;
         }
 
     }

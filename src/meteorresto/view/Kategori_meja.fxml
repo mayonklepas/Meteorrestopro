@@ -12,11 +12,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="556.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.Kategori_menuController">
+<AnchorPane id="AnchorPane" prefHeight="556.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meteorresto.controller.Kategori_mejaController">
     <children>
         <AnchorPane fx:id="header" layoutX="8.0" layoutY="101.0" prefHeight="98.0" prefWidth="815.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="399.0" text="DATA KATEGORI MENU" textFill="WHITE">
+                <Label layoutX="106.0" layoutY="16.0" prefHeight="38.0" prefWidth="191.0" text="DATA MEJA" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="28.0" />
                     </font>
@@ -26,7 +26,7 @@
                         <Image url="@../icon/ic_event_seat_white_48dp.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="106.0" layoutY="55.0" text="Data Kategori Menu Makanan Atau Minuman" textFill="WHITE">
+                <Label layoutX="106.0" layoutY="55.0" text="Data meja atau tempat makan yang digunakan" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI" size="16.0" />
                     </font>
@@ -52,7 +52,7 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <Label text="Kode Kategori Menu">
+                <Label text="Kode Meja">
                     <font>
                         <Font name="Segoe UI" size="15.0" />
                     </font>
@@ -62,7 +62,7 @@
                         <Font name="Segoe UI" size="15.0" />
                     </font>
                 </TextField>
-                <Label text="Nama Kategori Menu">
+                <Label text="Nama Meja">
                     <font>
                         <Font name="Segoe UI" size="15.0" />
                     </font>
@@ -72,6 +72,12 @@
                         <Font name="Segoe UI" size="15.0" />
                     </font>
                 </TextField>
+            <Label text="Kategori">
+               <font>
+                  <Font name="Segoe UI" size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="ckategori" editable="true" prefHeight="29.0" prefWidth="309.0" style="-fx-text-fill: 14;" />
                 <HBox prefHeight="18.0" prefWidth="310.0" spacing="10.0">
                     <children>
                         <Button fx:id="bsimpan" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Simpan">
@@ -125,8 +131,9 @@
                 <Label text="Tidak Ada Data" />
             </placeholder>
             <columns>
-                <TableColumn fx:id="kode" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Kode Kategori Menu" />
-                <TableColumn fx:id="nama" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Nama Kategori Menu" />
+                <TableColumn fx:id="kode" prefWidth="52.0" style="-fx-alignment: CENTER;" text="Kode" />
+                <TableColumn fx:id="nama" prefWidth="109.0" style="-fx-alignment: CENTER;" text="Nama" />
+            <TableColumn fx:id="kategori" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Kategori" />
             </columns>
             <opaqueInsets>
                 <Insets bottom="10.0" left="10.0" right="10.0" />

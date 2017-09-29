@@ -41,8 +41,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah,diskon,t.kode_user,a.nama AS nama_user ,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode
-INNER JOIN akun a ON t.kode_user=a.id WHERE kode_transaksi=$P{kode_transaksi} AND 
-kode_user2=$P{kode_kasir}]]>
+INNER JOIN akun a ON t.kode_user=a.id WHERE kode_transaksi=$P{kode_transaksi} AND kode_user2=$P{kode_kasir} ORDER BY t.id DESC]]>
 	</queryString>
 	<field name="tanggal" class="java.sql.Timestamp"/>
 	<field name="nama" class="java.lang.String"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Struckkasir" pageWidth="136" pageHeight="283" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="727ee1df-ed52-49e6-844d-4ecf25d82c98">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="118"/>
 	<parameter name="kode_meja" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -34,7 +34,8 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah,diskon,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir}]]>
+		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah AS jumlah,diskon,
+t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir} ORDER BY id DESC]]>
 	</queryString>
 	<field name="tanggal" class="java.sql.Timestamp"/>
 	<field name="nama" class="java.lang.String"/>

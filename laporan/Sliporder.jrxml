@@ -34,11 +34,12 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT t.tanggal,m.nama,t.jumlah,diskon,t.harga_masing*t.jumlah-(t.diskon/100*(t.harga_masing*t.jumlah)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir} AND status_cetak=0]]>
+		<![CDATA[SELECT t.tanggal,m.nama,t.status_cetak,diskon,t.harga_masing*t.status_cetak-
+(t.diskon/100*(t.harga_masing*t.status_cetak)) AS total,t.tax,t.diskon_transaksi FROM transaksi t INNER JOIN menu m ON t.kode_menu=m.kode WHERE kode_transaksi=$P{kode_transaksi} AND kode_user=$P{kode_kasir} AND status_cetak != 0 ORDER BY id DESC]]>
 	</queryString>
 	<field name="tanggal" class="java.sql.Timestamp"/>
 	<field name="nama" class="java.lang.String"/>
-	<field name="jumlah" class="java.lang.Integer"/>
+	<field name="status_cetak" class="java.lang.Integer"/>
 	<field name="diskon" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
 	<field name="tax" class="java.lang.Double"/>
@@ -202,7 +203,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{status_cetak}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0">
 				<reportElement x="105" y="0" width="31" height="20" uuid="0afe85bd-9a75-498b-b4b5-f54e3c98c300"/>
