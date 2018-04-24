@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="57b932b9-373a-4192-8f1e-14e9f5f00aef">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="271"/>
+	<property name="ireport.x" value="363"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -36,7 +36,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT tanggal,kode_transaksi,akun_keuangan.nama_akun_keuangan,akun.nama as kasir,
-kode_bahan,pembelian.nama,jumlah,(jumlah / 1000) AS jumlahkg,harga FROM pembelian INNER JOIN akun_keuangan ON pembelian.
+kode_bahan,pembelian.nama,jumlah,(jumlah / 1000) AS jumlahkg,harga,(harga*jumlah) AS harga_total FROM pembelian INNER JOIN akun_keuangan ON pembelian.
 kode_akun_keuangan=akun_keuangan.kode_akun_keuangan INNER JOIN akun ON 
 pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{tanggal_sampai}]]>
 	</queryString>
@@ -49,8 +49,12 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 	<field name="jumlah" class="java.lang.Double"/>
 	<field name="jumlahkg" class="java.lang.Double"/>
 	<field name="harga" class="java.lang.Double"/>
+	<field name="harga_total" class="java.lang.Double"/>
 	<variable name="harga_1" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{harga}]]></variableExpression>
+	</variable>
+	<variable name="harga_total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{harga_total}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -110,19 +114,19 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 				<text><![CDATA[Kode Transaksi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="299" y="5" width="143" height="20" uuid="9a2936b7-9243-483f-8b28-d3fcda4a7a2a"/>
+				<reportElement x="289" y="5" width="110" height="20" uuid="9a2936b7-9243-483f-8b28-d3fcda4a7a2a"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama Bahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="442" y="5" width="42" height="20" uuid="44c7b168-4928-4018-87bd-4ac871835f3a"/>
+				<reportElement x="399" y="5" width="35" height="20" uuid="44c7b168-4928-4018-87bd-4ac871835f3a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[KG / L]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="484" y="5" width="69" height="20" uuid="a525817e-8e8b-4c62-8866-6256bf508293"/>
+				<reportElement x="434" y="5" width="56" height="20" uuid="a525817e-8e8b-4c62-8866-6256bf508293"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Harga]]></text>
+				<text><![CDATA[Harga / G]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="26" width="555" height="1" uuid="dec3f9f6-dd56-46cd-8c1f-c8bd3f8b34ab"/>
@@ -136,9 +140,14 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 				<text><![CDATA[User]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="207" y="5" width="92" height="20" uuid="39881b58-5cb8-4653-8005-3f7d9ba420bd"/>
+				<reportElement x="207" y="5" width="73" height="20" uuid="39881b58-5cb8-4653-8005-3f7d9ba420bd"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Akun Keuangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="5" width="65" height="20" uuid="1f7a92e2-15c5-41ac-92bb-640fbd7f97ca"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Harga Total]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -155,17 +164,17 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 				<textFieldExpression><![CDATA[$F{kode_transaksi}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="299" y="0" width="143" height="20" uuid="31215b66-00bc-4287-bf71-f69911452081"/>
+				<reportElement x="289" y="0" width="110" height="20" uuid="31215b66-00bc-4287-bf71-f69911452081"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="442" y="0" width="42" height="20" uuid="0ca640ef-7cef-4b28-baa7-f438dcb955ad"/>
+				<reportElement x="399" y="0" width="35" height="20" uuid="0ca640ef-7cef-4b28-baa7-f438dcb955ad"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlahkg}]]></textFieldExpression>
 			</textField>
 			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="484" y="0" width="69" height="20" uuid="9c06b0e2-0c66-4ec4-a204-ad9e248d28e7"/>
+				<reportElement x="434" y="0" width="56" height="20" uuid="9c06b0e2-0c66-4ec4-a204-ad9e248d28e7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
 			</textField>
@@ -178,14 +187,19 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 				<textFieldExpression><![CDATA[$F{kasir}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="207" y="0" width="92" height="20" uuid="8248867a-d54c-49b8-ad42-8eeb5eb62645"/>
+				<reportElement x="207" y="0" width="73" height="20" uuid="8248867a-d54c-49b8-ad42-8eeb5eb62645"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama_akun_keuangan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="65" height="20" uuid="4e85dda4-c0ca-48bd-96a7-6274760018b3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{harga_total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<textField>
 				<reportElement mode="Opaque" x="219" y="17" width="80" height="20" backcolor="#CCCCCC" uuid="b0ff77b1-4264-4f65-bf0b-e0458d90320c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
@@ -210,10 +224,10 @@ pembelian.kode_user=akun.id WHERE tanggal >= $P{tanggal_dari} AND tanggal <= $P{
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Total Keseluruhan :]]></text>
 			</staticText>
-			<textField pattern="Rp #,##0" isBlankWhenNull="true">
-				<reportElement x="421" y="5" width="132" height="20" uuid="bade2bab-b310-4023-98a4-97a59c29a3b1"/>
+			<textField pattern="Rp #,##0">
+				<reportElement x="421" y="5" width="132" height="20" uuid="401e600f-256e-4b1d-a50e-bade0373f0b7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{harga_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{harga_total_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

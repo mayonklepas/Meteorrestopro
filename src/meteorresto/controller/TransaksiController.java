@@ -920,6 +920,7 @@ public class TransaksiController implements Initializable {
                     oh.gagal("Maaf anda belum menyimpan data");
                 } else {
                     try {
+                        System.out.println(kode_transaksi);
                         PindahmejaController.kode_transaksi = kode_transaksi;
                         sh.setSlot(cslot.getEditor().getText());
                         Stage st = new Stage(StageStyle.UTILITY);
@@ -1027,12 +1028,6 @@ public class TransaksiController implements Initializable {
                                 JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                                 JasperPrintManager.printReport(jp, false);
                                 ch.close();
-                                String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 0 "
-                                        + "WHERE kode_transaksi=?";
-                                PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
-                                preupdatestatuscetak.setString(1, kode_transaksi);
-                                preupdatestatuscetak.executeUpdate();
-                                ch.close();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 oh.gagal("Tidak ada data yang bisa dicetak");
@@ -1041,6 +1036,12 @@ public class TransaksiController implements Initializable {
                             }
 
                         }
+                        String sqlupdatecetak = "UPDATE transaksi SET status_cetak = 0 "
+                                + "WHERE kode_transaksi=?";
+                        PreparedStatement preupdatestatuscetak = ch.connect().prepareStatement(sqlupdatecetak);
+                        preupdatestatuscetak.setString(1, kode_transaksi);
+                        preupdatestatuscetak.executeUpdate();
+                        ch.close();
                         rawclear();
 
                     } catch (SQLException ex) {

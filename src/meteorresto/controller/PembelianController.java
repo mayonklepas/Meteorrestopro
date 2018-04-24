@@ -51,7 +51,7 @@ import meteorresto.helper.Sessionhelper;
  * @author user
  */
 public class PembelianController implements Initializable {
-    
+
     @FXML
     private AnchorPane header;
     @FXML
@@ -110,6 +110,8 @@ public class PembelianController implements Initializable {
     @FXML
     private TableColumn<Entity, String> akun_keuangan;
     ObservableList olscombouang = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<Entity, String> harga_satuan;
 
     /**
      * Initializes the controller class.
@@ -136,7 +138,7 @@ public class PembelianController implements Initializable {
         detail.setId("tema");
         tlimit.setId("tema");
     }
-    
+
     private void kembali() {
         pkembali.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -154,7 +156,7 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     private void loadcombokeuangan() {
         cakunuang.getEditor().clear();
         olscombouang.clear();
@@ -178,13 +180,14 @@ public class PembelianController implements Initializable {
             ch.close();
         }
     }
-    
+
     private void loaddata() {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
             String sql = "SELECT tanggal,pembelian.kode_akun_keuangan,akun_keuangan.nama_akun_keuangan,"
-                    + "kode_transaksi,kode_bahan,nama,jumlah,(jumlah / 1000) AS jumlahkg,harga "
+                    + "kode_transaksi,kode_bahan,nama,jumlah,"
+                    + "(jumlah / 1000) AS jumlahkg,harga,(harga*jumlah) AS harga_total "
                     + "FROM pembelian INNER JOIN akun_keuangan "
                     + "ON pembelian.kode_akun_keuangan=akun_keuangan.kode_akun_keuangan "
                     + "WHERE kode_user = ? ORDER BY tanggal DESC LIMIT ?";
@@ -200,10 +203,11 @@ public class PembelianController implements Initializable {
                 String sjumlah = nf.format(res.getDouble("jumlah"));
                 String sjumlahkg = nf.format(res.getDouble("jumlahkg"));
                 String sharga = nf.format(res.getDouble("harga"));
+                String shargatotal = nf.format(res.getDouble("harga_total"));
                 String skode_akun_keuangan = res.getString("kode_akun_keuangan");
                 String snama_akun_keuangan = res.getString("nama_akun_keuangan");
                 tabledata.add(new Entity(stanggal, skode_transaksi,
-                        skode_bahan, snama, sjumlah, sjumlahkg, sharga, skode_akun_keuangan, snama_akun_keuangan));
+                        skode_bahan, snama, sjumlah, sjumlahkg, sharga, shargatotal, skode_akun_keuangan, snama_akun_keuangan));
             }
             pre.close();
             res.close();
@@ -215,6 +219,7 @@ public class PembelianController implements Initializable {
             nama_bahan.setCellValueFactory(new PropertyValueFactory<>("nama_bahan"));
             jumlah_total.setCellValueFactory(new PropertyValueFactory<>("jumlah_total"));
             jumlahkg.setCellValueFactory(new PropertyValueFactory<>("jumlahkg"));
+            harga_satuan.setCellValueFactory(new PropertyValueFactory<>("hargasatuan"));
             harga_total.setCellValueFactory(new PropertyValueFactory<>("harga_total"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
@@ -224,11 +229,11 @@ public class PembelianController implements Initializable {
             ch.close();
         }
     }
-    
+
     private void loadtotaldata() {
         ljumlah.setText(" | " + String.valueOf(tabledata.size()) + " / " + tlimit.getText() + " DATA");
     }
-    
+
     private void select() {
         table.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -236,26 +241,30 @@ public class PembelianController implements Initializable {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 try {
                     int i = newValue.intValue();
-                    if (tanggal.getCellData(i) == null) {
-                        
+                    if (i < 0) {
+
                     } else {
-                        dtanggal.setValue(LocalDate.parse(tanggal.getCellData(i)));
+                        if (tanggal.getCellData(i) == null) {
+
+                        } else {
+                            dtanggal.setValue(LocalDate.parse(tanggal.getCellData(i)));
+                        }
+                        ids = kode_transaksi.getCellData(i);
+                        tkode_bahan.setText(kode_bahan.getCellData(i));
+                        tnama.setText(nama_bahan.getCellData(i));
+                        tjumlah.setText(jumlah_total.getCellData(i));
+                        tharga.setText(harga_satuan.getCellData(i));
+                        cakunuang.getEditor().setText(tabledata.get(i).kode_akun_keuangan + "-"
+                                + tabledata.get(i).nama_akun_keuangan);
                     }
-                    ids = kode_transaksi.getCellData(i);
-                    tkode_bahan.setText(kode_bahan.getCellData(i));
-                    tnama.setText(nama_bahan.getCellData(i));
-                    tjumlah.setText(jumlah_total.getCellData(i));
-                    tharga.setText(harga_total.getCellData(i));
-                    cakunuang.getEditor().setText(tabledata.get(i).kode_akun_keuangan + "-"
-                            + tabledata.get(i).nama_akun_keuangan);
                 } catch (Exception e) {
                     oh.error(e);
                 }
-                
+
             }
         });
     }
-    
+
     private void onkodetype() {
         tkode_bahan.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -276,7 +285,7 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     private void rawsimpan() {
         if (cakunuang.getEditor().getText().equals("")) {
             oh.gagal("Anda belum memilih akun keuangan");
@@ -351,7 +360,7 @@ public class PembelianController implements Initializable {
                 } finally {
                     ch.close();
                 }
-                
+
             } else {
                 if (oh.konfirmasi("ubah") == true) {
                     try {
@@ -378,12 +387,12 @@ public class PembelianController implements Initializable {
                         ch.close();
                     }
                 }
-                
+
             }
-            
+
         }
     }
-    
+
     private void simpan() {
         bsimpan.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -393,7 +402,7 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {
             try {
@@ -412,10 +421,10 @@ public class PembelianController implements Initializable {
             } finally {
                 ch.close();
             }
-            
+
         }
     }
-    
+
     private void hapus() {
         table.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -426,7 +435,7 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     private void rawclear() {
         ids = "";
         tkode_bahan.clear();
@@ -436,7 +445,7 @@ public class PembelianController implements Initializable {
         dtanggal.setValue(LocalDate.now());
         cakunuang.getEditor().clear();
     }
-    
+
     private void clear() {
         bclear.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -447,13 +456,14 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     private void rawcari() {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
             String sql = "SELECT tanggal,kode_transaksi,pembelian.kode_akun_keuangan,"
-                    + "akun_keuangan.nama_akun_keuangan,kode_bahan,nama,jumlah,(jumlah / 1000) AS jumlahkg,harga "
+                    + "akun_keuangan.nama_akun_keuangan,kode_bahan,nama,jumlah,(jumlah / 1000) AS jumlahkg,"
+                    + "harga,(harga*jumlah) AS harga_total "
                     + "FROM pembelian INNER JOIN akun_keuangan ON pembelian.kode_akun_keuangan = "
                     + "akun_keuangan.kode_akun_keuangan WHERE (tanggal::character varying ILIKE ? OR "
                     + "kode_transaksi ILIKE ? OR "
@@ -476,10 +486,11 @@ public class PembelianController implements Initializable {
                 String sjumlah = nf.format(res.getDouble("jumlah"));
                 String sjumlahkg = nf.format(res.getDouble("jumlahkg"));
                 String sharga = nf.format(res.getDouble("harga"));
+                String shargatotal = nf.format(res.getDouble("harga_total"));
                 String skode_akun_keuangan = res.getString("kode_akun_keuangan");
                 String snama_akun_keuangan = res.getString("nama_akun_keuangan");
                 tabledata.add(new Entity(stanggal, skode_transaksi,
-                        skode_bahan, snama, sjumlah, sjumlahkg, sharga, skode_akun_keuangan, snama_akun_keuangan));
+                        skode_bahan, snama, sjumlah, sjumlahkg, sharga, shargatotal, skode_akun_keuangan, snama_akun_keuangan));
             }
             pre.close();
             res.close();
@@ -491,6 +502,7 @@ public class PembelianController implements Initializable {
             nama_bahan.setCellValueFactory(new PropertyValueFactory<>("nama_bahan"));
             jumlah_total.setCellValueFactory(new PropertyValueFactory<>("jumlah_total"));
             jumlahkg.setCellValueFactory(new PropertyValueFactory<>("jumlahkg"));
+            harga_satuan.setCellValueFactory(new PropertyValueFactory<>("hargasatuan"));
             harga_total.setCellValueFactory(new PropertyValueFactory<>("harga_total"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
@@ -500,7 +512,7 @@ public class PembelianController implements Initializable {
             ch.close();
         }
     }
-    
+
     private void cari() {
         tcari.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -510,96 +522,105 @@ public class PembelianController implements Initializable {
             }
         });
     }
-    
+
     public class Entity {
-        
-        String tanggal, kode_transaksi, kode_bahan, nama_bahan, jumlah_total, jumlahkg, harga_total,
+
+        String tanggal, kode_transaksi, kode_bahan, nama_bahan, jumlah_total, jumlahkg, hargasatuan, harga_total,
                 kode_akun_keuangan, nama_akun_keuangan;
-        
-        public Entity(String tanggal, String kode_transaksi, String kode_bahan, String nama_bahan, String jumlah_total, String jumlahkg, String harga_total, String kode_akun_keuangan, String nama_akun_keuangan) {
+
+        public Entity(String tanggal, String kode_transaksi, String kode_bahan, String nama_bahan, String jumlah_total, String jumlahkg, String hargasatuan, String harga_total, String kode_akun_keuangan, String nama_akun_keuangan) {
             this.tanggal = tanggal;
             this.kode_transaksi = kode_transaksi;
             this.kode_bahan = kode_bahan;
             this.nama_bahan = nama_bahan;
             this.jumlah_total = jumlah_total;
             this.jumlahkg = jumlahkg;
+            this.hargasatuan = hargasatuan;
             this.harga_total = harga_total;
             this.kode_akun_keuangan = kode_akun_keuangan;
             this.nama_akun_keuangan = nama_akun_keuangan;
         }
-        
+
         public String getTanggal() {
             return tanggal;
         }
-        
+
         public void setTanggal(String tanggal) {
             this.tanggal = tanggal;
         }
-        
+
         public String getKode_transaksi() {
             return kode_transaksi;
         }
-        
+
         public void setKode_transaksi(String kode_transaksi) {
             this.kode_transaksi = kode_transaksi;
         }
-        
+
         public String getKode_bahan() {
             return kode_bahan;
         }
-        
+
         public void setKode_bahan(String kode_bahan) {
             this.kode_bahan = kode_bahan;
         }
-        
+
         public String getNama_bahan() {
             return nama_bahan;
         }
-        
+
         public void setNama_bahan(String nama_bahan) {
             this.nama_bahan = nama_bahan;
         }
-        
+
         public String getJumlah_total() {
             return jumlah_total;
         }
-        
+
         public void setJumlah_total(String jumlah_total) {
             this.jumlah_total = jumlah_total;
         }
-        
+
         public String getJumlahkg() {
             return jumlahkg;
         }
-        
+
         public void setJumlahkg(String jumlahkg) {
             this.jumlahkg = jumlahkg;
         }
-        
+
+        public String getHargasatuan() {
+            return hargasatuan;
+        }
+
+        public void setHargasatuan(String hargasatuan) {
+            this.hargasatuan = hargasatuan;
+        }
+
         public String getHarga_total() {
             return harga_total;
         }
-        
+
         public void setHarga_total(String harga_total) {
             this.harga_total = harga_total;
         }
-        
+
         public String getKode_akun_keuangan() {
             return kode_akun_keuangan;
         }
-        
+
         public void setKode_akun_keuangan(String kode_akun_keuangan) {
             this.kode_akun_keuangan = kode_akun_keuangan;
         }
-        
+
         public String getNama_akun_keuangan() {
             return nama_akun_keuangan;
         }
-        
+
         public void setNama_akun_keuangan(String nama_akun_keuangan) {
             this.nama_akun_keuangan = nama_akun_keuangan;
         }
-        
+
     }
-    
+
 }

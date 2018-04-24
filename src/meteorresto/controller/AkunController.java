@@ -144,7 +144,7 @@ public class AkunController implements Initializable {
     }
 
     private void loadcombo() {
-        olscombo.addAll("admin","spv","kasir","waiters");
+        olscombo.addAll("admin", "spv", "kasir", "waiters");
         ctipe.setItems(olscombo);
     }
 
@@ -257,17 +257,15 @@ public class AkunController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                if(tpassword.getText().equals(trepassword.getText())){
+                if (tpassword.getText().equals(trepassword.getText())) {
                     rawsimpan();
-                }else{
+                } else {
                     oh.gagal("Password yang diketik ulang tidak cocok");
                 }
-                
+
             }
         });
     }
-    
-    
 
     private void rawhapus() {
         if (oh.konfirmasi("hapus") == true) {

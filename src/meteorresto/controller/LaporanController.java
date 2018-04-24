@@ -270,7 +270,7 @@ public class LaporanController implements Initializable {
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(true);
                     tfilter.setDisable(true);
-                }else if (newValue.intValue() == 11) {
+                } else if (newValue.intValue() == 11) {
                     ddari.setDisable(false);
                     ddari.setValue(LocalDate.now());
                     dke.setDisable(false);
@@ -602,7 +602,7 @@ public class LaporanController implements Initializable {
 
                             HashMap hm = new HashMap(2);
                             hm.put("header", info[0]);
-                            hm.put("SUBREPORT_DIR", new File("laporan/laporandaftarmenu").getPath() + "/");
+                            hm.put("SUBREPORT_DIR", new File("laporan").getPath() + "/");
                             String path = "laporan/laporandaftarmenu/Laporanmenumaster.jasper";
                             loadrepot lr = new loadrepot(path, hm);
                             Thread th = new Thread(lr);
@@ -656,7 +656,7 @@ public class LaporanController implements Initializable {
                             ex.printStackTrace();
                             oh.error(ex);
                         }
-                    }else if (i == 11) {
+                    } else if (i == 11) {
                         try {
                             Instant dari = Instant.from(ddari.getValue().atStartOfDay(ZoneId.of("GMT")));
                             Instant ke = Instant.from(dke.getValue().atStartOfDay(ZoneId.of("GMT")));

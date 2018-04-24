@@ -160,15 +160,11 @@ public class BayarController implements Initializable {
                 } else {
                     if (oh.konfirmasibayar(datakeuangan.get(y).nama_akun_keuangan) == true) {
                         try {
-                            TextInputDialog ti = new TextInputDialog();
-                            ti.setTitle("Konfirmasi Kode CC");
-                            ti.setHeaderText("Masukan Kode Credit Card / No. Rekening");
-                            Optional<String> opt = ti.showAndWait();
-                            if (opt.isPresent()) {
+                            if (datakeuangan.get(y).kode_akun_keuangan.equals("CASH")) {
                                 String sql = "UPDATE transaksi SET kode_user2=?,kode_cc=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
                                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                                 pre.setString(1, sh.getKode_user());
-                                pre.setString(2, opt.get());
+                                pre.setString(2, "CASH");
                                 pre.setString(3, sh.getKode_meja());
                                 pre.setString(4, sh.getSlot());
                                 pre.setString(5, kode_transaksi);
@@ -187,7 +183,7 @@ public class BayarController implements Initializable {
                                 hash.put("alamat", info[1]);
                                 hash.put("nohp", info[3]);
                                 hash.put("kode_transaksi", kode_transaksi);
-                                hash.put("kode_cc", opt.get());
+                                hash.put("kode_cc", "CASH");
                                 double jumlahuang = 0;
                                 if (ljumlahuang.getText().equals("0") || ljumlahuang.getText().equals("")) {
                                     jumlahuang = total_belanja;
@@ -199,11 +195,53 @@ public class BayarController implements Initializable {
                                 JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
                                 JasperPrintManager.printReport(jp, false);
                                 ch.close();
+                            } else {
+                                TextInputDialog ti = new TextInputDialog();
+                                ti.setTitle("Konfirmasi Kode CC");
+                                ti.setHeaderText("Masukan Kode Credit Card / No. Rekening");
+                                Optional<String> opt = ti.showAndWait();
+                                if (opt.isPresent()) {
+                                    String sql = "UPDATE transaksi SET kode_user2=?,kode_cc=? WHERE kode_meja=? AND slot=? AND kode_transaksi=?";
+                                    PreparedStatement pre = ch.connect().prepareStatement(sql);
+                                    pre.setString(1, sh.getKode_user());
+                                    pre.setString(2, opt.get());
+                                    pre.setString(3, sh.getKode_meja());
+                                    pre.setString(4, sh.getSlot());
+                                    pre.setString(5, kode_transaksi);
+                                    pre.executeUpdate();
+                                    pre.close();
+                                    ch.close();
+                                    String[] info = fh.getinfo().split(";");
+                                    HashMap hash = new HashMap(12);
+                                    hash.put("kode_meja", sh.getKode_meja());
+                                    hash.put("slot", sh.getSlot());
+                                    hash.put("kode_kasir", sh.getKode_user());
+                                    hash.put("nama_kasir", sh.getUsername());
+                                    hash.put("kategori_meja", kategorimeja);
+                                    hash.put("nama_meja", namameja);
+                                    hash.put("perusahaan", info[0]);
+                                    hash.put("alamat", info[1]);
+                                    hash.put("nohp", info[3]);
+                                    hash.put("kode_transaksi", kode_transaksi);
+                                    hash.put("kode_cc", opt.get());
+                                    double jumlahuang = 0;
+                                    if (ljumlahuang.getText().equals("0") || ljumlahuang.getText().equals("")) {
+                                        jumlahuang = total_belanja;
+                                    } else {
+                                        jumlahuang = Double.parseDouble(oh.digitinputreplacer(ljumlahuang.getText()));
+                                    }
+                                    hash.put("uang", jumlahuang);
+                                    JasperReport jr = (JasperReport) JRLoader.loadObject(new File("laporan/" + info[6]));
+                                    JasperPrint jp = JasperFillManager.fillReport(jr, hash, ch.connect());
+                                    JasperPrintManager.printReport(jp, false);
+                                    ch.close();
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                             oh.error(e);
                         }
+
                         rawclearpembayaran(datakeuangan.get(y).kode_akun_keuangan);
                         Node node = (Node) event.getSource();
                         Stage st = (Stage) node.getScene().getWindow();

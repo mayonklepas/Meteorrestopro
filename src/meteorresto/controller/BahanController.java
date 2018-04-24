@@ -90,7 +90,11 @@ public class BahanController implements Initializable {
     String ids;
     @FXML
     private TableColumn<Entity, String> jumlahkg;
-    NumberFormat nf=NumberFormat.getInstance();
+    NumberFormat nf = NumberFormat.getInstance();
+    @FXML
+    private TextField thargasatuan;
+    @FXML
+    private TableColumn<Entity, String> hargaterkecil;
 
     /**
      * Initializes the controller class.
@@ -136,7 +140,7 @@ public class BahanController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,jumlah,(jumlah / 1000) AS jumlahkg FROM bahan ORDER BY nama DESC LIMIT ?";
+            String sql = "SELECT kode,nama,jumlah,harga_terkecil,(jumlah / 1000) AS jumlahkg FROM bahan ORDER BY nama DESC LIMIT ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
@@ -144,8 +148,9 @@ public class BahanController implements Initializable {
                 String skode = res.getString("kode");
                 String snama = res.getString("nama");
                 String sjumlah = nf.format(res.getDouble("jumlah"));
-                String sjumlahkg =  nf.format(res.getDouble("jumlahkg"));
-                tabledata.add(new Entity(skode, snama, sjumlah,sjumlahkg));
+                String shargaterkecil = nf.format(res.getDouble("harga_terkecil"));
+                String sjumlahkg = nf.format(res.getDouble("jumlahkg"));
+                tabledata.add(new Entity(skode, snama, sjumlah, sjumlahkg, shargaterkecil));
             }
             pre.close();
             res.close();
@@ -154,6 +159,7 @@ public class BahanController implements Initializable {
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             jumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
             jumlahkg.setCellValueFactory(new PropertyValueFactory<>("jumlahkg"));
+            hargaterkecil.setCellValueFactory(new PropertyValueFactory<>("hargaterkecil"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(BahanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,6 +183,7 @@ public class BahanController implements Initializable {
                 tkode.setText(kode.getCellData(i));
                 tnama.setText(nama.getCellData(i));
                 tjumlah.setText(jumlah.getCellData(i));
+                thargasatuan.setText(hargaterkecil.getCellData(i));
             }
         });
     }
@@ -184,11 +191,12 @@ public class BahanController implements Initializable {
     private void rawsimpan() {
         if (ids == null || ids.equals("")) {
             try {
-                String sql = "INSERT INTO bahan(kode,nama,jumlah) VALUES(?,?,?)";
+                String sql = "INSERT INTO bahan(kode,nama,jumlah,harga_terkecil) VALUES(?,?,?,?)";
                 PreparedStatement pre = ch.connect().prepareStatement(sql);
                 pre.setString(1, tkode.getText());
                 pre.setString(2, tnama.getText());
                 pre.setDouble(3, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
+                pre.setDouble(4, Double.parseDouble(oh.digitinputreplacer(thargasatuan.getText())));
                 pre.executeUpdate();
                 pre.close();
                 ch.close();
@@ -205,12 +213,13 @@ public class BahanController implements Initializable {
         } else {
             if (oh.konfirmasi("ubah") == true) {
                 try {
-                    String sql = "UPDATE bahan SET kode=?,nama=?,jumlah=? WHERE kode=?";
+                    String sql = "UPDATE bahan SET kode=?,nama=?,jumlah=?,harga_terkecil=? WHERE kode=?";
                     PreparedStatement pre = ch.connect().prepareStatement(sql);
                     pre.setString(1, tkode.getText());
                     pre.setString(2, tnama.getText());
                     pre.setDouble(3, Double.parseDouble(oh.digitinputreplacer(tjumlah.getText())));
-                    pre.setString(4, ids);
+                    pre.setDouble(4, Double.parseDouble(oh.digitinputreplacer(thargasatuan.getText())));
+                    pre.setString(5, ids);
                     pre.executeUpdate();
                     pre.close();
                     ch.close();
@@ -276,6 +285,7 @@ public class BahanController implements Initializable {
         tkode.clear();
         tnama.clear();
         tjumlah.clear();
+        thargasatuan.clear();
     }
 
     private void clear() {
@@ -293,7 +303,7 @@ public class BahanController implements Initializable {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getItems().clear();
         try {
-            String sql = "SELECT kode,nama,jumlah,(jumlah / 1000) AS jumlahkg FROM bahan "
+            String sql = "SELECT kode,nama,jumlah,(jumlah / 1000) AS jumlahkg,harga_terkecil FROM bahan "
                     + "WHERE kode ILIKE ? OR "
                     + "nama ILIKE ? OR "
                     + "jumlah::character varying ILIKE ? "
@@ -304,12 +314,13 @@ public class BahanController implements Initializable {
             }
             pre.setInt(4, Integer.parseInt(tlimit.getText()));
             ResultSet res = pre.executeQuery();
-           while (res.next()) {
+            while (res.next()) {
                 String skode = res.getString("kode");
                 String snama = res.getString("nama");
-                String sjumlah =  nf.format(res.getDouble("jumlah"));
-                String sjumlahkg =  nf.format(res.getDouble("jumlahkg"));
-                tabledata.add(new Entity(skode, snama, sjumlah,sjumlahkg));
+                String sjumlah = nf.format(res.getDouble("jumlah"));
+                String shargaterkecil = nf.format(res.getDouble("harga_terkecil"));
+                String sjumlahkg = nf.format(res.getDouble("jumlahkg"));
+                tabledata.add(new Entity(skode, snama, sjumlah, sjumlahkg, shargaterkecil));
             }
             pre.close();
             res.close();
@@ -318,6 +329,7 @@ public class BahanController implements Initializable {
             nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
             jumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
             jumlahkg.setCellValueFactory(new PropertyValueFactory<>("jumlahkg"));
+            hargaterkecil.setCellValueFactory(new PropertyValueFactory<>("hargaterkecil"));
             table.setItems(tabledata);
         } catch (SQLException ex) {
             Logger.getLogger(BahanController.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,13 +351,14 @@ public class BahanController implements Initializable {
 
     public class Entity {
 
-        String kode, nama, jumlah,jumlahkg;
+        String kode, nama, jumlah, jumlahkg, hargaterkecil;
 
-        public Entity(String kode, String nama, String jumlah, String jumlahkg) {
+        public Entity(String kode, String nama, String jumlah, String jumlahkg, String hargaterkecil) {
             this.kode = kode;
             this.nama = nama;
             this.jumlah = jumlah;
             this.jumlahkg = jumlahkg;
+            this.hargaterkecil = hargaterkecil;
         }
 
         public String getKode() {
@@ -379,8 +392,14 @@ public class BahanController implements Initializable {
         public void setJumlahkg(String jumlahkg) {
             this.jumlahkg = jumlahkg;
         }
-        
-        
+
+        public String getHargaterkecil() {
+            return hargaterkecil;
+        }
+
+        public void setHargaterkecil(String hargaterkecil) {
+            this.hargaterkecil = hargaterkecil;
+        }
 
     }
 

@@ -1,25 +1,4 @@
 
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
-
-
 CREATE TABLE akun (
     id character varying(10) NOT NULL,
     nama character varying(50),
@@ -29,7 +8,6 @@ CREATE TABLE akun (
 );
 
 
-ALTER TABLE akun OWNER TO postgres;
 
 CREATE TABLE akun_keuangan (
     kode_akun_keuangan character varying(15) NOT NULL,
@@ -38,17 +16,12 @@ CREATE TABLE akun_keuangan (
 );
 
 
-ALTER TABLE akun_keuangan OWNER TO postgres;
-
 
 CREATE TABLE bahan (
     kode character varying(10) NOT NULL,
     nama character varying(50),
     jumlah double precision
 );
-
-
-ALTER TABLE bahan OWNER TO postgres;
 
 
 CREATE TABLE catatan (
@@ -63,7 +36,6 @@ CREATE TABLE catatan (
 );
 
 
-ALTER TABLE catatan OWNER TO postgres;
 
 CREATE TABLE kategori_meja (
     kode_kategori_meja character varying(10),
@@ -71,7 +43,6 @@ CREATE TABLE kategori_meja (
 );
 
 
-ALTER TABLE kategori_meja OWNER TO postgres;
 
 CREATE TABLE kategori_menu (
     kode_kategori_menu character varying(10),
@@ -79,7 +50,6 @@ CREATE TABLE kategori_menu (
 );
 
 
-ALTER TABLE kategori_menu OWNER TO postgres;
 
 CREATE TABLE meja (
     nama character varying(25),
@@ -88,8 +58,6 @@ CREATE TABLE meja (
     kode character varying(10) NOT NULL
 );
 
-
-ALTER TABLE meja OWNER TO postgres;
 
 
 CREATE TABLE menu (
@@ -102,7 +70,6 @@ CREATE TABLE menu (
 );
 
 
-ALTER TABLE menu OWNER TO postgres;
 
 CREATE TABLE pembelian (
     tanggal date,
@@ -116,8 +83,6 @@ CREATE TABLE pembelian (
 );
 
 
-ALTER TABLE pembelian OWNER TO postgres;
-
 
 CREATE TABLE perkiraan (
     kode_perkiraan character varying(15) NOT NULL,
@@ -126,7 +91,6 @@ CREATE TABLE perkiraan (
 );
 
 
-ALTER TABLE perkiraan OWNER TO postgres;
 
 CREATE TABLE resep_detail (
     kode_master character varying(15),
@@ -136,7 +100,6 @@ CREATE TABLE resep_detail (
 );
 
 
-ALTER TABLE resep_detail OWNER TO postgres;
 
 CREATE SEQUENCE resep_detail_id_seq
     START WITH 1
@@ -146,9 +109,12 @@ CREATE SEQUENCE resep_detail_id_seq
     CACHE 1;
 
 
-ALTER TABLE resep_detail_id_seq OWNER TO postgres;
-
 ALTER SEQUENCE resep_detail_id_seq OWNED BY resep_detail.id;
+
+
+--
+-- Name: resep_master; Type: TABLE; Schema: public; Owner: postgres
+--
 
 CREATE TABLE resep_master (
     kode_resep character varying(15) NOT NULL,
@@ -158,6 +124,10 @@ CREATE TABLE resep_master (
 
 
 ALTER TABLE resep_master OWNER TO postgres;
+
+--
+-- Name: transaksi; Type: TABLE; Schema: public; Owner: postgres
+--
 
 CREATE TABLE transaksi (
     kode_transaksi character varying(15),
@@ -174,11 +144,10 @@ CREATE TABLE transaksi (
     kode_akun_keuangan character varying(15),
     diskon double precision DEFAULT 0,
     diskon_transaksi double precision DEFAULT 0,
+    kode_user2 character varying(15),
     id integer NOT NULL
 );
 
-
-ALTER TABLE transaksi OWNER TO postgres;
 
 CREATE SEQUENCE transaksi_id_seq
     START WITH 1
@@ -188,69 +157,81 @@ CREATE SEQUENCE transaksi_id_seq
     CACHE 1;
 
 
-ALTER TABLE transaksi_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE transaksi_id_seq OWNED BY transaksi.id;
 
+
 ALTER TABLE ONLY resep_detail ALTER COLUMN id SET DEFAULT nextval('resep_detail_id_seq'::regclass);
 
+
 ALTER TABLE ONLY transaksi ALTER COLUMN id SET DEFAULT nextval('transaksi_id_seq'::regclass);
+
+
 
 INSERT INTO akun (id, nama, username, password, tipe) VALUES ('K001', 'Kasir 1', 'kasir1', 'kasir1', 'kasir');
 INSERT INTO akun (id, nama, username, password, tipe) VALUES ('admin', 'Mulyadi', 'admin', 'admin', 'admin');
 INSERT INTO akun (id, nama, username, password, tipe) VALUES ('AK002', 'iwan', 'iwan', 'bk201', 'admin');
+INSERT INTO akun (id, nama, username, password, tipe) VALUES ('009', 'irawan', 'irawan', '1234', 'waiters');
 
-INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('003', 'BNI', 'Akun Bank BNI');
-INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('001', 'KAS', 'Kas Di kasir');
-INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('004', 'BRI', 'Akun BANK BRI');
-INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('002', 'MDRI', 'Akun Bank Mandiri');
 
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('BR001', 'Beras Bermutu', 95300);
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('DNB001', 'Daun Bawang', 9054.6000000000004);
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('MRC001', 'Merica bubuk', 11081);
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('AYM001', 'Ayam Potong', 114720);
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('GRM001', 'Garam Biasa', 1978.2499999999982);
-INSERT INTO bahan (kode, nama, jumlah) VALUES ('CKN', 'Chicken', 2980);
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('004', 'BRI', 'Pembayaran dengan BANK BRI');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('003', 'BNI', 'Pembayaran dengan BANK BNI');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('002', 'MDRI', 'Pembayaran dengan BANK MANDIRI');
+INSERT INTO akun_keuangan (kode_akun_keuangan, nama_akun_keuangan, keterangan_akun_keuangan) VALUES ('001', 'CASH', 'Pembayaran dengan CASH');
 
-INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1705012', '003', '2017-05-01', 'Biaya bensin karyawan', 'biaya bensin bulanan untuk karyawan', 100000, '001', 'admin');
+
+
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('JKD', 'Jack D', 8100);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('CKN', 'Chicken', 11967.76);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('DNB001', 'Daun Bawang', 8701.1000000000004);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('BR001', 'Beras Bermutu', 87193.149999999994);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('MRC001', 'Merica bubuk', 11040.549999999999);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('AYM001', 'Ayam Potong', 29083.137000000002);
+INSERT INTO bahan (kode, nama, jumlah) VALUES ('GRM001', 'Garam Biasa', -1767.0651000000021);
+
+
+
 INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1706111', '003', '2017-06-11', 'Beli bensin untuk motor delivery', 'yo', 20000, '003', 'admin');
-INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707171', '001', '2017-07-17', 'gaji lok budi', 'test', 150000, '001', 'admin');
 INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707181', '003', '2017-07-18', 'pembelian bensin', 'pembelian bensin', 120000, '001', 'AK002');
 INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707182', '003', '2017-07-18', '5 liter', '', 90000, '001', 'AK002');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707301', '08976', '2017-07-30', 'pembelian piring', 'pembelian piring 2 lusin oleh iwan', 20000, '001', 'admin');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1705012', '003', '2017-05-01', 'Biaya bensin karyawan', 'biaya bensin bulanan untuk karyawan', 100000, '001', 'admin');
+INSERT INTO catatan (kode, kode_perkiraan, tanggal, nama, keterangan, jumlah, kode_akun_keuangan, kode_user) VALUES ('1707171', '001', '2017-07-17', 'gaji lok budi', 'test', 150000, '001', 'admin');
 
 
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('TA', 'Take Away', 0, 'A001');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('1', 'BERUGAK', 0, 'BM001');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('14', 'RUANG 1', 0, 'R1M004');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('7', 'BERUGAK', 0, 'BM007');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('10', 'BERUGAK', 0, 'BM010');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('30', 'RUANG 2', 0, 'R2M010');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('28', 'RUANG 2', 0, 'R2M008');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('3', 'BERUGAK', 0, 'BM003');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('27', 'RUANG 2', 0, 'R2M007');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('29', 'RUANG 2', 0, 'R2M009');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('24', 'RUANG 2', 0, 'R2M004');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('VIP', 'VIP', 0, 'VIP');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('20', 'RUANG 1', 0, 'R1M010');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('4', 'BERUGAK', 0, 'BM004');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('16', 'RUANG 1', 0, 'R1M006');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('15', 'RUANG 1', 0, 'R1M005');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('26', 'RUANG 2', 0, 'R2M006');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('21', 'RUANG 2', 0, 'R2M001');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('12', 'RUANG 1', 0, 'R1M002');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('19', 'RUANG 1', 0, 'R1M009');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('8', 'BERUGAK', 0, 'BM008');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('17', 'RUANG 1', 0, 'R1M007');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('18', 'RUANG 1', 0, 'R1M008');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('23', 'RUANG 2', 0, 'R2M003');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('5', 'BERUGAK', 0, 'BM005');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('22', 'RUANG 2', 0, 'R2M002');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('25', 'RUANG 2', 0, 'R2M005');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('6', 'BERUGAK', 0, 'BM006');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('2', 'BERUGAK', 0, 'BM002');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('11', 'RUANG 1', 0, 'R1M001');
-INSERT INTO meja (nama, kategori, status, kode) VALUES ('13', 'RUANG 1', 0, 'R1M003');
 INSERT INTO meja (nama, kategori, status, kode) VALUES ('9', 'BERUGAK', 0, 'BM009');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('26', 'RUANG 2', 0, 'R2M006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('10', 'BERUGAK', 0, 'BM010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('21', 'RUANG 2', 0, 'R2M001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('19', 'RUANG 1', 0, 'R1M009');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('13', 'RUANG 1', 0, 'R1M003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('12', 'RUANG 1', 0, 'R1M002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('11', 'RUANG 1', 0, 'R1M001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('8', 'BERUGAK', 0, 'BM008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('7', 'BERUGAK', 0, 'BM007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('6', 'BERUGAK', 0, 'BM006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('4', 'BERUGAK', 0, 'BM004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('3', 'BERUGAK', 0, 'BM003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('17', 'RUANG 1', 0, 'R1M007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('23', 'RUANG 2', 0, 'R2M003');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('24', 'RUANG 2', 0, 'R2M004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('29', 'RUANG 2', 0, 'R2M009');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('15', 'RUANG 1', 0, 'R1M005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('22', 'RUANG 2', 0, 'R2M002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('20', 'RUANG 1', 0, 'R1M010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('30', 'RUANG 2', 0, 'R2M010');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('5', 'BERUGAK', 0, 'BM005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('28', 'RUANG 2', 0, 'R2M008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('27', 'RUANG 2', 0, 'R2M007');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('VIP', 'VIP', 0, 'VIP');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('16', 'RUANG 1', 0, 'R1M006');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('TA', 'Take Away', 0, 'A001');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('25', 'RUANG 2', 0, 'R2M005');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('14', 'RUANG 1', 0, 'R1M004');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('2', 'BERUGAK', 0, 'BM002');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('18', 'RUANG 1', 0, 'R1M008');
+INSERT INTO meja (nama, kategori, status, kode) VALUES ('1', 'BERUGAK', 0, 'BM001');
+
 
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH003', 'Teh Panas Madu', 'Minuman', 10000, 'TH003.png', 'RS001');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SS001', 'Susu Panas', 'Minuman', 10000, 'SS001.jpg', 'RS002');
@@ -263,7 +244,6 @@ INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('SF002', 'Udang Bakar Madu', 'Makanan', 30000, 'SF002.jpg', 'RS001');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TM001', 'Tumis Jamur', 'Makanan', 20000, 'TM001.jpg', 'RS002');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL006', 'Tempe  Goreng', 'Makanan', 10000, 'LL006.jpg', 'RS001');
-INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL004', 'Telur Dadar', 'Makanan', 20000, 'LL004.jpg', 'RS002');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH004', 'Teh Tarik Panas', 'Minuman', 15000, 'TH004.jpg', 'RS003');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('TH002', 'Teh Panas Tawar', 'Minuman', 5000, 'TH002.jpg', 'RS001');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL005', 'Tahu Goreng', 'Makanan', 10000, 'LL005.jpg', 'RS001');
@@ -295,26 +275,36 @@ INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('AT005', 'ayam taliwang', 'Makanan', 12000, 'AT005.jpg', 'RS002');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('09865', 'asdadas', 'Makanan', 120000, '09865.jpg', 'RS004');
 INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('PL001', 'Pelecing', 'Makanan', 12000, 'PL001.png', 'PL001');
-INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('FRC001', 'Fried Chicken Original', 'Makanan', 12000, 'FRC001.png', 'FRC001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('LL004', 'Telur Dadar', 'Makanan', 20000, 'LL004.jpg', 'RS002');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('FRC001', 'Fried Chicken Original', 'Makanan', 12000, 'FRC001.jpg', 'FRC001');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('AYMRC01', 'Ayam rica rica', 'Makanan', 12000, 'AYMRC01.jpg', 'AYMRC01');
+INSERT INTO menu (kode, nama, kategori, harga, gambar, kode_master_resep) VALUES ('jkdfsoft1', 'Jack d free 1 softdrink', 'Paket', 100000, 'jkdfsoft1.jpg', 'jkdf1soft');
 
 
-INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707181', 'AYM001', 'Ayam Potong', 12000, 120000, '001', 'admin');
+
 INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707182', 'AYM001', 'Ayam Potong', 12000, 8000000, '001', 'admin');
 INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707183', 'BR001', 'Beras Bermutus', 9000, 1900000, '001', 'AK002');
 INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707184', 'AYM001', 'Ayam Potong', 120000, 1200000, '001', 'AK002');
 INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-19', '1707191', 'CKN', 'Chicken', 3000, 200000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-30', '1707301', 'AYM001', 'Ayam Potong', 1000, 20000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-30', '1707302', 'GRM001', 'Garam Biasa', 1000, 5000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-18', '1707181', 'AYM001', 'Ayam Potong', 12000, 120000, '001', 'admin');
+INSERT INTO pembelian (tanggal, kode_transaksi, kode_bahan, nama, jumlah, harga, kode_akun_keuangan, kode_user) VALUES ('2017-07-30', '1707303', 'CKN', 'Chicken', 10000, 100000, '001', 'admin');
+
+
 
 INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('001', 'pengeluaran', 'Gaji Karyawan');
 INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('003', 'pengeluaran', 'Biaya Bensin');
 INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('002', 'pendapatan', 'Pendapatan Lain');
 INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('555', 'pendapatan', 'Penjualan Usaha');
 INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('777', 'pengeluaran', 'Pengeluaran Usaha');
+INSERT INTO perkiraan (kode_perkiraan, kategori_perkiraan, nama_perkiraan) VALUES ('08976', 'pengeluaran', 'Pengeluaran lain');
+
 
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'MRC001', 0.5, 11);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS003', 'MRC001', 0, 18);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS002', 'DNB001', 0.5, 19);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS001', 'DNB001', 3.5, 10);
-INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'DNB001', 0.5, 20);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'AYM001', 100, 21);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'GRM001', 0.050000000000000003, 22);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS002', 'AYM001', 10, 12);
@@ -329,62 +319,141 @@ INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('PL
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'CKN', 10, 25);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'GRM001', 0.5, 26);
 INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'DNB001', 0.20000000000000001, 27);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('AYMRC01', 'BR001', 0.050000000000000003, 28);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('AYMRC01', 'GRM001', 0.0023, 29);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('AYMRC01', 'AYM001', 0.999, 31);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('AYMRC01', 'CKN', 1000, 30);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'DNB001', 0.5, 20);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('RS004', 'MRC001', 10.300000000000001, 32);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('AYMRC01', 'MRC001', 12.9, 33);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('FRC001', 'CKN', 9.8000000000000007, 34);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('JKFREE1SOFT', 'MRC001', 1, 35);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('jkdfree1soft', 'JKD', 300, 36);
+INSERT INTO resep_detail (kode_master, kode_bahan, jumlah_pakai, id) VALUES ('jkdf1soft', 'JKD', 300, 37);
 
-SELECT pg_catalog.setval('resep_detail_id_seq', 27, true);
+
+SELECT pg_catalog.setval('resep_detail_id_seq', 37, true);
+
 
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS001', 'Resep Nasi Goreng', 0);
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS002', 'Nasi Rawon', 0);
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS003', 'Resep Mia Ayam', 0);
-INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS004', 'Semur balado', 0);
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS007', 'No resep', 0);
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('PL001', 'Pelecing', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('RS004', 'Semur balado', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('AYMRC01', 'Resep Ayam ricarica', 0);
 INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('FRC001', 'Fried Chicken Original', 0);
+INSERT INTO resep_master (kode_resep, nama_resep, status) VALUES ('jkdf1soft', 'jack D free 1 soft drink', 0);
 
 
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TH003', 10000, 1, '2017-07-23 12:45:59.41689', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 15, 3);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TM001', 20000, 2, '2017-07-23 12:45:58.404907', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 15, 1);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707231', 'TH004', 15000, 2, '2017-07-23 12:45:59.009288', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 5, 15, 2);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TH004', 15000, 1, '2017-07-23 12:50:09.984598', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 10, 5);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TH003', 10000, 1, '2017-07-23 12:50:10.502939', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 10, 6);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707232', 'TM001', 20000, 1, '2017-07-23 12:50:09.629424', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 15, 10, 4);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707233', 'TM001', 20000, 1, '2017-07-23 12:52:24.190855', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 5, 7);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707233', 'TH004', 15000, 1, '2017-07-23 12:52:24.497156', 1, 'admin', 'Slot 1', 'A001', 5, 1, '001', 0, 5, 8);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707234', 'TH004', 15000, 1, '2017-07-23 12:53:28.931021', 1, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 10, 10);
-INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, id) VALUES ('1707234', 'TM001', 20000, 1, '2017-07-23 12:53:28.524768', 1, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 5, 10, 9);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080003', 'SY005', 7500, 1, '2017-08-08 19:49:12.97612', 1, 'admin', 'Slot 1', 'BM009', 5, 1, '001', 0, 0, 'admin', 12);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080003', 'SY004', 7500, 1, '2017-08-08 19:49:13.272691', 1, 'admin', 'Slot 1', 'BM009', 5, 1, '001', 0, 0, 'admin', 13);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080003', 'TH004', 15000, 1, '2017-08-08 19:49:13.55525', 1, 'admin', 'Slot 1', 'BM009', 5, 1, '001', 0, 0, 'admin', 14);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080003', 'TM001', 20000, 2, '2017-08-08 19:49:12.684769', 1, 'admin', 'Slot 1', 'BM009', 5, 1, '001', 0, 0, 'admin', 11);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080003', 'TH003', 10000, 1, '2017-08-08 19:49:14.098319', 1, 'admin', 'Slot 1', 'BM009', 5, 1, '001', 0, 0, 'admin', 15);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'TM001', 20000, 1, '2017-08-08 19:49:04.532777', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 5);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'TH004', 15000, 1, '2017-08-08 19:49:04.917049', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 6);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY004', 7500, 1, '2017-08-08 19:49:05.287312', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 7);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY005', 7500, 1, '2017-08-08 19:49:05.573516', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 8);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY003', 10000, 1, '2017-08-08 19:49:05.935773', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 9);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'TH003', 10000, 1, '2017-08-08 19:49:06.207966', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 10);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY002', 10000, 1, '2017-08-08 19:50:52.275377', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 16);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY003', 10000, 1, '2017-08-08 19:50:52.600901', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 17);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'SY004', 7500, 1, '2017-08-08 19:48:14.672651', 2, 'admin', 'Slot 1', 'BM002', 5, 1, '002', 0, 0, 'admin', 3);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'SY005', 7500, 1, '2017-08-08 19:48:14.943889', 2, 'admin', 'Slot 1', 'BM002', 5, 1, '002', 0, 0, 'admin', 4);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'TH004', 15000, 2, '2017-08-08 19:48:14.368433', 2, 'admin', 'Slot 1', 'BM002', 5, 1, '002', 0, 0, 'admin', 2);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'TM001', 20000, 2, '2017-08-08 19:48:14.070155', 2, 'admin', 'Slot 1', 'BM002', 5, 1, '002', 0, 0, 'admin', 1);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'SY004', 7500, 1, '2017-08-08 19:50:52.888107', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 18);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080004', 'TH003', 10000, 1, '2017-08-08 19:50:53.349814', 1, 'admin', 'Slot 1', 'R1M004', 5, 1, '001', 0, 0, 'admin', 19);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TM001', 20000, 1, '2017-08-08 19:54:21.626181', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 20);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH004', 15000, 1, '2017-08-08 19:54:22.061977', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 21);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TM001', 20000, 1, '2017-08-10 19:02:07.982026', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 43);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH004', 15000, 1, '2017-08-10 19:02:08.571033', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 44);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH003', 10000, 1, '2017-08-10 19:02:08.923051', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 45);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY003', 10000, 1, '2017-08-10 19:02:09.228267', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 46);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'TH004', 15000, 1, '2017-08-08 19:54:59.675721', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 22);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'TH003', 10000, 1, '2017-08-08 19:54:59.964927', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 23);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080001', 'SY003', 10000, 1, '2017-08-08 19:55:00.29316', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 24);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SF003', 40000, 1, '2017-08-11 11:45:33.157048', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 53);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'TM001', 20000, 1, '2017-08-10 18:55:48.984618', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 30);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'TH004', 15000, 1, '2017-08-10 18:55:49.569851', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 31);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'TH003', 10000, 1, '2017-08-10 18:55:49.922102', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 32);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'SY003', 10000, 1, '2017-08-10 18:55:50.273852', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 33);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'SY004', 7500, 1, '2017-08-10 18:55:50.530534', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 34);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TM001', 20000, 2, '2017-08-11 11:45:25.044887', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 49);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080007', 'SY005', 7500, 1, '2017-08-10 18:55:50.774707', 2, 'admin', 'Slot 1', 'BM005', 5, 1, NULL, 0, 0, 'admin', 35);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080008', 'SY005', 7500, 1, '2017-08-10 18:56:39.65832', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 37);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080008', 'SY004', 7500, 1, '2017-08-10 18:56:39.98305', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 38);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080008', 'TH004', 15000, 1, '2017-08-10 18:56:40.387836', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 39);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708080008', 'TM001', 20000, 2, '2017-08-10 18:56:39.254533', 2, 'admin', 'Slot 1', 'R1M004', 5, 1, NULL, 0, 0, 'admin', 36);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY005', 7500, 1, '2017-08-11 11:45:27.253457', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 52);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH004', 15000, 1, '2017-08-11 11:45:25.772404', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 50);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY004', 7500, 1, '2017-08-11 11:45:26.263752', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 51);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TM001', 20000, 1, '2017-08-10 18:51:13.332769', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 25);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH004', 15000, 1, '2017-08-10 18:51:13.672089', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 26);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY003', 10000, 1, '2017-08-10 18:51:14.382593', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 27);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY004', 7500, 1, '2017-08-10 18:51:14.739346', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 28);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY005', 7500, 1, '2017-08-10 18:51:15.458887', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 29);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY004', 7500, 2, '2017-08-10 19:02:09.499474', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 47);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY005', 7500, 1, '2017-08-10 19:02:10.269769', 2, 'admin', 'Slot 1', 'BM001', 5, 1, '001', 0, 0, 'admin', 48);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY001', 7500, 1, '2017-08-11 11:45:33.399221', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 54);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY002', 10000, 1, '2017-08-11 11:45:33.679419', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 55);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SF004', 40000, 1, '2017-08-11 11:45:34.022153', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 56);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TM001', 20000, 1, '2017-08-10 18:57:22.556757', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 40);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'TH004', 15000, 1, '2017-08-10 18:57:22.863474', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 41);
+INSERT INTO transaksi (kode_transaksi, kode_menu, harga_masing, jumlah, tanggal, status, kode_user, slot, kode_meja, tax, statustax, kode_akun_keuangan, diskon, diskon_transaksi, kode_user2, id) VALUES ('1708110002', 'SY004', 7500, 1, '2017-08-10 18:57:23.215724', 2, 'admin', 'Slot 1', 'BM001', 5, 1, NULL, 0, 0, 'admin', 42);
 
 
-SELECT pg_catalog.setval('transaksi_id_seq', 10, true);
+SELECT pg_catalog.setval('transaksi_id_seq', 56, true);
+
+
 
 ALTER TABLE ONLY akun_keuangan
     ADD CONSTRAINT akun_uang_pkey PRIMARY KEY (kode_akun_keuangan);
 
+
+
 ALTER TABLE ONLY akun
     ADD CONSTRAINT akunpkey PRIMARY KEY (id);
+
+
 
 ALTER TABLE ONLY bahan
     ADD CONSTRAINT bahanpkey PRIMARY KEY (kode);
 
+
+
 ALTER TABLE ONLY catatan
     ADD CONSTRAINT catatanpkey PRIMARY KEY (kode);
+
 
 ALTER TABLE ONLY meja
     ADD CONSTRAINT mejapkey PRIMARY KEY (kode);
 
+
 ALTER TABLE ONLY menu
     ADD CONSTRAINT menupkey PRIMARY KEY (kode);
 
+
 ALTER TABLE ONLY pembelian
     ADD CONSTRAINT pembelianpkey PRIMARY KEY (kode_transaksi);
+
+
 
 ALTER TABLE ONLY perkiraan
     ADD CONSTRAINT perkirann_pkey PRIMARY KEY (kode_perkiraan);
 
 
+
 ALTER TABLE ONLY resep_detail
     ADD CONSTRAINT resep_detailpk PRIMARY KEY (id);
 
+
+
 ALTER TABLE ONLY resep_master
     ADD CONSTRAINT resep_masterkey PRIMARY KEY (kode_resep);
+
+
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;

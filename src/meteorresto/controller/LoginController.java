@@ -114,7 +114,7 @@ public class LoginController implements Initializable {
                     stage.getScene().getStylesheets().clear();
                     stage.getScene().getStylesheets().add("file:///" + css.replace("\\", "/"));
                     stage.setMaximized(true);
-                    stage.setTitle("Restoku POS App v1.0");
+                    stage.setTitle("Restoku POS App v1.2");
                     stage.getIcons().add(new Image(getClass().getResource("/meteorresto/icon/favico.png").toString()));
                     stage.show();
                     Node node = (Node) event.getSource();

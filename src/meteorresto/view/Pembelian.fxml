@@ -84,7 +84,7 @@
                         <Font name="Segoe UI" size="15.0" />
                     </font>
                 </TextField>
-                <Label text="Jumlah Total (Gram / Mili)">
+                <Label text="Jumlah Total (Gram / Mili / PCS)">
                     <font>
                         <Font name="Segoe UI" size="15.0" />
                     </font>
@@ -94,7 +94,7 @@
                         <Font name="Segoe UI" size="15.0" />
                     </font>
                 </TextField>
-                <Label text="Harga Total">
+                <Label text="Harga Persatuan (Gram / Mili / PCS)">
                     <font>
                         <Font name="Segoe UI" size="15.0" />
                     </font>
@@ -161,8 +161,9 @@
             <TableColumn fx:id="akun_keuangan" prefWidth="75.0" text="Akun Keuangan" />
                 <TableColumn fx:id="kode_bahan" prefWidth="152.0" style="-fx-alignment: CENTER;" text="Kode Bahan" />
                 <TableColumn fx:id="nama_bahan" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Nama Bahan" />
-            <TableColumn fx:id="jumlah_total" prefWidth="124.0" style="-fx-alignment: CENTER;" text="Jumlah Total (g / ml)" />
+            <TableColumn fx:id="jumlah_total" prefWidth="124.0" style="-fx-alignment: CENTER;" text="Jumlah Total (g / ml / PCS)" />
             <TableColumn fx:id="jumlahkg" prefWidth="63.0" text="Jumlah Total Kg/L" />
+            <TableColumn fx:id="harga_satuan" prefWidth="75.0" text="Harga Satuan" />
             <TableColumn fx:id="harga_total" prefWidth="75.0" text="Harga Total" />
             </columns>
             <opaqueInsets>

@@ -75,7 +75,7 @@ public class Operationhelper {
         }
         return hasil;
     }
-    
+
     public boolean konfirmasibayar(String kata) {
         Alert al = new Alert(Alert.AlertType.CONFIRMATION);
         al.setTitle("Konfirmasi");
@@ -95,14 +95,14 @@ public class Operationhelper {
     }
 
     public String gethddid() {
-        List<String> col=null;
+        List<String> col = null;
         try {
             String line = "";
-            InputStream is = Runtime.getRuntime().exec("wmic diskdrive get SerialNumber").getInputStream();
+            InputStream is = Runtime.getRuntime().exec("wmic baseboard get SerialNumber").getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             col = br.lines().collect(Collectors.toList());
             for (int i = 0; i < col.size(); i++) {
-                System.out.println(col.get(i));
+                System.out.println(col.get(i) + "-");
             }
         } catch (Exception ex) {
             Logger.getLogger(DialogaktivasiController.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,10 +110,10 @@ public class Operationhelper {
         }
         return col.get(2).replace(" ", "");
     }
-    
-    public String digitinputreplacer(String kata){
-        String res1=kata.replace(".", "");
-        String res2=res1.replace(",", ".");
+
+    public String digitinputreplacer(String kata) {
+        String res1 = kata.replace(".", "");
+        String res2 = res1.replace(",", ".");
         return res2;
     }
 

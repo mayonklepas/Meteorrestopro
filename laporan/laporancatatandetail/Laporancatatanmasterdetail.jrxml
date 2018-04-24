@@ -65,11 +65,11 @@
 	<detail>
 		<band height="83" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement mode="Opaque" x="0" y="0" width="555" height="25" forecolor="#6699FF" backcolor="#CCCCCC" uuid="5343cfda-c26b-4b91-80d3-63d91424cf20"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="25" forecolor="#FFFFFF" backcolor="#000000" uuid="5343cfda-c26b-4b91-80d3-63d91424cf20"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="10" isBold="true" isItalic="false" isStrikeThrough="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{kategori_perkiraan}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[  $F{kategori_perkiraan}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="27" width="555" height="50" uuid="4af38cbe-a600-4b18-8876-df3aa3151b5b"/>

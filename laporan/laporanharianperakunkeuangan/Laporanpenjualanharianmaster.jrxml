@@ -51,18 +51,18 @@
 	<detail>
 		<band height="71" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="2" width="93" height="20" forecolor="#3333FF" backcolor="#CCCCCC" uuid="fa8261c6-cfea-437f-94b3-d0781a64299c"/>
+				<reportElement mode="Opaque" x="0" y="2" width="93" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="fa8261c6-cfea-437f-94b3-d0781a64299c"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{kode_akun_keuangan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[  $F{kode_akun_keuangan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="93" y="2" width="462" height="20" forecolor="#3333FF" backcolor="#CCCCCC" uuid="a406696f-8a3d-4287-b278-6928418c6799"/>
+				<reportElement mode="Opaque" x="93" y="2" width="462" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a406696f-8a3d-4287-b278-6928418c6799"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nama_akun_keuangan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[  $F{nama_akun_keuangan}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="22" width="555" height="45" uuid="0a6934a2-347b-4bf0-9a09-bb8bd9571eb4"/>

@@ -108,7 +108,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <TableView fx:id="tableview" layoutX="990.0" layoutY="134.0" prefHeight="263.0" prefWidth="331.0" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="134.0">
+      <TableView fx:id="tableview" editable="true" layoutX="990.0" layoutY="134.0" prefHeight="263.0" prefWidth="331.0" AnchorPane.bottomAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="134.0">
         <columns>
             <TableColumn fx:id="tanggal" prefWidth="58.0" text="Tanggal" />
           <TableColumn fx:id="menu" prefWidth="116.0" text="Menu" />

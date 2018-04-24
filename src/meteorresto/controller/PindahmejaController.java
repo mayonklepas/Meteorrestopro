@@ -150,7 +150,7 @@ public class PindahmejaController implements Initializable {
                 } else {
                     try {
                         String sql = "UPDATE transaksi SET kode_meja=?,slot=? WHERE kode_meja=? AND slot=?;"
-                                + "UPDATE transaksi SET kode_transaksi=? WHERE kode_meja=? AND slot=?";
+                                + "UPDATE transaksi SET kode_transaksi=? WHERE kode_meja=? AND slot=? AND status=0";
                         PreparedStatement pre = ch.connect().prepareStatement(sql);
                         pre.setString(1, kode_meja);
                         pre.setString(2, cslotasal.getEditor().getText());

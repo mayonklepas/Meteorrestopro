@@ -79,8 +79,8 @@
             </Button>
             <TableView fx:id="tablebahan" editable="true" prefHeight="271.0" prefWidth="286.0">
               <columns>
-                <TableColumn fx:id="resepbahan" prefWidth="170.0" text="Bahan" />
-                <TableColumn fx:id="resepjumlah" prefWidth="112.0" text="Jumlah / Gram" />
+                <TableColumn fx:id="resepbahan" prefWidth="163.0" text="Bahan" />
+                <TableColumn fx:id="resepjumlah" prefWidth="119.0" text="Jumlah / gr/ml/pcs" />
               </columns>
             </TableView>
                 <HBox prefHeight="18.0" prefWidth="247.0" spacing="10.0">
